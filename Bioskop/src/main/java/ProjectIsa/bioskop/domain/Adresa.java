@@ -18,7 +18,6 @@ public class Adresa {
 	private String city;
 	@Column(nullable = false)
 	private String street;
-
 	
 	public Adresa() {
 		
@@ -29,7 +28,6 @@ public class Adresa {
 		this.city = city;
 		this.street = street;
 	}
-
 	public String getCity() {
 		return city;
 	}

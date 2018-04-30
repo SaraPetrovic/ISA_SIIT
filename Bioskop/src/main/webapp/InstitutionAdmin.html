@@ -1,0 +1,119 @@
+				<div class="container">
+				<h2>Modal Example</h2>
+				<!-- Trigger the modal with a button -->
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection">Add hall</button>
+				<div class="modal fade" id="newProjection" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new hall </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" id="form">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="hallID" id="hallID" class="form-control input-sm" placeholder="Name of the hall">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<input type="text" name="rows" id="rows" class="form-control input-sm" placeholder="Number of rows">
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<input type="text" name="columns" id="columns" class="form-control input-sm" placeholder="Number of columns">
+							    				</div>
+							    			</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				
+							    				      <label for="sel1">Select cinema or theater:</label>
+      												  <select class="form-control" id="nameCinemaOrTheater">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     											<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+						    							<button  id="addHall" type="button" class="btn btn-info">Add</button>
+     												</div>
+     											</div>
+							    			</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
+			 </div>
+			 
+	<script>
+	
+		$.ajax({
+			type: "GET",
+			url: "/api/TheaterOrCinemas",
+			success: function(theatersOrCinema){
+				var select = document.getElementById("nameCinemaOrTheater");
+				if(theatersOrCinema.length == 0){
+					alert("You can not add hall before theater or cinema.")
+				}else{
+					$.each(theatersOrCinema, function(i, cinema){
+						var option = document.createElement("OPTION");
+						select.add(option);
+						option.value = cinema.name;
+						option.text = cinema.name;
+					});
+				}
+			}
+		});
+
+		$("#addHall").click(function() {
+			var hall = {};
+			hall.id = $("#hallID").val();
+			var rows = document.getElementById("rows");
+			var columns = document.getElementById("columns");
+			for(var i = 0; i < rows; i++){
+				for(var j = 0; i < columns; i++){
+					hall.seats[i][j] = 0;
+				}
+			}
+			var name = document.getElementById("nameCinemaOrTheater");
+			$.each(theatersOrCinema, function(i, cinema){
+				if(cinema.name === name){
+					hall.theaterOrCinema = cinema;
+				}
+			});
+		
+			$.ajax({
+			    contentType: 'application/json',
+			    data: JSON.stringify(hall),
+			    dataType: 'json',
+			    success: function(data){
+
+			    	alert("Hall " + data.id + " has been successfully added!");
+
+					$('#modal').modal('toggle');
+
+			    },
+			    error: function(data){
+			    	alert("This name of hall already exists");
+			    },
+			    processData: false,
+			    type: 'POST',
+			    url: '/api/addHall'
+			});
+		});
+		
+	
+	</script>
