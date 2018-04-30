@@ -1,0 +1,5 @@
+package ProjectIsa.bioskop.domain;
+
+public enum UserType {
+	REGISTEREDUSER, UNREGISTEREDUSER, SYSTEMADMIN, CINEMAADMIN, FANZONEADMIN
+}

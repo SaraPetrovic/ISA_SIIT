@@ -1,0 +1,2 @@
+insert into adresa(id, city, street) values ('6', 'asd', 'dsa')
+insert into user(username, password, usertype, address_id, email, firstname, lastname) values ('admin', '1234', 'SYSTEMADMIN', '6', 'asd', 'admin', 'admin')

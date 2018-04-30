@@ -1,0 +1,224 @@
+				<div class="container">
+				 <h2>Modal Example</h2>
+				  <!-- Trigger the modal with a button -->
+				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal">Add admin</button>
+				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>
+				  <!-- Modal -->
+				  <div class="modal fade" id="modal" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new admin </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" id="form">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="firstName" id="firstName" class="form-control input-sm" placeholder="First Name">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="lastName" id="lastName" class="form-control input-sm" placeholder="Last Name">							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<input type="text" name="username" id="username" class="form-control input-sm" placeholder="Username">
+							    				</div>
+							    			</div>
+							    			</div>
+							    			<div class="row">
+
+
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="city" id="city" class="form-control input-sm" placeholder="City">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="street" id="street" class="form-control input-sm" placeholder="Street" >
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				
+							    				      <label for="sel1">Select admin type:</label>
+      												  <select class="form-control" id="userType">
+       													 	<option value="SYSTEMADMIN">System admin</option>
+        													<option value="FANZONEADMIN">Fan zone admin</option>
+        													<option value="CINEMAADMIN">Cinema admin</option>
+     												  </select>
+     											</div>
+							    				
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    				<button  id="addAdmin" type="button" class="btn btn-info">Add new admin</button>
+							    				
+							    			</div>
+							    			</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				  </div>
+				  </div> 
+				  <div class="modal fade" id="newCinema" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new admin </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" data-toggle="validator" id="formCinema">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="name" id="name" class="form-control input-sm"  placeholder="Name">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="city">						    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    						<input type="text" name="street" id="streetCinema" class="form-control input-sm" placeholder="Street" required>
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="description" id="description" class="form-control input-sm" placeholder="Description" required>
+							    					</div>
+							    			</div>
+
+							    			</div>
+							    			<div class="row">
+											<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="cinema" checked>Cinema</label>
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="theater">Theather</label>
+												
+							    				</div>
+							    			</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<button  id="addEntity" type="button" class="btn btn-info">Add</button>
+							    					</div>
+							    				</div>
+							    			</div>
+							    			
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				  </div>
+				  </div> 
+				  </div>
+<script>
+	$('#modal').on('hidden.bs.modal', function(){
+    	$(this).find('form')[0].reset();
+	});
+	$("#addAdmin").click(function() {
+		var person = {};
+		 person.firstName = $("#firstName").val();
+		 person.lastName = $("#lastName").val();
+		 person.username = $("#username").val();
+		 person.email = $("#email").val();
+		 var address = { "city" : $("#city").val(),
+				 		"street" : $("#street").val()};
+		 
+		 person["address"] = {};
+		 person["address"] = address
+		 person.password = $("#password").val();
+		 person.userType = $("#userType").val();
+		 
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(person),
+		    dataType: 'json',
+		    success: function(data){
+
+		    	alert("Admin " + data.username + " has been successfully added!");
+
+				$('#modal').modal('toggle');
+
+
+		    },
+		    error: function(data){
+		    	alert("username already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/users'
+		});
+	});
+	$("#addEntity").click(function() {
+		 var entity = {};
+		 var isCinema = $('#cinema:checked').val()?true:false;
+
+		 entity.cinema = isCinema;
+		 entity.name = $("#name").val();
+		 var adress = { "city" : $("#cityCinema").val(),
+				 		"street" : $("#streetCinema").val()};
+		 
+		entity["adress"] = {};
+		entity["adress"] = adress;
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(entity),
+		    dataType: 'json',
+		    success: function(data){
+
+		    	alert("Succesful add!");
+				$('#newCinema').modal('toggle');
+
+
+		    },
+		    error: function(data){
+		    	alert("name already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/createTheaterOrCinema'
+		});
+
+	});
+
+</script>
+	<script  type="text/javascript">
+		
+ 		var frmvalidator = new Validator("formCinema");
+ 		frmvalidator.addValidation("name","req","Please enter your First Name");
+ 		frmvalidator.addValidation("name","maxlen=20",
+  		      "Max length for FirstName is 20");
+ 
+ 		 frmvalidator.addValidation("name","req");
+		 frmvalidator.addValidation("name","maxlen=20");
+ 
+ 		
+</script>
+				
