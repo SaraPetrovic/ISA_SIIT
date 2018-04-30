@@ -8,14 +8,12 @@ import org.springframework.stereotype.Repository;
 import ProjectIsa.bioskop.domain.Projection;
 
 @Repository
-public class ProjectionRepository implements ProjectionInterface{
+public class ProjectionRepositoryImpl implements ProjectionInterface{
 
 	private Collection<Projection> projections = new ArrayList<Projection>();
 	
 	@Override
 	public Collection<Projection> getProjections() {
-		//Projection p =  new Projection("sa", "dfsf", "dsf", "dss", 125);
-		//projections.add(p);
 		return projections;
 	}
 
@@ -27,7 +25,8 @@ public class ProjectionRepository implements ProjectionInterface{
 
 	@Override
 	public void deleteProjection(Projection projection) {
-		projections.remove(projection);		
+		projections.remove(projection);
+		
 	}
 
 	@Override
@@ -39,6 +38,5 @@ public class ProjectionRepository implements ProjectionInterface{
 		}
 		return null;
 	}
-	
 
 }

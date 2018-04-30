@@ -1,57 +1,49 @@
 package ProjectIsa.bioskop.domain;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class Ticket {
-	private int seat;
-	private int row;
-	private int column;
-	private double price;
-	private long id;
+	private ArrayList<String> seat;
+	private TheaterOrCinema theaterOrCinema;
+	private MovieOrPerformance projekcija;
+	private Long id;
 	
-	public Ticket(){
+	public Ticket() {
 		
 	}
-	public Ticket(int seat, int row, int column, double price, long id) {
+	public Ticket(ArrayList<String> seat, TheaterOrCinema theaterOrCinema, MovieOrPerformance projekcija, Long id) {
 		super();
 		this.seat = seat;
-		this.row = row;
-		this.column = column;
-		this.price = price;
+		this.theaterOrCinema = theaterOrCinema;
+		this.projekcija = projekcija;
 		this.id = id;
 	}
-	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public int getSeat() {
+	public ArrayList<String> getSeat() {
 		return seat;
 	}
-	public void setSeat(int seat) {
+	public void setSeat(ArrayList<String> seat) {
 		this.seat = seat;
 	}
-	public int getRow() {
-		return row;
+	public TheaterOrCinema getTheaterOrCinema() {
+		return theaterOrCinema;
 	}
-	public void setRow(int row) {
-		this.row = row;
+	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
+		this.theaterOrCinema = theaterOrCinema;
 	}
-	public int getColumn() {
-		return column;
+	public MovieOrPerformance getProjekcija() {
+		return projekcija;
 	}
-	public void setColumn(int column) {
-		this.column = column;
+	public void setProjekcija(MovieOrPerformance projekcija) {
+		this.projekcija = projekcija;
 	}
-	public double getPrice() {
-		return price;
-	}
-	public void setPrice(double price) {
-		this.price = price;
-	}
-	
 	
 }

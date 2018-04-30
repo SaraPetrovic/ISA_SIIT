@@ -9,5 +9,4 @@ public interface ProjectionInterface {
 	Projection addProjection(Projection projection);
 	void deleteProjection(Projection projection);
 	Projection getProjection(Long id);
-	
 }

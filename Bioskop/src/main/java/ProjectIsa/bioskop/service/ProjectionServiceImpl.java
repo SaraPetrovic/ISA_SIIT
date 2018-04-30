@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Projection;
-import ProjectIsa.bioskop.repository.ProjectionRepository;
+import ProjectIsa.bioskop.repository.ProjectionRepositoryImpl;
 
 @Service
-public class ProjectionServiceImpl implements ProjectionServiceInterface{
+public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	@Autowired
-	ProjectionRepository repository;
+	ProjectionRepositoryImpl repository;
 	
 	@Override
 	public Collection<Projection> getProjections() {
@@ -28,7 +28,6 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface{
 	@Override
 	public void deleteProjection(Projection projection) {
 		repository.deleteProjection(projection);
-		
 	}
 
 	@Override
