@@ -12,7 +12,7 @@ import ProjectIsa.bioskop.repository.UserDBRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+	private static final String DEFAULT_ADMIN_PASSWORD = "ftn";
 	@Autowired
 	UserDBRepository userDbRepository;
 	
@@ -24,8 +24,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User addUser(User user) {
-		User newUser = userDbRepository.save(user);
-		return newUser;
+		if (user.getPassword() == null){
+			user.setPassword(DEFAULT_ADMIN_PASSWORD);
+		}
+		User existingUser = userDbRepository.findByUsername(user.getUsername());
+		if (existingUser == null){
+			User newUser = userDbRepository.save(user);
+			return newUser;
+		}
+		return null;
 	}
 	@Override
 	public void deleteUser(User user) {
@@ -45,6 +52,20 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		Adresa newAddress = userDbRepository.save(address);
 		return newAddress;
+	}
+
+	@Override
+	public Boolean changePassword(User user, String newPassword) {
+		String response = "";
+		if (!user.getPassword().equals(newPassword) && newPassword.length() > 8){
+			user.setPassword(newPassword);
+			user.setIsFirstLogin(false);
+			//save in DB
+			addUser(user);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 

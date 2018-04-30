@@ -2,6 +2,9 @@ package ProjectIsa.bioskop.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import ProjectIsa.bioskop.service.UserService;
 
 @RestController
 public class UserController {
-	private static final String DEFAULT_ADMIN_PASSWORD = "ftn";
+	private HttpServletRequest request;
 	@Autowired
 	private UserService userService;
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -49,20 +52,33 @@ public class UserController {
 			return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
 		}
 	}
+	
 	@RequestMapping(
 			value = "/api/users",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<User> addUser(@RequestBody User user){
-		if (user.getPassword() == null){
-			user.setPassword(DEFAULT_ADMIN_PASSWORD);
-		}
+
 		if (user.getAddress() != null){
 			userService.addAddress(user.getAddress());
 		}
 		User newUser = userService.addUser(user);
 		
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/api/changePassword", 
+					produces = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.POST
+					)
+	public ResponseEntity<String> changePassword(@RequestBody String newPassword){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		Boolean success = userService.changePassword(user, newPassword);
+		if (success){
+			return new ResponseEntity<String>("Sifra je uspesno promenjena", HttpStatus.OK);
+		}else{
+			return new ResponseEntity<String>("Sifra nije promenjena", HttpStatus.CONFLICT);
+		}
 	}
 }
