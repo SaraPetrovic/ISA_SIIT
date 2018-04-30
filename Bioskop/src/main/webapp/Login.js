@@ -22,14 +22,20 @@ $("#login-btn").click(function() {
 		url: "/api/login",
 		data: JSON.stringify(loginData),
 		dataType: "json",
-		success: function(response) { $("#username-field").hide();
-										$("#password-field").hide();
-										$("#admin-button").hide();
-										$("#login-btn").hide();
-										$("#registration-btn").hide();
-										$("#logout-btn").show();
-										$("#body").empty(); 
-										$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");
+		success: function(response) { 
+			$("#username-field").hide();
+			$("#password-field").hide();
+			$("#admin-button").hide();
+			$("#login-btn").hide();
+			$("#registration-btn").hide();
+			$("#logout-btn").show();
+			$("#body").empty(); 
+			$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");
+			if (response.userType == "SYSTEMADMIN" || response.userType == "FANZONEADMIN" || response.userType == "CINEMAADMIN"){
+				alert("admin je ulogovan");
+			}else{
+				alert("admin nije ulogovan");
+			}
 										
 										},
 		error: function() {alert("nije uspeo");},

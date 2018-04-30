@@ -12,7 +12,6 @@ import javax.persistence.Table;
 
 
 
-@SuppressWarnings("deprecation")
 
 @Entity
 
@@ -20,7 +19,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(nullable = false)
+	@Column(nullable = false, unique=true)
 	private String username;
 	@Column(nullable = false)
 	private String password;
@@ -35,8 +34,24 @@ public class User {
 	private String firstName;
 	@Column(nullable = false, name = "lastname")
 	private String lastName;
+	@Column(nullable = false)
+	private Boolean isFirstLogin;
 	
 	
+	
+	public Long getId() {
+		return id;
+	}
+	public Boolean getIsFirstLogin() {
+		return isFirstLogin;
+	}
+	public void setIsFirstLogin(Boolean isFirstLogin) {
+		this.isFirstLogin = isFirstLogin;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public User() {
 		super();
 	}

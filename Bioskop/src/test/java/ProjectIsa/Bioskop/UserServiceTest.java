@@ -27,6 +27,7 @@ public class UserServiceTest {
 /*
 	Anotacija @Test naznačava Springu da će se anotirana metoda izvrši prilikom testiranja.
 	Ukoliko se ona izostavi, test metoda se neće izvršiti.
+
 */	@Before
 	public void init(){
 		User u = new User("Marko", "Markovic", "Marko", "1234", UserType.REGISTEREDUSER, new Adresa("asd", "asd"), "asd@asd");
@@ -34,6 +35,7 @@ public class UserServiceTest {
 		userService.addUser(u);
 		userService.addUser(u1);
 	}
+
 	@Test
 	public void testFindAll() {
 		Collection<User> users = userService.getUsers();

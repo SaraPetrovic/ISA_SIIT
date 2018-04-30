@@ -28,7 +28,6 @@ public class Adresa {
 		this.city = city;
 		this.street = street;
 	}
-	
 	public String getCity() {
 		return city;
 	}

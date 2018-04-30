@@ -14,5 +14,7 @@ public interface UserService {
 	Adresa addAddress(Adresa address);
 	void deleteUser(User user);
 	User getUser(String id);
+
+	Boolean changePassword(User user, String newPassword);
 	
 }
