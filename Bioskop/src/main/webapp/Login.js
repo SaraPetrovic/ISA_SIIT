@@ -31,6 +31,11 @@ $("#login-btn").click(function() {
 			$("#logout-btn").show();
 			$("#body").empty(); 
 			$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");
+			if (response.userType == "SYSTEMADMIN" || response.userType == "FANZONEADMIN" || response.userType == "CINEMAADMIN"){
+				alert("admin je ulogovan");
+			}else{
+				alert("admin nije ulogovan");
+			}
 										
 										},
 		error: function() {alert("nije uspeo");},

@@ -60,9 +60,7 @@ public class UserController {
 			method = RequestMethod.POST)
 	public ResponseEntity<User> addUser(@RequestBody User user){
 
-		if (user.getAddress() != null){
-			userService.addAddress(user.getAddress());
-		}
+
 		User newUser = userService.addUser(user);
 		
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);

@@ -24,6 +24,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User addUser(User user) {
+		if (user.getAddress() != null){
+			addAddress(user.getAddress());
+		}
+		user.setIsFirstLogin(true);
 		if (user.getPassword() == null){
 			user.setPassword(DEFAULT_ADMIN_PASSWORD);
 		}

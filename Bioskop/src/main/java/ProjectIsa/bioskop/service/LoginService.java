@@ -16,7 +16,6 @@ public class LoginService implements LoginServiceInterface {
 
 	
 	@Autowired
-
 	UserDBRepository repository;
 	
 	@Override
