@@ -1,0 +1,36 @@
+</br>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<br/>
+			<h1 class="panel-title" align="center" style="color:black;font-family:serif;font-size:45px;">Cinemas</h1><br/>
+</div></div>
+<div id="cinemas" class="container"></div>
+
+<script>
+	$.ajax({
+		type: "GET",
+		url: "/api/TheaterOrCinemas",
+		success: function(cinemas){
+			
+			var html = '<hr>';
+			$.each(cinemas, function(i, cinema){
+				if(cinemas.length == 0){
+					html+='<p>There is no cinema at this moment.</p>';
+				}
+				else{
+				//if(cinema.isCinema === true){
+					html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
+		       		'<div class="col-md-4">'+
+		         	'<h2 font-family:serif>'+cinema.name+'</h2>'+
+		         	'<p>'+cinema.adress.street +' '+ cinema.adress.city+'</p>'+
+		         	'<p>'+cinema.description+'</p>'+
+		         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
+		       		'</div>'+
+		    		'</div><hr>';
+				//}
+				}
+			});
+			$('#cinemas').append(html);
+		}
+	});
+</script>

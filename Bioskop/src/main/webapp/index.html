@@ -92,6 +92,9 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
       <script src="js/bootstrap.min.js"></script>
+      <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	  <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+      
 
 	  <script>
 	  		
@@ -113,7 +116,16 @@
 			
 		</script>
 		
-		<script src="login.js"></script>
+	<script src="login.js"></script>
+	
+	<script type="text/javascript">
+		$("#registration-btn").click(function(){
+			$("#body").empty();
+			$.get("SignUpForm.html", function( signUpForm ) {
+				$("#body").append(signUpForm);
+				});
+		});
+	</script>
 		
 	<script type="text/javascript">
 		$("#theater").click(function(){
@@ -121,8 +133,17 @@
 			$("#body").load("/api/projections");
 			
 		});
-	
 	</script>
+	
+	<script>
+		$("#cinema").click(function(){
+			$("#body").empty();
+			$.get("cinemas.html", function( cinemas ) {
+				$("#body").append(cinemas);
+				});
+		});
+	</script>
+	
 
 	
 			
