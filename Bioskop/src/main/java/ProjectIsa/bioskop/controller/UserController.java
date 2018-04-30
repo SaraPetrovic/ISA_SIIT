@@ -22,6 +22,7 @@ import ProjectIsa.bioskop.service.UserService;
 
 @RestController
 public class UserController {
+	@Autowired
 	private HttpServletRequest request;
 	@Autowired
 	private UserService userService;
@@ -69,14 +70,18 @@ public class UserController {
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST
 					)
-	public ResponseEntity<String> changePassword(@RequestBody String newPassword){
+	public ResponseEntity<User> changePassword(@RequestBody String newPassword){
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		Boolean success = userService.changePassword(user, newPassword);
 		if (success){
-			return new ResponseEntity<String>("Sifra je uspesno promenjena", HttpStatus.OK);
+			System.out.println("vracam ok 200");
+			String a = "asd";
+			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}else{
-			return new ResponseEntity<String>("Sifra nije promenjena", HttpStatus.CONFLICT);
+			System.out.println("uspesno je " + success);
+
+			return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
 		}
 	}
 }

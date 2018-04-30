@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
 		if (existingUser == null){
 			User newUser = userDbRepository.save(user);
 			return newUser;
+			
 		}
 		return null;
 	}
@@ -60,12 +61,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Boolean changePassword(User user, String newPassword) {
-		String response = "";
+		System.out.println("sifra admina :" + user.getPassword() + "Nova sifra je : " + newPassword + " Duzina sifre je :" +  newPassword.length());
 		if (!user.getPassword().equals(newPassword) && newPassword.length() > 8){
+			System.out.println("usao");
 			user.setPassword(newPassword);
 			user.setIsFirstLogin(false);
 			//save in DB
-			addUser(user);
+			userDbRepository.save(user);
 			return true;
 		}else{
 			return false;
