@@ -18,27 +18,17 @@ public class Adresa {
 	private String city;
 	@Column(nullable = false)
 	private String street;
-	@Column(nullable = false)
-	private String phoneNumber;
 	
 	public Adresa() {
 		
 	}
 	
-	public Adresa(String city, String street, String phoneNumber) {
+	public Adresa(String city, String street) {
 		super();
 		this.city = city;
 		this.street = street;
-		this.phoneNumber = phoneNumber;
 	}
 	
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String contactNumber) {
-		this.phoneNumber = contactNumber;
-	}
 	public String getCity() {
 		return city;
 	}

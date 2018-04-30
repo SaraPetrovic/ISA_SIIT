@@ -29,8 +29,8 @@ public class UserServiceTest {
 	Ukoliko se ona izostavi, test metoda se neće izvršiti.
 */	@Before
 	public void init(){
-		User u = new User("Marko", "Markovic", "Marko", "1234", UserType.REGISTEREDUSER, new Adresa("asd", "asd", "021 454545"), "asd@asd");
-		User u1 = new User("Marko", "Markovic", "Marko1", "1234", UserType.REGISTEREDUSER, new Adresa("asd", "asd",  "021 454545"), "asd@asd");
+		User u = new User("Marko", "Markovic", "Marko", "1234", UserType.REGISTEREDUSER, new Adresa("asd", "asd"), "asd@asd");
+		User u1 = new User("Marko", "Markovic", "Marko1", "1234", UserType.REGISTEREDUSER, new Adresa("asd", "asd"), "asd@asd");
 		userService.addUser(u);
 		userService.addUser(u1);
 	}
@@ -48,7 +48,7 @@ public class UserServiceTest {
 	}
 	@Test
 	public void testAdd(){
-		User user = new User("asd", "asd", "asd","asd", UserType.SYSTEMADMIN, new Adresa("asd", "asd",  "021 454545"), "asd@asd");
+		User user = new User("asd", "asd", "asd","asd", UserType.SYSTEMADMIN, new Adresa("asd", "asd"), "asd@asd");
 		Collection<User> users = userService.getUsers();
 		int sizeBeforeAdd = users.size();
 		userService.addUser(user);

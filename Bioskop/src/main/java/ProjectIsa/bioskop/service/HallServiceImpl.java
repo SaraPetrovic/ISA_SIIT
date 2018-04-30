@@ -18,6 +18,7 @@ public class HallServiceImpl implements HallServiceInterface{
 
 	@Override
 	public Hall addHall(Hall hall) {
+		
 		repository.addHall(hall);
 		return hall;
 	}
