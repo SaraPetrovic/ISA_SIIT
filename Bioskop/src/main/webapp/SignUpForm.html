@@ -190,8 +190,8 @@
   	var signupData = {};
 	signupData.username = $("#email").val();
 	signupData.password = $("#userPw").val();
-	signupData.userType = "SYSTEMADMIN";
-	var address = { "city" : $("#city").val(), "street" : $("#address").val(), "contactNumber" : "555-5555"};
+	signupData.userType = "REGISTEREDUSER";
+	var address = { "city" : $("#city").val(), "street" : $("#address").val()};
 	
 
 	signupData.address = address;
