@@ -1,0 +1,58 @@
+<!-- Modal -->
+				  <div class="modal fade" id="passwordModal" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Its your first time logging in. Please enter new password. </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" id="form">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="password" id="password" class="form-control input-sm" placeholder="New password">
+							    					</div>
+							    				</div>
+							    											    		
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    				<button  id="changePassword" type="button" class="btn btn-info">Change</button>
+							    				
+							    			</div>
+							    			</div>
+
+							    			
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+
+				  </div>
+				  </div> 
+				  	<script>
+					$("#changePassword").click(function(){
+						var password = $("#password").val();
+						$.ajax({
+						    contentType: 'application/json',
+						    data: password,
+						    dataType: 'json',
+						    success: function(){
+						    	alert("Uspesno promenjena lozinka!");
+						    	$('#passwordModal').modal('hide');
+						    },
+						    error: function(){
+						    	alert("Greska asdasdasdsaprilikom unosa nove sifre");
+						    },
+						    processData: false,
+						    type: 'POST',
+						    url: '/api/changePassword'
+						});
+						
+					});
+				    </script>

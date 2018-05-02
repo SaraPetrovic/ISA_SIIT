@@ -8,7 +8,7 @@ public interface ItemService {
 
 	Collection<ThematicItem> getItems();
 	ThematicItem getItem(Long id);
-	ThematicItem createItem(ThematicItem item);
+	ThematicItem addNewItem(ThematicItem item);
 	ThematicItem changeItem(ThematicItem item);
-	void deleteItem(Long id);
+	void deleteItem(ThematicItem item);
 }

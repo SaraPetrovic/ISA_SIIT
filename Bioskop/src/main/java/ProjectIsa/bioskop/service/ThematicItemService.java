@@ -17,30 +17,32 @@ public class ThematicItemService implements ItemService {
 	@Override
 	public Collection<ThematicItem> getItems() {
 		
-		return repository.getItems();
+		return repository.findAll();
 	}
 
 	@Override
 	public ThematicItem getItem(Long id) {
 		// TODO Auto-generated method stub
-		return repository.getItem(id);
+		return repository.findById(id);
 	}
 
 	@Override
-	public ThematicItem createItem(ThematicItem item) {
-		
-		return repository.createItem(item);
+	public ThematicItem addNewItem(ThematicItem item) {
+		if (item.getPrice() < 0){
+			return null;
+		}
+		return repository.save(item);
 	}
 
 	@Override
 	public ThematicItem changeItem(ThematicItem item) {
 		// TODO Auto-generated method stub
-		return repository.changeItem(item);
+		return repository.save(item);
 	}
 
 	@Override
-	public void deleteItem(Long id) {
-		repository.deleteItem(id);
+	public void deleteItem(ThematicItem item) {
+		repository.delete(item);
 		
 	}
 

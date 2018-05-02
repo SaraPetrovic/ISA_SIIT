@@ -61,6 +61,38 @@ public class UserServiceTest {
 		users.remove(user);
 		
 	}
+	@Test
+	public void testFirstTimeLogin(){
+		//default admin inserted in DB password = "ftn"
+		User user = userService.getUser("ftn");
+		String passwordBefore = user.getPassword();
+		//password has only 3 characters
+		userService.changePassword(user, "asd");
+		String passwordAfter = user.getPassword();
+		assertThat(passwordBefore.equals(passwordAfter));
+	}
+	@Test
+	public void testFirstTimeLogin2(){
+		//default admin inserted in DB password = "ftn"
+		User user = userService.getUser("ftn");
+		String passwordBefore = user.getPassword();
+		//password is same as default admin password - FAIL
+		userService.changePassword(user, "ftn");
+		String passwordAfter = user.getPassword();
+		assertThat(passwordBefore.equals(passwordAfter));
+	}
+	@Test
+	public void testFirstTimeLogin3(){
+		//default admin inserted in DB password = "ftn"
+		User user = userService.getUser("ftn");
+		String passwordBefore = user.getPassword();
+		//password - SUCCESS
+		userService.changePassword(user, "123456789");
+		String passwordAfter = user.getPassword();
+		assertThat(!passwordBefore.equals(passwordAfter));
+	}
+		
+	
 
 	
 }

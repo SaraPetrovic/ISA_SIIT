@@ -54,7 +54,7 @@ public class ThematicItemController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<ThematicItem> createItem(@RequestBody ThematicItem item){
-		ThematicItem createdItem = itemService.createItem(item);
+		ThematicItem createdItem = itemService.addNewItem(item);
 		return new ResponseEntity<ThematicItem>(createdItem, HttpStatus.OK);
 	}
 }

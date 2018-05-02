@@ -15,6 +15,7 @@ $("#login-btn").click(function() {
 	loginData.lastName = "";
 	
 	var success = false;
+	var retUser = null;
 	
 	
 	$.ajax({
@@ -32,10 +33,28 @@ $("#login-btn").click(function() {
 			$("#body").empty(); 
 			$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");
 			if (response.userType == "SYSTEMADMIN" || response.userType == "FANZONEADMIN" || response.userType == "CINEMAADMIN"){
-				alert("admin je ulogovan");
+				if (response.isFirstLogin){
+					$.get("changePassModal.html", function( modalPanel ) {
+						  $('#body').append(modalPanel);
+						  $('#passwordModal').modal({backdrop: 'static', keyboard: false});
+
+						});
+				}
 			}else{
 				alert("admin nije ulogovan");
 			}
+			
+			if (response.userType == "REGISTEREDUSER") {
+				retUser = response;
+				$("#body").empty();
+				if (retUser != null) {
+					alert(retUser.username);
+					$.get("RegisteredUserHomepage.html", function(RegUserPanel) {
+						$("#body").append(RegUserPanel);
+					});
+				};
+			}
+			
 										
 										},
 		error: function() {alert("nije uspeo");},
