@@ -16,13 +16,20 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	@Override
 	public Collection<Projection> getProjections() {
 		Collection<Projection> projections = repository.getProjections();
+		if(projections.size() == 0) {
+			return null;
+		}
 		return projections;
 	}
 
 	@Override
 	public Projection addProjection(Projection projection) {
-		repository.addProjection(projection);
-		return projection;
+		if(getProjectionByName(projection.getMovieOrPerformance().getName()) != null) {
+			repository.addProjection(projection);
+			return projection;
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -36,4 +43,27 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		return proj;
 	}
 
+	@Override
+	public Projection getProjectionByName(String name) {
+		Projection proj = repository.getProjectionByName(name);
+		return proj;
+	}
+
+	@Override
+	public Boolean termCheck(Projection projection) {
+		for(Projection p: getProjections()) {
+			if(projection.getMovieOrPerformance().getName() == p.getMovieOrPerformance().getName()
+					&& projection.getHall() == p.getHall()) {
+				if(projection.getDate() == p.getDate()) {
+					return false;
+				}//else if(){
+					
+				//}
+			}
+		}
+		return true;
+	}
+	
+	
+	
 }

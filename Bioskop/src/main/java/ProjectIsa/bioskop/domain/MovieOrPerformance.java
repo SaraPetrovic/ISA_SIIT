@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovieOrPerformance {
 	private String name;
-	private ArrayList<String> actors;
+	private String actors;
 	private String type;
 	private String producer;
 	private int filmDuration;
@@ -22,7 +22,7 @@ public class MovieOrPerformance {
 		
 	}
 	
-	public MovieOrPerformance(String name, ArrayList<String> actors, String type, String producer, int filmDuration) {
+	public MovieOrPerformance(String name, String actors, String type, String producer, int filmDuration) {
 		super();
 		this.name = name;
 		this.actors = actors;
@@ -31,7 +31,7 @@ public class MovieOrPerformance {
 		this.filmDuration = filmDuration;
 	}
 	
-	public MovieOrPerformance(String name, ArrayList<String> actors, String type, String producer, int filmDuration, String img,
+	public MovieOrPerformance(String name, String actors, String type, String producer, int filmDuration, String img,
 			double mark, String description, ArrayList<Integer> halls, Time terms, long id,
 			boolean isFilm, ArrayList<Ticket> tickets) {
 		super();
@@ -71,11 +71,11 @@ public class MovieOrPerformance {
 		this.name = name;
 	}
 
-	public ArrayList<String> getActors() {
+	public String getActors() {
 		return actors;
 	}
 
-	public void setActors(ArrayList<String> actors) {
+	public void setActors(String actors) {
 		this.actors = actors;
 	}
 

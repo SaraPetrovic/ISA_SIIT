@@ -1,0 +1,100 @@
+	<div class="container">
+	 <h2>Modal Example</h2>
+	  <!-- Trigger the modal with a button -->
+	  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal"  data-backdrop="static" data-keyboard="false">Update profile</button>
+	  <!-- Modal -->
+	  <div class="modal fade" id="modal" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="row centered-form">
+	        <div class="col-xs-12 col-sm-12 col-md-12 ">
+	        	<div class="panel panel-default">
+	        		<div class="panel-heading">
+				    		<h3 class="panel-title">Please enter new profile information </h3>
+				 			</div>
+				 			<div class="panel-body">
+				    		<form role="form" id="form">
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<div class="form-group">
+				                			<input type="text" name="firstName" id="firstName" class="form-control input-sm" placeholder="First Name">
+				    					</div>
+				    				</div>
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<div class="form-group">
+				    						<input type="text" name="lastName" id="lastName" class="form-control input-sm" placeholder="Last Name">							    					</div>
+				    				</div>
+				    			</div>
+				    			
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6" >
+				    					<div class="form-group">
+				    						<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
+				    					</div>
+				    				</div>
+				    				<div class="col-xs-6 col-sm-6 col-md-6" >
+				    					<div class="form-group">
+				    						<input type="text" name="username" id="username" class="form-control input-sm" placeholder="Username">
+				    					</div>
+				    				</div>	
+				    			</div>
+				    			
+				    			
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6" >
+				    					<div class="form-group">
+				    						<input type="password" name="password" id="password" class="form-control input-sm" placeholder="Password">
+				    					</div>
+				    				</div>
+				    				<div class="col-xs-6 col-sm-6 col-md-6" >
+				    					<div class="form-group">
+				    						<input type="password" name="password-confirm" id="password-confirm" class="form-control input-sm" placeholder="Confirm Password">
+				    					</div>
+				    				</div>
+				    			</div>
+				    			
+				    			
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<div class="form-group">
+				    						<input type="text" name="city" id="city" class="form-control input-sm" placeholder="City">
+				    					</div>
+				    				</div>
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<div class="form-group">
+				    						<input type="text" name="street" id="street" class="form-control input-sm" placeholder="Street" >
+				    					</div>
+				    				</div>
+				    			</div>
+				    			
+				    			<div class="row">	
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<button  id="update-btn" type="button" class="btn btn-info">Update</button>
+				    				</div>
+				    			</div>
+				    		</form>
+				    	</div>
+		    		</div>
+	    		</div>
+	    	</div>	
+	    </div>
+	  </div>
+	  </div> 
+
+	  </div>
+
+
+	<script>
+	
+		$('#modal').on('hidden.bs.modal', function(){
+	    	$(this).find('form')[0].reset();
+		});
+		
+		
+		$("#update-btn").click(function(){
+			alert("Update clicked!!");
+		});
+	
+	</script>

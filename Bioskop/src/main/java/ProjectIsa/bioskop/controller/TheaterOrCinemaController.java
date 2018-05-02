@@ -27,12 +27,13 @@ public class TheaterOrCinemaController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<TheaterOrCinema>> getTheaterOrCinemas() {
 		
-		
 		Collection<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
 
-
-		return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas,
-				HttpStatus.OK);
+		//if (cinemas != null){
+			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
+		//}else{
+			//return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
+	//	}
 	}
 	@RequestMapping(
 			value= "/api/TheaterOrCinema/{id}",

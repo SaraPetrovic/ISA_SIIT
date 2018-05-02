@@ -21,21 +21,24 @@ public class HallController {
 			value = "/api/halls",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Hall>> getHall() {
+	public ResponseEntity<Collection<Hall>> getHalls() {
 		
 		Collection<Hall> halls = service.getHalls();
-
-		return new ResponseEntity<Collection<Hall>>(halls,
-				HttpStatus.OK);
+		//if (halls != null){
+			return new ResponseEntity<Collection<Hall>>(halls, HttpStatus.OK); 
+		//}else{
+			//return new ResponseEntity<Collection<Hall>>(halls, HttpStatus.NOT_FOUND);
+		//}
+		
 	}
 	
 	@RequestMapping(
 			value= "/api/hall/{id}",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.GET)
-	public ResponseEntity<Hall> getHall(@PathVariable("id") String id){
+	public ResponseEntity<Hall> getHallById(@PathVariable("id") String id){
 		
-		Hall hall = service.getHall(id);
+		Hall hall = service.getHallById(id);
 		if (hall != null){
 			return new ResponseEntity<Hall>(hall, HttpStatus.OK); 
 		}else{
@@ -51,6 +54,7 @@ public class HallController {
 	public ResponseEntity<Hall> addHall(@RequestBody Hall hall){
 		
 		Hall newHall = service.addHall(hall);
+		
 		return new ResponseEntity<Hall>(newHall, HttpStatus.OK);
 	}
 }

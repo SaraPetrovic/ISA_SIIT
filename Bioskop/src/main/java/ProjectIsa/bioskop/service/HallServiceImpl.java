@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ProjectIsa.bioskop.domain.Hall;
+import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.repository.HallRepositoryImpl;
 
 public class HallServiceImpl implements HallServiceInterface{
@@ -13,14 +14,28 @@ public class HallServiceImpl implements HallServiceInterface{
 	
 	@Override
 	public Collection<Hall> getHalls() {
-		return repository.getHalls();
+		Collection<Hall> halls = repository.getHalls();
+		if(halls.size() == 0) {
+			return null;
+		}
+		return halls;
 	}
 
 	@Override
 	public Hall addHall(Hall hall) {
+		Collection<Hall> halls = repository.getHalls();
+		for (Hall h : halls ){
+			if (h.getId().equals(hall.getId())){
+				return null;
+			}
+		}
+		return repository.addHall(hall);
 		
-		repository.addHall(hall);
-		return hall;
+		/*
+		if(getHallById(hall.getId()) == null) {
+			return repository.addHall(hall);
+		}
+		return null;*/
 	}
 
 	@Override
@@ -29,7 +44,7 @@ public class HallServiceImpl implements HallServiceInterface{
 	}
 
 	@Override
-	public Hall getHall(String id) {
+	public Hall getHallById(String id) {
 		return repository.getHall(id);
 	}
 }

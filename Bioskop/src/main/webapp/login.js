@@ -15,6 +15,7 @@ $("#login-btn").click(function() {
 	loginData.lastName = "";
 	
 	var success = false;
+	var retUser = null;
 	
 	
 	$.ajax({
@@ -42,6 +43,18 @@ $("#login-btn").click(function() {
 			}else{
 				alert("admin nije ulogovan");
 			}
+			
+			if (response.userType == "REGISTEREDUSER") {
+				retUser = response;
+				$("#body").empty();
+				if (retUser != null) {
+					alert(retUser.username);
+					$.get("RegisteredUserHomepage.html", function(RegUserPanel) {
+						$("#body").append(RegUserPanel);
+					});
+				};
+			}
+			
 										
 										},
 		error: function() {alert("nije uspeo");},

@@ -15,7 +15,11 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	
 	@Override
 	public Collection<TheaterOrCinema> getTheaterOrCinemas() {
-		return repository.getTheaterOrCinemas();
+		Collection<TheaterOrCinema> cinemas = repository.getTheaterOrCinemas();
+		if(cinemas.size() == 0) {
+			return null;
+		}
+		return cinemas;
 	}
 
 	@Override

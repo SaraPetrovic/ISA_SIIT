@@ -18,11 +18,6 @@ private Collection<Hall> halls = new ArrayList<Hall>();
 
 	@Override
 	public Hall addHall(Hall hall) {
-		for (Hall h : halls){
-			if (h.getId().equals(hall.getId())){
-				return null;
-			}
-		}
 		halls.add(hall);
 		return hall;
 	}
