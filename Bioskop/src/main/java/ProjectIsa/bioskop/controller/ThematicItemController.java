@@ -1,5 +1,8 @@
 package ProjectIsa.bioskop.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.service.ThematicItemService;
@@ -18,7 +23,7 @@ import ProjectIsa.bioskop.service.ThematicItemService;
 @RestController
 public class ThematicItemController {
 	
-
+	public final static String  DEFAULT_IMAGE_FOLDER = "src/main/webapp/images/";
 	@Autowired
 	private ThematicItemService itemService;
 
@@ -56,6 +61,30 @@ public class ThematicItemController {
 	public ResponseEntity<ThematicItem> createItem(@RequestBody ThematicItem item){
 		ThematicItem createdItem = itemService.addNewItem(item);
 		return new ResponseEntity<ThematicItem>(createdItem, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "api/uploadImage",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			method = RequestMethod.POST)
+	public String uploadImage(@RequestParam("file") MultipartFile file,
+							@RequestParam("itemImage") String imageName) {
+		if (!file.isEmpty()) {
+            try {
+
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(DEFAULT_IMAGE_FOLDER  + imageName )));
+                stream.write(bytes);
+                stream.close();
+                return "You successfully uploaded " + "images/file.jpg" + "!";
+            } catch (Exception e) {
+                return "You failed to upload " + "images/file.jpg" + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + "images/file.jpg" + " because the file was empty.";
+        }
+    
+
 	}
 }
 

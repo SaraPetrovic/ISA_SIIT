@@ -80,4 +80,13 @@ public class UserController {
 			return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
 		}
 	}
+	@RequestMapping(value = "api/changeProfile", 
+					produces = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.POST)
+	public ResponseEntity<User> changeProfile(@RequestBody User changedUser){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		User newUser = userService.changeProfile(user, changedUser);
+		return new ResponseEntity<User>(newUser, HttpStatus.OK);
+	}
 }

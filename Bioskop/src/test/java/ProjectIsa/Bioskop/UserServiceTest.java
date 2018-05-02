@@ -91,6 +91,49 @@ public class UserServiceTest {
 		String passwordAfter = user.getPassword();
 		assertThat(!passwordBefore.equals(passwordAfter));
 	}
+	@Test
+	public void changeProfileTest1(){
+		User user = userService.getUser("ftn");
+		String emailBefore = user.getEmail();
+		User newUserInfo = new User("asd", "asd", "ftn", "12345578512", UserType.SYSTEMADMIN, new Adresa("asd","asd"), "nevalidan email");
+		
+		userService.changeProfile(user, newUserInfo);
+		String emailAfter = user.getEmail();
+		assertThat(emailBefore.equals(emailAfter));
+	}
+	@Test
+	public void changeProfileTest2(){
+		User user = userService.getUser("ftn");
+		String passwordBefore = user.getPassword();
+		//nevalidna sifra
+		User newUserInfo = new User("asd", "asd", "ftn", "123", UserType.SYSTEMADMIN, new Adresa("asd","asd"), "asd@gmail.com");
+		
+		userService.changeProfile(user, newUserInfo);
+		String passwordAfter = user.getPassword();
+		assertThat(passwordBefore.equals(passwordAfter));
+	}
+	@Test
+	public void changeProfileTest3(){
+		User user = userService.getUser("ftn");
+		String usernameBefore = user.getUsername();
+		//username vec postoji
+		User newUserInfo = new User("asd", "asd", "admin", "123", UserType.SYSTEMADMIN, new Adresa("asd","asd"), "asd@gmail.com");
+		
+		userService.changeProfile(user, newUserInfo);
+		String usernameAfter = user.getUsername();
+		assertThat(usernameBefore.equals(usernameAfter));
+	}
+	@Test
+	public void changeProfileTest4(){
+		User user = userService.getUser("ftn");
+		String usernameBefore = user.getUsername();
+		//sve validno
+		User newUserInfo = new User("asd", "asd", "noviUsername", "123", UserType.SYSTEMADMIN, new Adresa("asd","asd"), "asd@gmail.com");
+		
+		userService.changeProfile(user, newUserInfo);
+		String usernameAfter = user.getUsername();
+		assertThat(!usernameBefore.equals(usernameAfter));
+	}
 		
 	
 

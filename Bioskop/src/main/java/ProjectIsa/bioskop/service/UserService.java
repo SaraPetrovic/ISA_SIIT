@@ -16,5 +16,7 @@ public interface UserService {
 	User getUser(String id);
 
 	Boolean changePassword(User user, String newPassword);
+
+	User changeProfile(User user, User changedUser);
 	
 }

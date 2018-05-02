@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.repository.UserDBRepository;
+import org.apache.commons.validator.routines.EmailValidator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,6 +71,35 @@ public class UserServiceImpl implements UserService {
 		}else{
 			return false;
 		}
+	}
+
+	@Override
+	public User changeProfile(User user, User changedUser) {
+		//check if new username exists
+		
+		if (!user.getUsername().equals(changedUser)){
+			User u = userDbRepository.findByUsername(changedUser.getUsername());
+			if (u != null){
+				return null;
+			}
+		}
+		if (!EmailValidator.getInstance().isValid(changedUser.getEmail())){
+			return null;
+		}
+		if (!user.getPassword().equals(changedUser.getPassword())){
+			if (changedUser.getPassword().length() < 8){
+				return null;
+			}
+		}
+		user.setUsername(changedUser.getUsername());
+		user.setAddress(changedUser.getAddress());
+		user.setPassword(changedUser.getPassword());
+		user.setFirstName(changedUser.getFirstName());
+		user.setLastName(changedUser.getLastName());
+		userDbRepository.save(user);
+		return user;
+
+		
 	}
 	
 

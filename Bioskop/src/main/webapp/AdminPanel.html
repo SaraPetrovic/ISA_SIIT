@@ -1,8 +1,9 @@
 				<div class="container">
 				 <h2>Modal Example</h2>
 				  <!-- Trigger the modal with a button -->
-				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal"  >Addd admin</button>
+				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal"  >Add admin</button>
 				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>
+				  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newItem">Add thematic item</button>
 				  <!-- Modal -->
 				  <div class="modal fade" id="modal" role="dialog">
 				    <div class="modal-dialog">
@@ -137,6 +138,80 @@
 				  </div>
 				  </div> 
 				  </div>
+				  <!-- Modal -->
+				  <div class="modal fade" id="newItem" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new thematic item </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" id="formItem">
+							    			<div class="row">
+							    				<div class="col-xs-12 col-sm-12 col-md-12">
+							    					<div class="form-group">
+							                			<input type="text" name="ItemName" id="itemName" class="form-control input-sm" placeholder="Item Name">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-12 col-sm-12 col-md-12">
+							    					<div class="form-group">
+							    						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">							    					</div>
+							    				</div>
+							    			    <div class="col-xs-12 col-sm-12 col-md-12">
+							    					<div class="form-group">
+							    						<input type="text" name="itemDescription" id="itemDescription" class="form-control input-sm" placeholder="Description">							    					</div>
+							    				</div>
+							    			</div>
+							    			
+							    			    <div class="container">
+									
+									
+									
+									          <div id="image-preview-div" style="display: none">
+									            <label for="exampleInputFile">Selected image:</label>
+									            <br>
+									            <img id="preview-img">
+									          </div>
+									          <div class="form-group">
+									            <input type="file" name="file" id="file" required>
+									            <input id="itemImage" name="itemImage" type="hidden" value="">
+									          </div>
+
+
+										        <br>
+										        <div class="alert alert-info" id="loading" style="display: none;" role="alert">
+										          Uploading image...
+										          <div class="progress">
+										            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+										            </div>
+										          </div>
+										        </div>
+										        <div id="message"></div>
+										      </div>
+										
+										
+								
+										    <script src="uploadImage.js"></script>
+							    				
+							    			<div class="col-xs-12 col-sm-12 col-md-12">
+							    				<button  id="addItem" type="button" class="btn btn-info">Add item</button>
+							    				
+							    			</div>
+							    			
+							    			
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				  </div>
+				  </div>
 <script>
 	$('#modal').on('hidden.bs.modal', function(){
     	$(this).find('form')[0].reset();
@@ -210,16 +285,5 @@
 	});
 
 </script>
-	<script  type="text/javascript">
-		
- 		var frmvalidator = new Validator("formCinema");
- 		frmvalidator.addValidation("name","req","Please enter your First Name");
- 		frmvalidator.addValidation("name","maxlen=20",
-  		      "Max length for FirstName is 20");
- 
- 		 frmvalidator.addValidation("name","req");
-		 frmvalidator.addValidation("name","maxlen=20");
- 
- 		
-</script>
+
 				
