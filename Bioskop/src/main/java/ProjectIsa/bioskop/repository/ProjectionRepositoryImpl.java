@@ -39,4 +39,14 @@ public class ProjectionRepositoryImpl implements ProjectionInterface{
 		return null;
 	}
 
+	@Override
+	public Projection getProjectionByName(String name) {
+		for(Projection p: projections) {
+			if(p.getMovieOrPerformance().getName() == name) {
+				return p;
+			}
+		}
+		return null;
+	}
+
 }

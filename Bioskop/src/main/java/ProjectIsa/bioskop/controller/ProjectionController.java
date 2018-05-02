@@ -30,9 +30,13 @@ public class ProjectionController {
 		
 		Collection<Projection> projections = service.getProjections();
 
+		if(projections == null) {
+			return new ResponseEntity<Collection<Projection>>(projections, HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Collection<Projection>>(projections, HttpStatus.OK);
+		}
 
-		return new ResponseEntity<Collection<Projection>>(projections,
-				HttpStatus.OK);
+		
 	}
 	@RequestMapping(
 			value= "/api/projections/{id}",
@@ -54,6 +58,10 @@ public class ProjectionController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		Projection newProjection = service.addProjection(projection);
-		return new ResponseEntity<Projection>(newProjection, HttpStatus.OK);
+		if(newProjection == null) {
+			return new ResponseEntity<Projection>(newProjection, HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Projection>(newProjection, HttpStatus.OK);
+		}
 	}
 }

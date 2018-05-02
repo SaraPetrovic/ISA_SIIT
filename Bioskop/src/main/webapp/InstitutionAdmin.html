@@ -1,8 +1,9 @@
 				<div class="container">
 				<h2>Modal Example</h2>
 				<!-- Trigger the modal with a button -->
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection">Add hall</button>
-				<div class="modal fade" id="newProjection" role="dialog">
+				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall">Add hall</button>
+				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection">Add projection</button>				
+				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
 				    
 				      <!-- Modal content-->
@@ -14,7 +15,7 @@
 							    		<h3 class="panel-title">Please enter information about new hall </h3>
 							 			</div>
 							 			<div class="panel-body">
-							    		<form role="form" id="form">
+							    		<form role="form1" id="form1">
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
@@ -56,19 +57,128 @@
 				    </div>
 				</div>	
 			   </div>
+			   <div class="modal fade" id="newProjection" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new projection </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form2" id="form2">
+								    		<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6" >
+									    			<div class="form-group">
+									    				<label class="radio-inline"><input type="radio" name="optradio" id="movie" checked>Movie</label>
+									    				<label class="radio-inline"><input type="radio" name="optradio" id="performance">Performance</label>
+									    			</div>
+								    			</div>
+								    		</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="projectionName" id="projectionName" class="form-control input-sm" placeholder="Name of the projection">
+							    					</div>
+							    				</div>
+											</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="projectionType" id="projectionType" class="form-control input-sm" placeholder="Type of the projection">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="producer" id="producer" class="form-control input-sm" placeholder="Producer name">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6" >
+								    				<div class="form-group">
+								    					<input type="text" name="actors" id="actors" class="form-control input-sm" placeholder="Actors">
+								    				</div>
+								    			</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+								    				<div class="form-group">
+								    				Description
+								    					<textarea rows="3" cols="6" name="description" id="description" class="form-control input-sm" placeholder="Description">
+								    					</textarea>
+								    				</div>
+								    			</div>
+								    		</div>
+								    		<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="img" id="img" class="form-control input-sm" placeholder="Image">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="duration" id="duration" class="form-control input-sm" placeholder="Duration">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select hall
+      												  <select class="form-control" id="selectHall">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+     										<br>
+     										<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="datetime" name="datetime" id="datetime" class="form-control input-sm" placeholder="Date and time">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">
+							    					</div>
+							    				</div>
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div align="center" class="form-group">
+						    							<button id="addProjection" type="button" class="btn btn-info">Add projection</button>
+     												</div>
+     											</div>
+     										</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
 			 </div>
 			 
-	<script>
+	<script type="text/javascript">
 	
-		$.ajax({
+	//dodavanje bioskopa/pozorista u padajucu listu	
+	$.ajax({
 			type: "GET",
 			url: "/api/TheaterOrCinemas",
-			success: function(theatersOrCinema){
+			success: function(theatersOrCinemas){
 				var select = document.getElementById("nameCinemaOrTheater");
-				if(theatersOrCinema.length == 0){
-					alert("You can not add hall before theater or cinema.")
+				if(theatersOrCinemas == null){
+					alert("You can not add hall before theater or cinema.");
 				}else{
-					$.each(theatersOrCinema, function(i, cinema){
+					$.each(theatersOrCinemas, function(i, cinema){
 						var option = document.createElement("OPTION");
 						select.add(option);
 						option.value = cinema.name;
@@ -77,7 +187,30 @@
 				}
 			}
 		});
-
+		
+		//dodavanje sala u padajucu listu
+		$.ajax({
+			type: "GET",
+			url: "/api/halls",
+			success: function(halls){
+				var select = document.getElementById("selectHall");
+				if(halls == null){
+					alert("You can not add projection before hall.");
+					$("#newProjection").hide();
+					//document.getElementById('newProjection').innerHTML = '<span class="emptyHalls"><h1>You must add hall before projection</h1></span>';
+				}else{
+					$.each(halls, function(i, hall){
+						var option = document.createElement("OPTION");
+						select.add(option);
+						option.value = hall.name;
+						option.text = hall.name;
+					});
+				}
+			}
+		});
+	</script>
+	
+	<script type="text/javascript">
 		$("#addHall").click(function() {
 			var hall = {};
 			hall.id = $("#hallID").val();
@@ -89,21 +222,24 @@
 				}
 			}
 			var name = document.getElementById("nameCinemaOrTheater");
-			$.each(theatersOrCinema, function(i, cinema){
-				if(cinema.name === name){
-					hall.theaterOrCinema = cinema;
+			$.ajax({
+				type: "GET",
+				url: "/api/TheaterOrCinemas",
+				success: function(theatersOrCinemas){
+					$.each(theatersOrCinemas, function(i, cinema){
+						if(cinema.name === name){
+							hall.theaterOrCinema = cinema;
+						}
+					});
 				}
 			});
-		
 			$.ajax({
 			    contentType: 'application/json',
 			    data: JSON.stringify(hall),
 			    dataType: 'json',
 			    success: function(data){
 
-			    	alert("Hall " + data.id + " has been successfully added!");
-
-					$('#modal').modal('toggle');
+			    	alert("Successful add");
 
 			    },
 			    error: function(data){
@@ -114,6 +250,57 @@
 			    url: '/api/addHall'
 			});
 		});
+	</script>
+	<script type="text/javascript">
+		$("#addProjection").click(function(){
+			var movieOrPerformance = {};
+			var projection = {};
+			var isFilm = $('#movie:checked').val()?true:false;
+			
+			movieOrPerformance.name = $("#projectionName").val();
+			movieOrPerformance.type = $("#projectionType").val();
+			movieOrPerformance.producer = $("#producer").val();
+			movieOrPerformance.actors = $("#actors").val();
+			movieOrPerformance.filmDuration = $("#duration").val();
+			movieOrPerformance.img = $("#img").val();
+			movieOrPerformance.averageRating = 0;
+			movieOrPerformance.description = $("#description").val();
+			movieOrPerformance.isFilm = isFilm;
+			
+			projection.date = $("#datetime").val;
+			projection.price = $("#price").val;
+			var hallName = $("#selectHall").val;
+			
+			$.ajax({
+				type: "GET",
+				url: "/api/halls",
+				success: function(halls){
+					$.each(halls, function(i, hall){
+						if(hall.name === hallName){
+							projection.hall = hall;
+						}
+					});
+				}
+			});
+			projection.movieOrPerformance = movieOrPerformance;
 		
+			$.ajax({
+			    contentType: 'application/json',
+			    data: JSON.stringify(projection),
+			    dataType: 'json',
+			    success: function(data){
 	
+			    	alert("Projection " + data.movieOrPerformance.name + " has been successfully added!");
+	
+					
+	
+			    },
+			    error: function(data){
+			    	alert("This name of projection already exists");
+			    },
+			    processData: false,
+			    type: 'POST',
+			    url: '/api/createProjection'
+			});
+		});
 	</script>

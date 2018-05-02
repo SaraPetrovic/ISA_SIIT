@@ -14,20 +14,24 @@
 			
 			var html = '<hr>';
 			$.each(theaters, function(i, theater){
-				if(theaters.length == 0){
-					html+='<p>There is no theater at this moment.</p>';
+				if(theaters == null){
+					html+='<br></br><br></br><br><br></br><br></br><br></br><p><h1>There is no theater at this moment.<h1></p>';
 				}
 				else{
-				//if(theater.isCinema === false){
-					html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
-		       		'<div class="col-md-4">'+
-		         	'<h2 font-family:serif>'+theater.name+'</h2>'+
-		         	'<p>'+theater.adress.street +' '+ theater.adress.city+'</p>'+
-		         	'<p>'+theater.description+'</p>'+
-		         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
-		       		'</div>'+
-		    		'</div><hr>';
-				//}
+					//if(theater.isCinema == false){
+						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
+			       		'<div class="col-xs-6 col-sm-6 col-md-6" ><div class="form-group">'+
+			         	'<h2 font-family:serif>'+theater.name+'</h2>'+
+			         	'<p>'+theater.adress.street +' '+ theater.adress.city+'</p>'+
+			         	'<p>'+theater.description+'</p>'+
+			         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
+			       		'</div></div>'+
+			       		/*
+			       		'<div class="col-xs-6 col-sm-6 col-md-6" ><div class="form-group">'+
+			       		'<button id="changeInfo" type="button" class="btn btn-info">Change informations</button>'+		       		
+			       		'</div></div>'+*/
+			       		'</div><hr>';
+					//}
 				}
 			});
 			$('#theaters').append(html);

@@ -9,4 +9,7 @@ public interface ProjectionServiceInterface {
 	Projection addProjection(Projection projection);
 	void deleteProjection(Projection projection);
 	Projection getProjection(Long id);
+	Projection getProjectionByName(String name);
+	
+	Boolean termCheck(Projection projection);
 }
