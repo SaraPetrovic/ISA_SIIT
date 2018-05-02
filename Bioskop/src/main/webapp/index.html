@@ -48,6 +48,7 @@
                   <button  id="admin-button" type="button" class="btn btn-success admin">Administracija</button>
                   <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
                   <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
+                  <button  id="adminCinema-button" type="button" class="btn btn-success admin">Institution's Admin</button>
                   
                </form>
             </div>
@@ -114,8 +115,19 @@
 			});
 			
 		</script>
-		
-	<script src="Login.js"></script>
+
+		<script>
+			
+			$("#adminCinema-button").click(function(){
+				$("#body").empty();
+				$.get("InstitutionAdmin.html", function( InstitutionAdminPanel ) {
+					  $("#body").append(InstitutionAdminPanel);
+					 
+					});
+			});
+		</script>
+	<script src="login.js"></script>
+
 	
 	<script type="text/javascript">
 		$("#registration-btn").click(function(){
@@ -129,7 +141,9 @@
 	<script type="text/javascript">
 		$("#theater").click(function(){
 			$("#body").empty();
-			$("#body").load("/api/projections");
+			$.get("theaters.html", function( theaters ) {
+				$("#body").append(theaters);
+				});
 			
 		});
 	</script>
