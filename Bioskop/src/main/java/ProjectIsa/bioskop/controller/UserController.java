@@ -75,12 +75,8 @@ public class UserController {
 		User user = (User) session.getAttribute("user");
 		Boolean success = userService.changePassword(user, newPassword);
 		if (success){
-			System.out.println("vracam ok 200");
-			String a = "asd";
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}else{
-			System.out.println("uspesno je " + success);
-
 			return new ResponseEntity<User>(user, HttpStatus.CONFLICT);
 		}
 	}

@@ -1,13 +1,26 @@
 package ProjectIsa.bioskop.domain;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@Component
+
+@Entity
 public class ThematicItem {
+	@Id
+	@Column(nullable = false)
 	private Long id;
+	
+	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
 	private double price;
+	
+	@Column(nullable = false)
 	private String description;
+	
+	@Column(nullable = true)
 	private String picture;
 	
 	public Long getId() {
