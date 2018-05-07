@@ -118,8 +118,30 @@
 
 	<script>
 	
-		$("#logout-btn").click(function() {
-			$.get("index.html");
+		$("#logout-btn").click(function() {	
+			$.ajax({
+				type: "POST",
+				url: "/api/logout",
+				success: function(response) { 
+					$("#username-field").val("");
+					$("#password-field").val("");
+					$("#username-field").show();
+					$("#password-field").show();
+					$("#admin-button").show();
+					$("#login-btn").show();
+					$("#registration-btn").show();
+					$("#logout-btn").hide();
+					$("#body").empty(); 
+					$("#body").append("<h1><br/><br/>Uspesno ste se izlogovali!!</h1>");
+					
+					alert(response.username);
+				},
+				error: function() {alert("nije uspeo logout");},
+				contentType: "application/json",
+				
+			});
+			
+			
 			
 		});
 	

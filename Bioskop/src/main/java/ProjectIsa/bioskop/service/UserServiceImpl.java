@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 	public User changeProfile(User user, User changedUser) {
 		//check if new username exists
 		
-		if (!user.getUsername().equals(changedUser)){
+		if (!user.getUsername().equals(changedUser.getUsername())){
 			User u = userDbRepository.findByUsername(changedUser.getUsername());
 			if (u != null){
 				return null;
@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(changedUser.getPassword());
 		user.setFirstName(changedUser.getFirstName());
 		user.setLastName(changedUser.getLastName());
+		userDbRepository.save(user.getAddress());
 		userDbRepository.save(user);
 		return user;
 

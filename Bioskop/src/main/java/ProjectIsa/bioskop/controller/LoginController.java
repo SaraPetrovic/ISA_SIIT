@@ -21,7 +21,7 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	@Autowired
-	private HttpServletRequest request;;
+	private HttpServletRequest request;
 	@RequestMapping(
 			value="/api/login",
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -41,5 +41,15 @@ public class LoginController {
 			return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
 		}
 		
+	}
+	
+	@RequestMapping(
+			value = "/api/logout",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<User> logout() {
+		User user = (User) request.getSession().getAttribute("user");
+		request.getSession().invalidate();
+		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 }
