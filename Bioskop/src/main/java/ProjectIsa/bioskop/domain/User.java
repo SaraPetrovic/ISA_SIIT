@@ -1,21 +1,28 @@
 package ProjectIsa.bioskop.domain;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 
 
 
 @Entity
-
-public class User {
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -36,9 +43,11 @@ public class User {
 	private String lastName;
 	@Column(nullable = false)
 	private Boolean isFirstLogin;
-	
-	
-	
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user")
+	private Set<ItemOffer> itemOffers;
+
+
+
 	public Long getId() {
 		return id;
 	}

@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 
 import ProjectIsa.bioskop.domain.Adresa;
+import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.UserService;
@@ -27,7 +28,8 @@ public class ItemServiceTest {
 	
 	@Autowired
 	ThematicItemService service;
-	
+	@Autowired
+	UserService userService;
 	@Test
 	public void testPrice(){
 		List<ThematicItem> items = (List<ThematicItem>)service.getItems();
@@ -47,5 +49,35 @@ public class ItemServiceTest {
 		service.addNewItem(item);
 		List<ThematicItem> itemsAfter = (List<ThematicItem>)service.getItems();
 		assertThat(items).hasSize(itemsAfter.size());
+	}
+	@Test
+	public void testItemOffer(){
+		ThematicItem item = service.getItem(1L); // default item in db
+		User user = userService.getUser("admin"); //default user in db
+		double price = 400;
+		ItemOffer offer = new ItemOffer(user, price, item);
+		
+		List<ItemOffer> itemsBefore = service.getOffers();
+		
+		service.addItemOffer(offer);
+		
+		List<ItemOffer> itemsAfter = service.getOffers();
+		
+		assertThat(itemsBefore).hasSize(itemsAfter.size() - 1);
+	}
+	@Test
+	public void testItemOffer1(){
+		ThematicItem item = service.getItem(1L); // default item in db
+		User user = new User("ime", "prezime", "aaaaaaaaaaaaaaaaa", "asd", UserType.REGISTEREDUSER, new Adresa(), "asd@gmail.com"); // user koji ne postoji
+		double price = 400;
+		ItemOffer offer = new ItemOffer(user, price, item);
+		
+		List<ItemOffer> itemsBefore = service.getOffers();
+		
+		service.addItemOffer(offer);
+		
+		List<ItemOffer> itemsAfter = service.getOffers();
+		
+		assertThat(itemsBefore).hasSize(itemsAfter.size());
 	}
 }
