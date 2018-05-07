@@ -94,7 +94,35 @@
 		
 		
 		$("#update-btn").click(function(){
-			alert("Update clicked!!");
+			var changedUser = {};
+			changedUser.username = $("#username").val();
+			changedUser.password = $("#password").val();
+			changedUser.userType = "REGISTEREDUSER";
+			var address = { "city" : $("#city").val(), "street" : $("#street").val()};
+
+			changedUser.address = address;
+			changedUser.email = $("#email").val();
+			changedUser.firstName = $("#firstName").val();
+			changedUser.lastName = $("#lastName").val();
+			
+			var success = false;
+			var retUser = null;
+			
+			
+			$.ajax({
+				type: "POST",
+				url: "/api/changeProfile",
+				data: JSON.stringify(changedUser),
+				dataType: "json",
+				success: function(response) { 
+					alert("Uspesno ste izmenili profil!");
+					alert(response);
+				},
+				error: function() {alert("nije uspela izmena!");},
+				contentType: "application/json",
+				
+			});
+			
 		});
 	
 	</script>
