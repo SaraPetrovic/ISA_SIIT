@@ -17,10 +17,7 @@
       <link href="css/jumbotron.css" rel="stylesheet">
       <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
       <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-	<script src="js/gen_validatorv4.js" type="text/javascript"></script>
-		<script src="js/validator.js" type="text/javascript"></script>
-		<script src="js/validator.min.js" type="text/javascript"></script>
+
 		
    </head>
 
@@ -105,7 +102,7 @@
 					
 				  $("#body").empty();
 				  
-					$.get("AdminPanel.html", function( adminPanel ) {
+					$.get("ProfilePanel.html", function( adminPanel ) {
 						 
 						  $("#body").append(adminPanel);
 						 
@@ -118,8 +115,30 @@
 
 	<script>
 	
-		$("#logout-btn").click(function() {
-			$.get("index.html");
+		$("#logout-btn").click(function() {	
+			$.ajax({
+				type: "POST",
+				url: "/api/logout",
+				success: function(response) { 
+					$("#username-field").val("");
+					$("#password-field").val("");
+					$("#username-field").show();
+					$("#password-field").show();
+					$("#admin-button").show();
+					$("#login-btn").show();
+					$("#registration-btn").show();
+					$("#logout-btn").hide();
+					$("#body").empty(); 
+					$("#body").append("<h1><br/><br/>Uspesno ste se izlogovali!!</h1>");
+					
+					alert(response.username);
+				},
+				error: function() {alert("nije uspeo logout");},
+				contentType: "application/json",
+				
+			});
+			
+			
 			
 		});
 	

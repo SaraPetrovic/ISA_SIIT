@@ -1,9 +1,10 @@
 package ProjectIsa.bioskop.repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.repository.Repository;
+
+import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.ThematicItem;
 
 public interface ThematicItemRepository extends Repository<ThematicItem, Long>{
@@ -11,5 +12,7 @@ public interface ThematicItemRepository extends Repository<ThematicItem, Long>{
 	List<ThematicItem> findAll();
 	void delete(ThematicItem item);
 	ThematicItem findById(Long id);
+
+
 	
 }

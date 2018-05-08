@@ -1,5 +1,6 @@
 package ProjectIsa.bioskop.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.repository.UserDBRepository;
 
 @Service
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
 	public User changeProfile(User user, User changedUser) {
 		//check if new username exists
 		
-		if (!user.getUsername().equals(changedUser)){
+		if (!user.getUsername().equals(changedUser.getUsername())){
 			User u = userDbRepository.findByUsername(changedUser.getUsername());
 			if (u != null){
 				return null;
@@ -96,10 +98,24 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(changedUser.getPassword());
 		user.setFirstName(changedUser.getFirstName());
 		user.setLastName(changedUser.getLastName());
+		userDbRepository.save(user.getAddress());
 		userDbRepository.save(user);
 		return user;
 
 		
+	}
+
+	@Override
+	public List<User> findAdmins() {
+		// TODO Auto-generated method stub
+		List<User> users = userDbRepository.findAll();
+		List<User> admins = new ArrayList<User>();
+		for (User user : users){
+			if (user.getUserType() == UserType.SYSTEMADMIN || user.getUserType() == UserType.FANZONEADMIN || user.getUserType() == UserType.CINEMAADMIN){
+				admins.add(user);
+			}
+		}
+		return admins;
 	}
 	
 

@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,6 @@ public class UserController {
 	private HttpServletRequest request;
 	@Autowired
 	private UserService userService;
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	@RequestMapping(
 			value = "/api/users",
 			method = RequestMethod.GET,
@@ -35,7 +35,7 @@ public class UserController {
 		
 		
 		Collection<User> users = userService.getUsers();
-		
+
 
 		return new ResponseEntity<Collection<User>>(users,
 				HttpStatus.OK);
@@ -66,6 +66,18 @@ public class UserController {
 		
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
+	@RequestMapping(
+			value = "/api/admins",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<List<User>> addUser(){
+
+
+		List<User> admins = userService.findAdmins();
+		
+		return new ResponseEntity<List<User>>(admins, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/api/changePassword", 
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST
@@ -86,6 +98,15 @@ public class UserController {
 	public ResponseEntity<User> changeProfile(@RequestBody User changedUser){
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
+		System.out.println("\nOld username: " + user.getUsername());
+		System.out.println("\nNew username: " + changedUser.getUsername());
+		
+		System.out.println("\nOld address: " + user.getAddress().getCity() + ", " + user.getAddress().getStreet());
+		System.out.println("\nNew address: " + changedUser.getAddress().getCity() + ", " + changedUser.getAddress().getStreet());
+		
+		System.out.println("\nOld address object: " + user.getAddress());
+		System.out.println("\nNew address object: " + changedUser.getAddress()); 
+		
 		User newUser = userService.changeProfile(user, changedUser);
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
