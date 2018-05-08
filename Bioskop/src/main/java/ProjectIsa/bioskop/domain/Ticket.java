@@ -1,16 +1,15 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.ArrayList;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 @Entity
 public class Ticket {
 	@Id
@@ -20,9 +19,9 @@ public class Ticket {
 	private int row;
 	@Column(nullable = false)
 	private int column;
-	@Column(nullable = false)
+	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
-	@Column(nullable = false)
+	@ManyToOne(optional = false)
 	private MovieOrPerformance projekcija;
 		
 	public Ticket() {

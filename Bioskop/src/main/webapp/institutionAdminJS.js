@@ -12,8 +12,8 @@ function loadHalls(){
 					$.each(halls, function(i, hall){
 						var option = document.createElement("OPTION");
 						select.add(option);
-						option.value = hall.id;
-						option.text = hall.id;
+						option.value = hall.name;
+						option.text = hall.name;
 					});
 				}
 			}

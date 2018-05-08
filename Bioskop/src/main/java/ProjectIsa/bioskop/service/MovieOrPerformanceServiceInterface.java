@@ -2,6 +2,7 @@ package ProjectIsa.bioskop.service;
 
 import java.util.Collection;
 
+import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
 
 public interface MovieOrPerformanceServiceInterface {

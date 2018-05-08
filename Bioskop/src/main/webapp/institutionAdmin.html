@@ -4,6 +4,7 @@
 				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add hall</button>
 				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls()">Add projection</button>				
 				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="changeInstitution()">Change institution</button>				
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>
 				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -222,6 +223,67 @@
 				    </div>
 				</div>	
 			   </div>
+			   	<div class="modal fade" id="newCinema" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new cinema </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" data-toggle="validator" id="formCinema">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="name" id="name" class="form-control input-sm"  placeholder="Name">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="city" id="cityCinema3" class="form-control input-sm" placeholder="city">						    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    						<input type="text" name="street" id="streetCinema3" class="form-control input-sm" placeholder="Street" required>
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="description" id="description3" class="form-control input-sm" placeholder="Description" required>
+							    					</div>
+							    			</div>
+
+							    			</div>
+							    			<div class="row">
+											<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="cinema" checked>Cinema</label>
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="theater">Theather</label>
+												
+							    				</div>
+							    			</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<button  id="addEntity" type="button" class="btn btn-info">Add cinema</button>
+							    					</div>
+							    				</div>
+							    			</div>
+							    			
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				  </div>
+				  </div> 
+				  
 			  
 			 </div>
 			 
@@ -314,4 +376,42 @@
 			    url: '/api/createMovie'
 			});
 		});
+	</script>
+	<script>
+	$("#addEntity").click(function() {
+		 var entity = {};
+		 var isCinema = $('#cinema:checked').val()?true:false;
+
+		 entity.cinema = isCinema;
+		 entity.name = $("#name").val();
+		 var adress3 = { "city" : $("#cityCinema3").val(),
+				 		"street" : $("#streetCinema3").val()};
+		 
+		entity.adress = adress3;
+		entity.description = $("#description3").val();
+		
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(entity),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Succesful add!");
+				$('#newCinema').modal('toggle');
+
+
+		    },
+		    error: function(err){
+		    	alert("name already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/createTheaterOrCinema'
+		});
+
+	});
+
+	
+	
 	</script>
