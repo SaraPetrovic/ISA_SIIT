@@ -55,7 +55,7 @@
             <!--/.navbar-collapse -->
          </div>
       </nav>
-      <div class="container-body" id="body">
+      <div id="body" class="container-body" style="margin-top: 100px">
       
       <div class="jumbotron">
          <div class="container">
@@ -130,7 +130,7 @@
 			
 			$("#adminCinema-button").click(function(){
 				$("#body").empty();
-				$.get("InstitutionAdmin.html", function( InstitutionAdminPanel ) {
+				$.get("institutionAdmin.html", function( InstitutionAdminPanel ) {
 					  $("#body").append(InstitutionAdminPanel);
 					 
 					});

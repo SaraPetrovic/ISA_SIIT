@@ -31,11 +31,11 @@ public class ProjectionRepositoryImpl implements ProjectionInterface{
 
 	@Override
 	public Projection getProjection(Long id) {
-		for (Projection p: projections){
-			if (p.getId() == id){
-				return p;
-			}
-		}
+		//for (Projection p: projections){
+			//if (p.getId() == id){
+				//return p;
+			//}
+		//}
 		return null;
 	}
 

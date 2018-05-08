@@ -24,7 +24,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 
 	@Override
 	public Projection addProjection(Projection projection) {
-		if(getProjectionByName(projection.getMovieOrPerformance().getName()) != null) {
+		if(getProjectionByName(projection.getMovieOrPerformance().getName()) == null) {
 			repository.addProjection(projection);
 			return projection;
 		}
@@ -48,7 +48,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		Projection proj = repository.getProjectionByName(name);
 		return proj;
 	}
-
+/*
 	@Override
 	public Boolean termCheck(Projection projection) {
 		for(Projection p: getProjections()) {
@@ -63,6 +63,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		}
 		return true;
 	}
+	*/
 	
 	
 	

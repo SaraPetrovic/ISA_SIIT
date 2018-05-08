@@ -1,8 +1,9 @@
 				<div class="container">
-				<h2>Modal Example</h2>
+				<h2>Modal </h2>
 				<!-- Trigger the modal with a button -->
-				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall">Add hall</button>
-				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection">Add projection</button>				
+				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add hall</button>
+				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls()">Add projection</button>				
+				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="changeInstitution()">Change institution</button>				
 				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -165,92 +166,98 @@
 				    </div>
 				</div>	
 			   </div>
+			   <div class="modal fade" id="changeInstitution" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Change information about institution </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form1" id="form1">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="institutionName" id="institutionName" class="form-control input-sm" placeholder="Name of institution">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    				<div class="form-group">
+							    					<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="City">
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    						<input type="text" name="street" id="streetCinema" class="form-control input-sm" placeholder="Street" required>
+							    				</div>
+							    			</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+								    				<div class="form-group">
+								    				Description
+								    					<textarea rows="3" cols="6" name="description" id="description" class="form-control input-sm" placeholder="Description">
+								    					</textarea>
+								    				</div>
+								    			</div>
+								    		</div>
+							    			<div class="row">
+							   		     		<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+						    							<button  id="saveInstitutionChanges" type="button" class="btn btn-info">Save change</button>
+     												</div>
+     											</div>
+							    			</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
+			  
 			 </div>
 			 
+	<script type="text/javascript" src="institutionAdminJS.js"></script>
 	<script type="text/javascript">
-	
-	//dodavanje bioskopa/pozorista u padajucu listu	
-	$.ajax({
-			type: "GET",
-			url: "/api/TheaterOrCinemas",
-			success: function(theatersOrCinemas){
-				var select = document.getElementById("nameCinemaOrTheater");
-				if(theatersOrCinemas == null){
-					alert("You can not add hall before theater or cinema.");
-				}else{
-					$.each(theatersOrCinemas, function(i, cinema){
-						var option = document.createElement("OPTION");
-						select.add(option);
-						option.value = cinema.name;
-						option.text = cinema.name;
-					});
-				}
-			}
-		});
-		
-		//dodavanje sala u padajucu listu
-		$.ajax({
-			type: "GET",
-			url: "/api/halls",
-			success: function(halls){
-				var select = document.getElementById("selectHall");
-				if(halls == null){
-					alert("You can not add projection before hall.");
-					$("#newProjection").hide();
-					//document.getElementById('newProjection').innerHTML = '<span class="emptyHalls"><h1>You must add hall before projection</h1></span>';
-				}else{
-					$.each(halls, function(i, hall){
-						var option = document.createElement("OPTION");
-						select.add(option);
-						option.value = hall.name;
-						option.text = hall.name;
-					});
-				}
-			}
-		});
-	</script>
-	
-	<script type="text/javascript">
-		$("#addHall").click(function() {
-			var hall = {};
-			hall.id = $("#hallID").val();
-			var rows = document.getElementById("rows");
-			var columns = document.getElementById("columns");
-			for(var i = 0; i < rows; i++){
-				for(var j = 0; i < columns; i++){
-					hall.seats[i][j] = 0;
-				}
-			}
-			var name = document.getElementById("nameCinemaOrTheater");
-			$.ajax({
-				type: "GET",
-				url: "/api/TheaterOrCinemas",
-				success: function(theatersOrCinemas){
-					$.each(theatersOrCinemas, function(i, cinema){
-						if(cinema.name === name){
-							hall.theaterOrCinema = cinema;
-						}
-					});
-				}
-			});
+	$("#addHall").click(function() {
+			var poluHall = {};
+			poluHall.id = $("#hallID").val();
+			
+			poluHall.rows = $("#rows").val();
+			poluHall.columns = $("#columns").val();
+			poluHall.name = $("#nameCinemaOrTheater").val();
+			
 			$.ajax({
 			    contentType: 'application/json',
-			    data: JSON.stringify(hall),
+			    //data: "{'rows':'" + rows + "'," + "'columns':'" + columns + "'," + "'name':'" + name + "'," + "'id':'" + id + "'}",
+			    //data: JSON.stringify({rows: rows, columns: columns, name: name, id: id}),
+			    data: JSON.stringify(poluHall),
 			    dataType: 'json',
-			    success: function(data){
+			    success: function(response){
 
 			    	alert("Successful add");
+			    	$('#newHall').modal('toggle');
 
 			    },
-			    error: function(data){
-			    	alert("This name of hall already exists");
+			    error: function(err){
+			    	alert(err);
+			    	//alert("This name of hall already exists");
 			    },
 			    processData: false,
-			    type: 'POST',
+			    method: 'POST',
 			    url: '/api/addHall'
 			});
 		});
 	</script>
+	
 	<script type="text/javascript">
 		$("#addProjection").click(function(){
 			var movieOrPerformance = {};
@@ -266,41 +273,45 @@
 			movieOrPerformance.averageRating = 0;
 			movieOrPerformance.description = $("#description").val();
 			movieOrPerformance.isFilm = isFilm;
+			//projection["movieOrPerformance"] = {};
+			//projection["movieOrPerformance"] = movieOrPerformance;
 			
-			projection.date = $("#datetime").val;
-			projection.price = $("#price").val;
-			var hallName = $("#selectHall").val;
-			
+			//projection.date = $("#datetime").val;
+			//projection.price = $("#price").val;
+			//var hallName = $("#selectHall").val;
+			/*
 			$.ajax({
 				type: "GET",
 				url: "/api/halls",
 				success: function(halls){
 					$.each(halls, function(i, hall){
-						if(hall.name === hallName){
+						if(hall.id === hallName){
 							projection.hall = hall;
 						}
 					});
 				}
-			});
-			projection.movieOrPerformance = movieOrPerformance;
-		
+			});*/
+			
+			//projection.hall = findHall(hallName);
+			
 			$.ajax({
 			    contentType: 'application/json',
-			    data: JSON.stringify(projection),
+			    data: JSON.stringify(movieOrPerformance),
 			    dataType: 'json',
-			    success: function(data){
+			    success: function(response){
 	
-			    	alert("Projection " + data.movieOrPerformance.name + " has been successfully added!");
+			    	alert("Projection has been successfully added!");
 	
-					
+			    	$('#newProjection').modal('toggle');
 	
 			    },
-			    error: function(data){
+			    error: function(err){
+			    	//alert(err);
 			    	alert("This name of projection already exists");
 			    },
 			    processData: false,
 			    type: 'POST',
-			    url: '/api/createProjection'
+			    url: '/api/createMovie'
 			});
 		});
 	</script>

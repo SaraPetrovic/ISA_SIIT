@@ -13,7 +13,6 @@ public class TheaterOrCinema {
 	private ArrayList<Projection> projections;
 	private double averageMark;
 	private ArrayList<Hall> halls;
-	//SEGMENTI
 	private Long id;
 	private boolean isCinema;
 	
@@ -22,7 +21,7 @@ public class TheaterOrCinema {
 	}
 
 	public TheaterOrCinema(String name, Adresa adress, String description, ArrayList<Ticket> fastRezTicket,
-			ArrayList<Projection> projections, double averageMark, ArrayList<Hall> halls, Long id, boolean isCinema) {
+			ArrayList<Projection> projections, double averageMark, ArrayList<Hall> halls, boolean isCinema, String segment) {
 		super();
 		this.name = name;
 		this.adress = adress;
@@ -31,10 +30,11 @@ public class TheaterOrCinema {
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
-		this.id = id;
+		//this.id = id;
 		this.isCinema = isCinema;
 	}
 
+	
 	public String getName() {
 		return name;
 	}

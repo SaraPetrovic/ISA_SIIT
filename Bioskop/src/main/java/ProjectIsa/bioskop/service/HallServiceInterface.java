@@ -8,5 +8,6 @@ public interface HallServiceInterface {
 	Collection<Hall> getHalls();
 	Hall addHall(Hall hall);
 	void deleteHall(Hall hall);
-	Hall getHallById(String id);
+	Hall getHallById(Long id);
+	Hall getHallByName(String name);
 }

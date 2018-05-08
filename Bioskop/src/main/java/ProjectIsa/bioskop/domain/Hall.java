@@ -1,29 +1,47 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class Hall {
-	private ArrayList<ArrayList<Integer>> seats;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+	@Column(nullable = false, unique=true)
+	private String name;
+	@Column(nullable = false)
+	private int maxRow;
+	@Column(nullable = false)
+	private int maxColumn;
+	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
-	private String id;
+	
 	
 	public Hall() {
 		
 	}
-	public Hall(ArrayList<ArrayList<Integer>> seats, TheaterOrCinema theaterOrCinema, String id) {
+	
+	public Hall(int row, int column, TheaterOrCinema theaterOrCinema, String id) {
 		super();
-		this.seats = seats;
+		this.maxRow = row;
+		this.maxColumn = column;
 		this.theaterOrCinema = theaterOrCinema;
-		this.id = id;
+		this.name = id;
 	}
-	public String getId() {
-		return id;
+
+	public String getName() {
+		return name;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setName(String id) {
+		this.name = id;
 	}
 	public TheaterOrCinema getTheaterOrCinema() {
 		return theaterOrCinema;
@@ -31,11 +49,20 @@ public class Hall {
 	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
 		this.theaterOrCinema = theaterOrCinema;
 	}
-	public ArrayList<ArrayList<Integer>> getSeats() {
-		return seats;
+
+	public int getMaxRow() {
+		return maxRow;
 	}
 
-	public void setSeats(ArrayList<ArrayList<Integer>> seats) {
-		this.seats = seats;
+	public void setMaxRow(int maxRow) {
+		this.maxRow = maxRow;
+	}
+
+	public int getMaxColumn() {
+		return maxColumn;
+	}
+
+	public void setMaxColumn(int maxColumn) {
+		this.maxColumn = maxColumn;
 	}
 }

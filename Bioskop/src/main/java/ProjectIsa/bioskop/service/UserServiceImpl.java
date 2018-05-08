@@ -3,13 +3,13 @@ package ProjectIsa.bioskop.service;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.repository.UserDBRepository;
-import org.apache.commons.validator.routines.EmailValidator;
 
 @Service
 public class UserServiceImpl implements UserService {

@@ -9,4 +9,7 @@ public interface TheaterOrCinemaServiceInterface {
 	TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc);
 	void deleteTheaterOrCinema(TheaterOrCinema tc);
 	TheaterOrCinema getTheaterOrCinema(Long id);
+	
+	TheaterOrCinema changeInstitution(String institutionName, TheaterOrCinema newInstitution);
+	
 }

@@ -3,18 +3,18 @@ package ProjectIsa.bioskop.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Hall;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
-import ProjectIsa.bioskop.repository.HallRepositoryImpl;
-
+import ProjectIsa.bioskop.repository.HallDBRepository;
+@Service
 public class HallServiceImpl implements HallServiceInterface{
 	@Autowired
-	HallRepositoryImpl repository;
+	HallDBRepository repository;
 	
 	@Override
 	public Collection<Hall> getHalls() {
-		Collection<Hall> halls = repository.getHalls();
+		Collection<Hall> halls = repository.findAll();
 		if(halls.size() == 0) {
 			return null;
 		}
@@ -23,28 +23,29 @@ public class HallServiceImpl implements HallServiceInterface{
 
 	@Override
 	public Hall addHall(Hall hall) {
-		Collection<Hall> halls = repository.getHalls();
+		
+		Collection<Hall> halls = repository.findAll();
+		
 		for (Hall h : halls ){
-			if (h.getId().equals(hall.getId())){
+			if (h.getName().equals(hall.getName())){
 				return null;
 			}
 		}
-		return repository.addHall(hall);
+		return repository.save(hall);
 		
-		/*
-		if(getHallById(hall.getId()) == null) {
-			return repository.addHall(hall);
-		}
-		return null;*/
 	}
 
 	@Override
 	public void deleteHall(Hall hall) {
-		repository.deleteHall(hall);
+		repository.delete(hall);
 	}
 
 	@Override
-	public Hall getHallById(String id) {
-		return repository.getHall(id);
+	public Hall getHallByName(String name) {
+		return repository.findByName(name);
+	}
+	@Override
+	public Hall getHallById(Long id) {
+		return repository.findById(id);
 	}
 }
