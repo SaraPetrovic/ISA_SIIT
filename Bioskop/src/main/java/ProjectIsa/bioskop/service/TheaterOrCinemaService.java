@@ -6,16 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
-import ProjectIsa.bioskop.repository.TheaterOrCinemaRepository;
+import ProjectIsa.bioskop.repository.CinemaDBRepository;
 @Service
 public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 
 	@Autowired
-	TheaterOrCinemaRepository repository;
+	CinemaDBRepository repository;
 	
 	@Override
 	public Collection<TheaterOrCinema> getTheaterOrCinemas() {
-		Collection<TheaterOrCinema> cinemas = repository.getTheaterOrCinemas();
+		Collection<TheaterOrCinema> cinemas = repository.findAll();
 		if(cinemas.size() == 0) {
 			return null;
 		}
@@ -24,23 +24,23 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 
 	@Override
 	public TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc) {
-		Collection<TheaterOrCinema> entities = repository.getTheaterOrCinemas();
-		for (TheaterOrCinema entity : entities ){
-			if (entity.getName().equals(tc.getName())){
-				return null;
-			}
+		
+		TheaterOrCinema t = repository.findByName(tc.getName());
+		if (t != null) {
+			return null;
 		}
-		return repository.addTheaterOrCinema(tc);
+		
+		return repository.save(tc);
 	}
 
 	@Override
 	public void deleteTheaterOrCinema(TheaterOrCinema tc) {
-		repository.deleteTheaterOrCinema(tc);
+		repository.delete(tc);
 	}
 
 	@Override
 	public TheaterOrCinema getTheaterOrCinema(Long id) {
-		return repository.getTheaterOrCinema(id);
+		return repository.findById(id);
 	}
 
 }

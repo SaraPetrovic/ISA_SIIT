@@ -2,19 +2,39 @@ package ProjectIsa.bioskop.domain;
 
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class TheaterOrCinema {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Column(nullable = false)
 	private String name;
+	@OneToOne(optional = false)
 	private Adresa adress;
+	@Column(nullable = false)
 	private String description;
+	@OneToMany(cascade = CascadeType.ALL)
 	private ArrayList<Ticket> fastRezTicket;
+	@OneToMany(cascade = CascadeType.ALL)
 	private ArrayList<Projection> projections;
+	@Column(nullable = false)
 	private double averageMark;
+	@OneToMany(cascade = CascadeType.ALL)
 	private ArrayList<Hall> halls;
 	//SEGMENTI
-	private Long id;
+	@Column
 	private boolean isCinema;
 	
 	public TheaterOrCinema() {

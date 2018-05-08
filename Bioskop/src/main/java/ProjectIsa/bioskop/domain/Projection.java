@@ -1,24 +1,38 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class Projection {
-	private Date date;
-	private int price;
-	private Hall hall;
-	private MovieOrPerformance movieOrPerformance;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(nullable = false)
+	private String date;
+	@Column(nullable = false)
+	private int price;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Hall hall;
+	@Column(nullable = false)
+	private MovieOrPerformance movieOrPerformance;
+	
 	
 	public Projection() {
 		
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public int getPrice() {
@@ -45,7 +59,7 @@ public class Projection {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Projection(Date date, int price, Hall hall, MovieOrPerformance movieOrPerformance, Long id) {
+	public Projection(String date, int price, Hall hall, MovieOrPerformance movieOrPerformance, Long id) {
 		super();
 		this.date = date;
 		this.price = price;
