@@ -2,8 +2,10 @@
 				<h2>Modal </h2>
 				<!-- Trigger the modal with a button -->
 				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add hall</button>
-				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls()">Add projection</button>				
+				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls()">Add projection</button>
+				<button id="newMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newMovie">Add movie</button>				
 				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="changeInstitution()">Change institution</button>				
+				
 				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -300,7 +302,7 @@
 			    dataType: 'json',
 			    success: function(response){
 	
-			    	alert("Projection has been successfully added!");
+			    	alert("Movie has been successfully added!");
 	
 			    	$('#newProjection').modal('toggle');
 	
