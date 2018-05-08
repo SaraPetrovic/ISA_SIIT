@@ -33,8 +33,7 @@ public class TheaterOrCinema {
 	private double averageMark;
 	@OneToMany(cascade = CascadeType.ALL)
 	private ArrayList<Hall> halls;
-	//SEGMENTI
-	@Column
+	@Column(nullable = false)
 	private boolean isCinema;
 	
 	public TheaterOrCinema() {
@@ -42,7 +41,7 @@ public class TheaterOrCinema {
 	}
 
 	public TheaterOrCinema(String name, Adresa adress, String description, ArrayList<Ticket> fastRezTicket,
-			ArrayList<Projection> projections, double averageMark, ArrayList<Hall> halls, Long id, boolean isCinema) {
+			ArrayList<Projection> projections, double averageMark, ArrayList<Hall> halls, boolean isCinema, String segment) {
 		super();
 		this.name = name;
 		this.adress = adress;
@@ -51,10 +50,11 @@ public class TheaterOrCinema {
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
-		this.id = id;
+		//this.id = id;
 		this.isCinema = isCinema;
 	}
 
+	
 	public String getName() {
 		return name;
 	}

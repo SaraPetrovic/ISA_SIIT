@@ -2,6 +2,8 @@ package ProjectIsa.bioskop.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
 @RestController
@@ -29,11 +32,11 @@ public class TheaterOrCinemaController {
 		
 		Collection<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
 
-		//if (cinemas != null){
+		if (cinemas != null){
 			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
-		//}else{
-			//return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
-	//	}
+		}else{
+			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
+		}
 	}
 	@RequestMapping(
 			value= "/api/TheaterOrCinema/{id}",
@@ -48,6 +51,7 @@ public class TheaterOrCinemaController {
 			return new ResponseEntity<TheaterOrCinema>(cinema, HttpStatus.NOT_FOUND);
 		}
 	}
+	
 	@RequestMapping(
 			value = "/api/createTheaterOrCinema",
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -57,4 +61,12 @@ public class TheaterOrCinemaController {
 		TheaterOrCinema newTheaterOrCinema = service.addTheaterOrCinema(item);
 		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "api/changeInstitution", 
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<TheaterOrCinema> changeInstitution(@RequestBody String institutionName, TheaterOrCinema newInstitution){
+		TheaterOrCinema newCinema = service.changeInstitution(institutionName, newInstitution);
+		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
+}
 }

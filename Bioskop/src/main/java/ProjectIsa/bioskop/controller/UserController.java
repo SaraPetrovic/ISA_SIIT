@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,6 @@ public class UserController {
 	private HttpServletRequest request;
 	@Autowired
 	private UserService userService;
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	@RequestMapping(
 			value = "/api/users",
 			method = RequestMethod.GET,
@@ -35,7 +35,7 @@ public class UserController {
 		
 		
 		Collection<User> users = userService.getUsers();
-		
+
 
 		return new ResponseEntity<Collection<User>>(users,
 				HttpStatus.OK);
@@ -66,6 +66,18 @@ public class UserController {
 		
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
+	@RequestMapping(
+			value = "/api/admins",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<List<User>> addUser(){
+
+
+		List<User> admins = userService.findAdmins();
+		
+		return new ResponseEntity<List<User>>(admins, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/api/changePassword", 
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST

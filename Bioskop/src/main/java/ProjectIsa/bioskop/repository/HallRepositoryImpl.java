@@ -9,7 +9,8 @@ import ProjectIsa.bioskop.domain.Hall;
 
 @Repository
 public class HallRepositoryImpl implements HallRepositoryInterface {
-private Collection<Hall> halls = new ArrayList<Hall>();
+	
+	private Collection<Hall> halls = new ArrayList<Hall>();
 	
 	@Override
 	public Collection<Hall> getHalls() {
@@ -31,7 +32,7 @@ private Collection<Hall> halls = new ArrayList<Hall>();
 	@Override
 	public Hall getHall(String id) {
 		for(Hall h:halls) {
-			if(h.getId().equals(id)) {
+			if(h.getName().equals(id)) {
 				return h;
 			}
 		}

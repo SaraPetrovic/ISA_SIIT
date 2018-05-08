@@ -3,19 +3,37 @@ package ProjectIsa.bioskop.domain;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class MovieOrPerformance {
-	private String name;
-	private String actors;
-	private String type;
-	private String producer;
-	private int filmDuration;
-	private String img;
-	private double averageRating;
-	private String description;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@Column(nullable = false, unique=true)
+	private String name;
+	@Column(nullable = false)
+	private String actors;
+	@Column(nullable = false)
+	private String type;
+	@Column(nullable = false)
+	private String producer;
+	@Column(nullable = false)
+	private int filmDuration;
+	@Column(nullable = false)
+	private String img;
+	@Column(nullable = false)
+	private double averageRating;
+	@Column(nullable = false)
+	private String description;
+	@Column(nullable = false)
 	private boolean isFilm;
 	
 	public MovieOrPerformance() {
@@ -30,10 +48,9 @@ public class MovieOrPerformance {
 		this.producer = producer;
 		this.filmDuration = filmDuration;
 	}
-	
-	public MovieOrPerformance(String name, String actors, String type, String producer, int filmDuration, String img,
-			double mark, String description, ArrayList<Integer> halls, Time terms, long id,
-			boolean isFilm, ArrayList<Ticket> tickets) {
+
+	public MovieOrPerformance(String name, String actors, String type, String producer, int filmDuration,
+			String img, double averageRating, String description, boolean isFilm) {
 		super();
 		this.name = name;
 		this.actors = actors;
@@ -41,9 +58,8 @@ public class MovieOrPerformance {
 		this.producer = producer;
 		this.filmDuration = filmDuration;
 		this.img = img;
-		this.averageRating = mark;
+		this.averageRating = averageRating;
 		this.description = description;
-		this.id = id;
 		this.isFilm = isFilm;
 	}
 

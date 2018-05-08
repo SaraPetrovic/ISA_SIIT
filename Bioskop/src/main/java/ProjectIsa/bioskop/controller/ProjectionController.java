@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.Projection;
+import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
 
 @RestController
@@ -58,6 +60,7 @@ public class ProjectionController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		Projection newProjection = service.addProjection(projection);
+		
 		if(newProjection == null) {
 			return new ResponseEntity<Projection>(newProjection, HttpStatus.BAD_REQUEST);
 		}else {

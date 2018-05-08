@@ -43,4 +43,17 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		return repository.findById(id);
 	}
 
+	@Override
+	public TheaterOrCinema changeInstitution(String institutionName, TheaterOrCinema newInstitution) {
+		
+		for(TheaterOrCinema cinema : getTheaterOrCinemas()) {
+			if(cinema.getName().equals(institutionName)) {
+				
+			}
+		}
+		
+		return null;
+	}
+	
+
 }

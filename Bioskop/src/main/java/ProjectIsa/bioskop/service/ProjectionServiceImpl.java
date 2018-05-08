@@ -35,7 +35,6 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		
 		repository.save(projection);
 		return projection;
-		
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		//return proj;
 		return null;
 	}
-
+/*
 	@Override
 	public Boolean termCheck(Projection projection) {
 		for(Projection p: getProjections()) {
@@ -70,6 +69,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		}
 		return true;
 	}
+	*/
 	
 	
 	

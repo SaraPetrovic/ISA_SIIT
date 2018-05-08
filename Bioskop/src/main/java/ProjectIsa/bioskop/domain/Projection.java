@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 public class Projection {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -28,6 +29,23 @@ public class Projection {
 	
 	public Projection() {
 		
+	}
+
+
+	public Projection(String date, int price, Hall hall, MovieOrPerformance movieOrPerformance) {
+		super();
+		this.date = date;
+		this.price = price;
+		this.hall = hall;
+		this.movieOrPerformance = movieOrPerformance;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getDate() {
 		return date;
@@ -53,20 +71,5 @@ public class Projection {
 	public void setMovieOrPerformance(MovieOrPerformance movieOrPerformance) {
 		this.movieOrPerformance = movieOrPerformance;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public Projection(String date, int price, Hall hall, MovieOrPerformance movieOrPerformance, Long id) {
-		super();
-		this.date = date;
-		this.price = price;
-		this.hall = hall;
-		this.movieOrPerformance = movieOrPerformance;
-		this.id = id;
-	}
-	
 	
 }
