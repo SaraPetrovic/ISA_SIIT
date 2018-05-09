@@ -98,6 +98,7 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(changedUser.getPassword());
 		user.setFirstName(changedUser.getFirstName());
 		user.setLastName(changedUser.getLastName());
+		user.setEmail(changedUser.getEmail());
 		userDbRepository.save(user.getAddress());
 		userDbRepository.save(user);
 		return user;
@@ -116,6 +117,14 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return admins;
+	}
+
+	@Override
+	public User changePicure(User user, String originalFilename) {
+		// TODO Auto-generated method stub
+		user.setProfilePicture(originalFilename);
+		userDbRepository.save(user);
+		return user;
 	}
 	
 

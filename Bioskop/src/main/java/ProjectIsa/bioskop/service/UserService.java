@@ -19,5 +19,7 @@ public interface UserService {
 	Boolean changePassword(User user, String newPassword);
 	List<User> findAdmins();
 	User changeProfile(User user, User changedUser);
+
+	User changePicure(User user, String originalFilename);
 	
 }
