@@ -52,7 +52,7 @@
             <!--/.navbar-collapse -->
          </div>
       </nav>
-      <div class="container-body" id="body">
+      <div id="body" class="container-body" style="margin-top: 100px">
       
       <div class="jumbotron">
          <div class="container">
@@ -127,6 +127,7 @@
 					$("#admin-button").show();
 					$("#login-btn").show();
 					$("#registration-btn").show();
+					$("#adminCinema-button").show();
 					$("#logout-btn").hide();
 					$("#body").empty(); 
 					$("#body").append("<h1><br/><br/>Uspesno ste se izlogovali!!</h1>");
@@ -149,7 +150,7 @@
 			
 			$("#adminCinema-button").click(function(){
 				$("#body").empty();
-				$.get("InstitutionAdmin.html", function( InstitutionAdminPanel ) {
+				$.get("institutionAdmin.html", function( InstitutionAdminPanel ) {
 					  $("#body").append(InstitutionAdminPanel);
 					 
 					});

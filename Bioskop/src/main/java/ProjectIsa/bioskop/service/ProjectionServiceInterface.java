@@ -11,5 +11,5 @@ public interface ProjectionServiceInterface {
 	Projection getProjection(Long id);
 	Projection getProjectionByName(String name);
 	
-	Boolean termCheck(Projection projection);
+	//Boolean termCheck(Projection projection);
 }

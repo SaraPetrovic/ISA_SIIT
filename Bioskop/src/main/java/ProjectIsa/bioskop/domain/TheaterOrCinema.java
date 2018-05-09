@@ -1,40 +1,61 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.stereotype.Component;
 
 @Component
+@Entity
 public class TheaterOrCinema {
-	private String name;
-	private Adresa adress;
-	private String description;
-	private ArrayList<Ticket> fastRezTicket;
-	private ArrayList<Projection> projections;
-	private double averageMark;
-	private ArrayList<Hall> halls;
-	//SEGMENTI
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(nullable = false)
+	private String name;
+	@OneToOne(optional = false)
+	private Adresa adress;
+	@Column(nullable = false)
+	private String description;
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Ticket> fastRezTicket;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Projection> projections;
+	@Column(nullable = false)
+	private double averageMark;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Hall> halls;
+	@Column(nullable = false)
 	private boolean isCinema;
 	
 	public TheaterOrCinema() {
 		
 	}
 
-	public TheaterOrCinema(String name, Adresa adress, String description, ArrayList<Ticket> fastRezTicket,
-			ArrayList<Projection> projections, double averageMark, ArrayList<Hall> halls, Long id, boolean isCinema) {
+	public TheaterOrCinema(String name, Adresa adress, String description, 
+			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema, String segment) {
 		super();
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
-		this.fastRezTicket = fastRezTicket;
+//		this.fastRezTicket = fastRezTicket;
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
-		this.id = id;
+		//this.id = id;
 		this.isCinema = isCinema;
 	}
 
+	
 	public String getName() {
 		return name;
 	}
@@ -59,19 +80,19 @@ public class TheaterOrCinema {
 		this.description = description;
 	}
 
-	public ArrayList<Ticket> getFastRezTicket() {
-		return fastRezTicket;
-	}
+//	public List<Ticket> getFastRezTicket() {
+//		return fastRezTicket;
+//	}
 
-	public void setFastRezTicket(ArrayList<Ticket> fastRezTicket) {
-		this.fastRezTicket = fastRezTicket;
-	}
+//	public void setFastRezTicket(List<Ticket> fastRezTicket) {
+//		this.fastRezTicket = fastRezTicket;
+//	}
 
-	public ArrayList<Projection> getProjections() {
+	public List<Projection> getProjections() {
 		return projections;
 	}
 
-	public void setProjections(ArrayList<Projection> projections) {
+	public void setProjections(List<Projection> projections) {
 		this.projections = projections;
 	}
 
@@ -83,11 +104,11 @@ public class TheaterOrCinema {
 		this.averageMark = averageMark;
 	}
 
-	public ArrayList<Hall> getHalls() {
+	public List<Hall> getHalls() {
 		return halls;
 	}
 
-	public void setHalls(ArrayList<Hall> halls) {
+	public void setHalls(List<Hall> halls) {
 		this.halls = halls;
 	}
 

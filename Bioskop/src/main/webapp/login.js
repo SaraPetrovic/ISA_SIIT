@@ -29,6 +29,7 @@ $("#login-btn").click(function() {
 			$("#admin-button").hide();
 			$("#login-btn").hide();
 			$("#registration-btn").hide();
+			$("#adminCinema-button").hide();
 			$("#logout-btn").show();
 			$("#body").empty(); 
 			$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");

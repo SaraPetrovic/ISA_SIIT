@@ -115,6 +115,7 @@ public class UserController {
 		User newUser = userService.changeProfile(user, changedUser);
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
 	}
+
 	@RequestMapping(value = "api/profile",
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.GET)
@@ -153,5 +154,19 @@ public class UserController {
         }
     
 
+	}
+
+	
+	@RequestMapping(value = "api/getLoggedUser",
+					produces = MediaType.APPLICATION_JSON_VALUE,
+					method = RequestMethod.GET)
+	public ResponseEntity<User> getLoggedUser(){
+		
+		User loggedUser = (User) request.getSession().getAttribute("user");
+		if (loggedUser == null) {	
+			return null;
+		}
+		return new ResponseEntity<User>(loggedUser, HttpStatus.OK);
+		
 	}
 }

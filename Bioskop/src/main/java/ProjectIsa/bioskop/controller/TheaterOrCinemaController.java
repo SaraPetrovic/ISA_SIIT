@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,15 +26,15 @@ public class TheaterOrCinemaController {
 			value = "/api/TheaterOrCinemas",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TheaterOrCinema>> getTheaterOrCinemas() {
+	public ResponseEntity<List<TheaterOrCinema>> getTheaterOrCinemas() {
 		
-		Collection<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
+		List<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
 
-		//if (cinemas != null){
-			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
-		//}else{
-			//return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
-	//	}
+		if (cinemas != null){
+			return new ResponseEntity<List<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
+		}else{
+			return new ResponseEntity<List<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
+		}
 	}
 	@RequestMapping(
 			value= "/api/TheaterOrCinema/{id}",
@@ -48,6 +49,7 @@ public class TheaterOrCinemaController {
 			return new ResponseEntity<TheaterOrCinema>(cinema, HttpStatus.NOT_FOUND);
 		}
 	}
+	
 	@RequestMapping(
 			value = "/api/createTheaterOrCinema",
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -57,4 +59,12 @@ public class TheaterOrCinemaController {
 		TheaterOrCinema newTheaterOrCinema = service.addTheaterOrCinema(item);
 		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "api/changeInstitution", 
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<TheaterOrCinema> changeInstitution(@RequestBody String institutionName, TheaterOrCinema newInstitution){
+		TheaterOrCinema newCinema = service.changeInstitution(institutionName, newInstitution);
+		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
+}
 }

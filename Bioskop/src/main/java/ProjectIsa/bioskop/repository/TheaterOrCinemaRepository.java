@@ -31,10 +31,10 @@ public class TheaterOrCinemaRepository implements TheaterOrCinemaRepositoryInter
 	public TheaterOrCinema getTheaterOrCinema(Long id) {
 
 		for (TheaterOrCinema tc : cinemas){
-			if (tc.getId() == id){
+			//if (tc.getId() == id){
 				return tc;
 			}
-		}
+		//}
 		return null;
 	}
 

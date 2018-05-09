@@ -32,10 +32,10 @@ public class MovieOrPerformanceRepository implements MovieOrPerformanceInterface
 	@Override
 	public MovieOrPerformance getMovieOrPerformance(Long id) {
 		for (MovieOrPerformance p: projections){
-			if (p.getId() == id){
+			//if (p.getId() == id){
 				return p;
 			}
-		}
+		//}
 		return null;
 	}
 	
