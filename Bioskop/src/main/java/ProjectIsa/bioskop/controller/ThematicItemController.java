@@ -1,3 +1,4 @@
+
 package ProjectIsa.bioskop.controller;
 
 import java.io.BufferedOutputStream;
@@ -87,4 +88,3 @@ public class ThematicItemController {
 
 	}
 }
-

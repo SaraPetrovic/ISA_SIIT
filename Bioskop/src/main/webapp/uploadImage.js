@@ -15,7 +15,7 @@ function selectImage(e) {
   $('#preview-img').css('max-width', '550px');
 }
 
-$(document).ready(function (e) {
+
 
   var maxsize = 500 * 1024; // 500 KB
 
@@ -94,6 +94,6 @@ $(document).ready(function (e) {
     reader.onload = selectImage;
     reader.readAsDataURL(this.files[0]);
 
-  });
+  
 
 });

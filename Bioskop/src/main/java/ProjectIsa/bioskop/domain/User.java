@@ -43,11 +43,19 @@ public class User implements Serializable {
 	private String lastName;
 	@Column(nullable = false)
 	private Boolean isFirstLogin;
+	@Column(nullable = true)
+	private String profilePicture;
+
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user")
 	private Set<ItemOffer> itemOffers;
 
 
-
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
 	public Long getId() {
 		return id;
 	}
