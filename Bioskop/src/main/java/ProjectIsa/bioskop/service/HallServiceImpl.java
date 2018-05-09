@@ -24,13 +24,13 @@ public class HallServiceImpl implements HallServiceInterface{
 	@Override
 	public Hall addHall(Hall hall) {
 		
-		Collection<Hall> halls = repository.findAll();
+		//Collection<Hall> halls = repository.findAll();
 		
-		for (Hall h : halls ){
+	/*	for (Hall h : halls ){
 			if (h.getName().equals(hall.getName())){
 				return null;
 			}
-		}
+		}*/
 		return repository.save(hall);
 		
 	}

@@ -1,8 +1,6 @@
 package ProjectIsa.bioskop.controller;
 
-import java.util.Collection;
-
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProjectIsa.bioskop.domain.ChangedInstitution;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
-import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
 @RestController
@@ -28,14 +26,14 @@ public class TheaterOrCinemaController {
 			value = "/api/TheaterOrCinemas",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<TheaterOrCinema>> getTheaterOrCinemas() {
+	public ResponseEntity<List<TheaterOrCinema>> getTheaterOrCinemas() {
 		
-		Collection<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
+		List<TheaterOrCinema> cinemas = service.getTheaterOrCinemas();
 
 		if (cinemas != null){
-			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
+			return new ResponseEntity<List<TheaterOrCinema>>(cinemas, HttpStatus.OK); 
 		}else{
-			return new ResponseEntity<Collection<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<TheaterOrCinema>>(cinemas, HttpStatus.NOT_FOUND);
 		}
 	}
 	@RequestMapping(
@@ -65,8 +63,14 @@ public class TheaterOrCinemaController {
 	@RequestMapping(value = "api/changeInstitution", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<TheaterOrCinema> changeInstitution(@RequestBody String institutionName, TheaterOrCinema newInstitution){
-		TheaterOrCinema newCinema = service.changeInstitution(institutionName, newInstitution);
+	public ResponseEntity<TheaterOrCinema> changeInstitution(@RequestBody ChangedInstitution changeInstitution){
+		
+		TheaterOrCinema institution = service.findByName(changeInstitution.getSelectInstitution());
+		TheaterOrCinema newInstitution = new TheaterOrCinema();
+		newInstitution.setName(changeInstitution.getName());
+		newInstitution.setAdress(changeInstitution.getAdress());
+		newInstitution.setDescription(changeInstitution.getDescription());
+		TheaterOrCinema newCinema = service.changeInstitution(institution, newInstitution);
 		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
 }
 }

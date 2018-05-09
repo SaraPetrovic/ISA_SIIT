@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProjectIsa.bioskop.domain.ChangedMovie;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
-import ProjectIsa.bioskop.domain.Projection;
+import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 
 @RestController
@@ -66,4 +67,23 @@ public class MovieOrPerformanceController {
 			return new ResponseEntity<MovieOrPerformance>(newMovie, HttpStatus.OK);
 		}
 	}
+	
+	@RequestMapping(value = "api/changeMovie", 
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<MovieOrPerformance> changeInstitution(@RequestBody ChangedMovie changeMovie){
+		
+		MovieOrPerformance movie = serviceMovie.findByName(changeMovie.getSelectMovie());
+		MovieOrPerformance newMovie = new MovieOrPerformance();
+		newMovie.setName(changeMovie.getName());
+		newMovie.setActors(changeMovie.getActors());
+		newMovie.setType(changeMovie.getType());
+		newMovie.setProducer(changeMovie.getProducer());
+		newMovie.setFilmDuration(changeMovie.getFilmDuration());
+		newMovie.setImg(changeMovie.getImg());
+		newMovie.setDescription(changeMovie.getDescription());
+		
+		MovieOrPerformance returnMovie = serviceMovie.changeMovie(movie, newMovie);
+		return new ResponseEntity<MovieOrPerformance>(returnMovie, HttpStatus.OK);
+}
 }

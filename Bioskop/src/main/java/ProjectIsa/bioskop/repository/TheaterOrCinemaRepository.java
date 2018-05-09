@@ -38,4 +38,14 @@ public class TheaterOrCinemaRepository implements TheaterOrCinemaRepositoryInter
 		return null;
 	}
 
+	@Override
+	public TheaterOrCinema findByName(String name) {
+		for (TheaterOrCinema tc : cinemas){
+			if (tc.getName().equals(name)){
+				return tc;
+			}
+		}
+		return null;
+	}
+
 }

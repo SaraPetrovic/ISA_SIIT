@@ -2,10 +2,14 @@
 				<h2>Modal </h2>
 				<!-- Trigger the modal with a button -->
 				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add hall</button>
-				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls()">Add projection</button>
+				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls(); loadMovie()">Add projection</button>
 				<button id="newMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newMovie">Add movie</button>				
-				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="changeInstitution()">Change institution</button>				
-				
+				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeInstitution" onclick="loadInstitutions1()">Change institution</button>				
+				<button id="changeMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeMovie" onclick="loadMovie1()">Change movie</button>				
+				<button id="changeProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="loadProjections()">Change projection</button>				
+
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>
+
 				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -73,6 +77,63 @@
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form2" id="form2">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select movie or performance
+      												  <select class="form-control" id="selectMovie">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select hall
+      												  <select class="form-control" id="selectHall">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+     										<br>
+     										<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="datetime" name="datetime" id="datetime" class="form-control input-sm" placeholder="Date and time">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">
+							    					</div>
+							    				</div>
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div align="center" class="form-group">
+						    							<button id="addProjection" type="button" class="btn btn-info">Add projection</button>
+     												</div>
+     											</div>
+     										</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
+			   <div class="modal fade" id="newMovie" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new movie or performance</h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form3" id="form3">
 								    		<div class="row">
 								    			<div class="col-xs-6 col-sm-6 col-md-6" >
 									    			<div class="form-group">
@@ -113,7 +174,7 @@
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 								    				<div class="form-group">
 								    				Description
-								    					<textarea rows="3" cols="6" name="description" id="description" class="form-control input-sm" placeholder="Description">
+								    					<textarea rows="3" cols="6" name="moiveDescription" id="movieDescription" class="form-control input-sm" placeholder="Description">
 								    					</textarea>
 								    				</div>
 								    			</div>
@@ -131,35 +192,12 @@
 							    						<input type="text" name="duration" id="duration" class="form-control input-sm" placeholder="Duration">
 							    					</div>
 							    				</div>
-							    			</div>
-							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
-							    				      Select hall
-      												  <select class="form-control" id="selectHall">
-       													 	<option value=""></option>
-     												  </select>
-     											</div>
-     										</div>
-     										<br>
-     										<div class="row">
-     											<div class="col-xs-6 col-sm-6 col-md-6">
-							    					<div class="form-group">
-							                			<input type="datetime" name="datetime" id="datetime" class="form-control input-sm" placeholder="Date and time">
-							    					</div>
-							    				</div>
-							    			</div>
-							    			<div class="row">
-							    				<div class="col-xs-6 col-sm-6 col-md-6" >
-							    					<div class="form-group">
-							    						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">
-							    					</div>
-							    				</div>
-     											<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div align="center" class="form-group">
-						    							<button id="addProjection" type="button" class="btn btn-info">Add projection</button>
+						    							<button id="addMovie" type="button" class="btn btn-info">Add</button>
      												</div>
      											</div>
-     										</div>
+							    			</div>
 							    		</form>
 							    	</div>
 					    		</div>
@@ -180,7 +218,15 @@
 							    		<h3 class="panel-title">Change information about institution </h3>
 							 			</div>
 							 			<div class="panel-body">
-							    		<form role="form1" id="form1">
+							    		<form role="form4" id="form4">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select institution for change
+      												  <select class="form-control" id="selectInstitution">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
@@ -191,12 +237,12 @@
 							    			<div class="row">
 							    			<div class="col-xs-6 col-sm-6 col-md-6">
 							    				<div class="form-group">
-							    					<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="City">
+							    					<input type="text" name="cityInstitution" id="cityInstitution" class="form-control input-sm" placeholder="City">
 							    				</div>
 							    			</div>
 							    			<div class="col-xs-6 col-sm-6 col-md-6" >
 							    				<div class="form-group">
-							    						<input type="text" name="street" id="streetCinema" class="form-control input-sm" placeholder="Street" required>
+							    						<input type="text" name="streetInstitution" id="streetInstitution" class="form-control input-sm" placeholder="Street" required>
 							    				</div>
 							    			</div>
 							    			</div>
@@ -204,15 +250,100 @@
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 								    				<div class="form-group">
 								    				Description
-								    					<textarea rows="3" cols="6" name="description" id="description" class="form-control input-sm" placeholder="Description">
+								    					<textarea rows="3" cols="6" name="descriptionCinema" id="descriptionCinema" class="form-control input-sm" placeholder="Description">
 								    					</textarea>
 								    				</div>
 								    			</div>
 								    		</div>
-							    			<div class="row">
-							   		     		<div class="col-xs-6 col-sm-6 col-md-6" >
+								    		<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
 						    							<button  id="saveInstitutionChanges" type="button" class="btn btn-info">Save change</button>
+     												</div>
+     											</div>
+     										</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
+			   <div class="modal fade" id="changeMovie" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Change information about new movie or performance</h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form3" id="form3">
+								    		<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select movie or performance
+      												  <select class="form-control" id="selectMovieForChange">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+								    		</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="changedName" id="changedName" class="form-control input-sm" placeholder="Name of the projection">
+							    					</div>
+							    				</div>
+											</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="changedType" id="changedType" class="form-control input-sm" placeholder="Type of the projection">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="changedProducer" id="changedProducer" class="form-control input-sm" placeholder="Producer name">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6" >
+								    				<div class="form-group">
+								    					<input type="text" name="changedActors" id="changedActors" class="form-control input-sm" placeholder="Actors">
+								    				</div>
+								    			</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+								    				<div class="form-group">
+								    				Description
+								    					<textarea rows="3" cols="6" name="changedDescription" id="changedDescription" class="form-control input-sm" placeholder="Description">
+								    					</textarea>
+								    				</div>
+								    			</div>
+								    		</div>
+								    		<div class="row">
+								    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="changedImg" id="changedImg" class="form-control input-sm" placeholder="Image">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="changedDuration" id="changedDuration" class="form-control input-sm" placeholder="Duration">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div align="center" class="form-group">
+						    							<button id="saveMovieChange" type="button" class="btn btn-info">Save changes</button>
      												</div>
      											</div>
 							    			</div>
@@ -224,11 +355,175 @@
 				    </div>
 				</div>	
 			   </div>
+			    <div class="modal fade" id="changeProjection" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Change information about projection </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form2" id="form2">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select projection
+      												  <select class="form-control" id="selectProjectionForChange">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+     										<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="datetime" name="newDatetime" id="newDatetime" class="form-control input-sm" placeholder="Date and time">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="newPrice" id="newPrice" class="form-control input-sm" placeholder="Price">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select movie or performance
+      												  <select class="form-control" id="selectNewMovie">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select hall
+      												  <select class="form-control" id="selectNewHall">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+     										<br>
+							    			<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div align="center" class="form-group">
+						    							<button id="saveProjectionChange" type="button" class="btn btn-info">Save changes</button>
+     												</div>
+     											</div>
+     										</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
+			   
+			   
+			   
+			   	<div class="modal fade" id="newCinema" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Please enter information about new cinema </h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="form" data-toggle="validator" id="formCinema">
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="name" id="name" class="form-control input-sm"  placeholder="Name">
+							    					</div>
+							    				</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="city" id="cityCinema3" class="form-control input-sm" placeholder="city">						    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    			<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    						<input type="text" name="street" id="streetCinema3" class="form-control input-sm" placeholder="Street" required>
+							    				</div>
+							    			</div>
+							    			<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<input type="text" name="description" id="description3" class="form-control input-sm" placeholder="Description" required>
+							    					</div>
+							    			</div>
+
+							    			</div>
+							    			<div class="row">
+											<div class="col-xs-6 col-sm-6 col-md-6" >
+							    				<div class="form-group">
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="cinema" checked>Cinema</label>
+							    					<label class="radio-inline"><input type="radio" name="optradio" id="theater">Theather</label>
+												
+							    				</div>
+							    			</div>
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							    						<button  id="addEntity" type="button" class="btn btn-info">Add cinema</button>
+							    					</div>
+							    				</div>
+							    			</div>
+							    			
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				  </div>
+				  </div> 
+				  
 			  
 			 </div>
 			 
 	<script type="text/javascript" src="institutionAdminJS.js"></script>
 	<script type="text/javascript">
+	/*
+	$("#saveProjectionChange").click(function(){
+		var poluProjection = {};
+		poluProjection.date = $("#newDatetime").val();
+		poluProjection.price = $("#newPrice").val();
+		poluProjection.projectionName = $("#selectProjectionForChange").val();
+		poluProjection.hallName = $("#selectNewHall").val();
+		poluProjection.movieName = $("#selectNewMovie").val();
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(poluProjection),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Changes has been successfully saved!");
+
+		    	$('#changeProjection').modal('toggle');
+
+		    },
+		    error: function(err){
+		    	//alert(err);
+		    	alert("This name already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/changeProjection'
+		});
+		
+	});*/
+	</script>
+	
+	<script>
 	$("#addHall").click(function() {
 			var poluHall = {};
 			poluHall.id = $("#hallID").val();
@@ -260,10 +555,43 @@
 		});
 	</script>
 	
+	<script>
+	$("#addProjection").click(function(){
+		var poluProjection = {};
+		poluProjection.date = $("#datetime").val();
+		poluProjection.price = $("#price").val();
+		
+		poluProjection.hallName = $("#selectHall").val();
+		poluProjection.movieName = $("#selectMovie").val();
+		
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(poluProjection),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Projection has been successfully added!");
+
+		    	$('#newProjection').modal('toggle');
+
+		    },
+		    error: function(err){
+		    	//alert(err);
+		    	alert("This name of projection already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/createProjection'
+		});
+		
+	});
+	
+	</script>
 	<script type="text/javascript">
-		$("#addProjection").click(function(){
+		$("#addMovie").click(function(){
 			var movieOrPerformance = {};
-			var projection = {};
+			//var projection = {};
 			var isFilm = $('#movie:checked').val()?true:false;
 			
 			movieOrPerformance.name = $("#projectionName").val();
@@ -273,28 +601,8 @@
 			movieOrPerformance.filmDuration = $("#duration").val();
 			movieOrPerformance.img = $("#img").val();
 			movieOrPerformance.averageRating = 0;
-			movieOrPerformance.description = $("#description").val();
+			movieOrPerformance.description = $("#movieDescription").val();
 			movieOrPerformance.isFilm = isFilm;
-			//projection["movieOrPerformance"] = {};
-			//projection["movieOrPerformance"] = movieOrPerformance;
-			
-			//projection.date = $("#datetime").val;
-			//projection.price = $("#price").val;
-			//var hallName = $("#selectHall").val;
-			/*
-			$.ajax({
-				type: "GET",
-				url: "/api/halls",
-				success: function(halls){
-					$.each(halls, function(i, hall){
-						if(hall.id === hallName){
-							projection.hall = hall;
-						}
-					});
-				}
-			});*/
-			
-			//projection.hall = findHall(hallName);
 			
 			$.ajax({
 			    contentType: 'application/json',
@@ -304,16 +612,129 @@
 	
 			    	alert("Movie has been successfully added!");
 	
-			    	$('#newProjection').modal('toggle');
+			    	$('#newMovie').modal('toggle');
 	
 			    },
 			    error: function(err){
 			    	//alert(err);
-			    	alert("This name of projection already exists");
+			    	alert("This name of movie already exists");
 			    },
 			    processData: false,
 			    type: 'POST',
 			    url: '/api/createMovie'
 			});
 		});
+	</script>
+	
+	<script>
+	
+	$("#saveMovieChange").click(function(){
+		var changedMovie = {};
+		
+		changedMovie.name = $("#changedName").val();
+		changedMovie.actors = $("#changedActors").val();
+		changedMovie.type = $("#changedType").val();
+		changedMovie.producer = $("#changedProducer").val();
+		changedMovie.filmDuration = $("#changedDuration").val();
+		changedMovie.img = $("#changedImg").val();
+		changedMovie.description = $("#changedDescription").val();
+		changedMovie.selectMovie = $("#selectMovieForChange").val();
+	
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(changedMovie),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Changes has been successfully saved!");
+
+		    	$('#changeMovie').modal('toggle');
+
+		    },
+		    error: function(err){
+		    	//alert(err);
+		    	alert("This name of movie already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/changeMovie'
+		});
+	
+	});
+	
+	</script>
+	<script>
+	$("#saveInstitutionChanges").click(function(){
+		var changedInstitution = {};
+		
+		changedInstitution.name = $("#institutionName").val();
+		changedInstitution.description = $("#descriptionCinema").val();
+		
+		var address = {};
+		address.city = $("#cityInstitution").val();
+		address.street = $("#streetInstitution").val();
+		
+		changedInstitution.adress = address;
+		
+		changedInstitution.selectInstitution = $("#selectInstitution").val();
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(changedInstitution),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Changes has been successfully saved!");
+
+		    	$('#changeInstitution').modal('toggle');
+
+		    },
+		    error: function(err){
+		    	//alert(err);
+		    	alert("This name of movie already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/changeInstitution'
+		});
+		
+		
+		
+	});
+	
+	</script>
+	<script>
+	$("#addEntity").click(function() {
+		 var entity = {};
+		 var isCinema = $('#cinema:checked').val()?true:false;
+
+		 entity.cinema = isCinema;
+		 entity.name = $("#name").val();
+		 var adress3 = { "city" : $("#cityCinema3").val(),
+				 		"street" : $("#streetCinema3").val()};
+		 
+		entity.adress = adress3;
+		entity.description = $("#description3").val();
+		
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(entity),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Succesful add!");
+				$('#newCinema').modal('toggle');
+
+
+		    },
+		    error: function(err){
+		    	alert("name already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/createTheaterOrCinema'
+		});
+
+	});
 	</script>

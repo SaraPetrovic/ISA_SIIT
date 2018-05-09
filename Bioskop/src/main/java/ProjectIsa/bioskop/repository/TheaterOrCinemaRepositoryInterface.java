@@ -9,4 +9,6 @@ public interface TheaterOrCinemaRepositoryInterface {
 	TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc);
 	void deleteTheaterOrCinema(TheaterOrCinema tc);
 	TheaterOrCinema getTheaterOrCinema(Long id);
+	
+	TheaterOrCinema findByName(String name);
 }

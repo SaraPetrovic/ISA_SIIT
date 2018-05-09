@@ -1,15 +1,20 @@
 package ProjectIsa.bioskop.service;
 
-import java.util.Collection;
+import java.util.List;
 
+import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 
 public interface TheaterOrCinemaServiceInterface {
-	Collection<TheaterOrCinema> getTheaterOrCinemas();
+	List<TheaterOrCinema> getTheaterOrCinemas();
 	TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc);
 	void deleteTheaterOrCinema(TheaterOrCinema tc);
 	TheaterOrCinema getTheaterOrCinema(Long id);
 	
-	TheaterOrCinema changeInstitution(String institutionName, TheaterOrCinema newInstitution);
+	TheaterOrCinema changeInstitution(TheaterOrCinema institution, TheaterOrCinema newInstitution);
+	
+	Adresa addAddress(Adresa address);
+	
+	TheaterOrCinema findByName(String name);
 	
 }

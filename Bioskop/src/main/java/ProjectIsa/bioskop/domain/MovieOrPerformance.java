@@ -1,8 +1,5 @@
 package ProjectIsa.bioskop.domain;
 
-import java.sql.Time;
-import java.util.ArrayList;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -12,6 +12,6 @@ public interface ProjectionsDBRepository extends Repository<Projection, Long>{
 	List<Projection> findAll();
 	void delete(Projection Projection);
 	Projection findById(Long id);
-	
+	//Projection findByName(String name);
 
 }

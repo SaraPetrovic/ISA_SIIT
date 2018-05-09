@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 
@@ -70,7 +71,24 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		return true;
 	}
 	*/
+/*
+	public Projection changeProjection(Projection projection, Projection newProjection) {
+		
+		if (!projection.getMovieOrPerformance().getName().equals(newProjection.getMovieOrPerformance().getName())){
+			Projection proj = repository.findByName(newProjection.getMovieOrPerformance().getName());
+			if (proj != null){
+				return null;
+			}
+		}
+		projection.setDate(newProjection.getDate());
+		projection.setPrice(newProjection.getPrice());
+		projection.setHall(newProjection.getHall());
+		projection.setMovieOrPerformance(newProjection.getMovieOrPerformance());
+		
+		repository.save(projection);
+		return projection;
+	}
 	
-	
+	*/
 	
 }

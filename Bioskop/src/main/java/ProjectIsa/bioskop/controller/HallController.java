@@ -2,6 +2,7 @@ package ProjectIsa.bioskop.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,14 @@ import ProjectIsa.bioskop.domain.PoluHall;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.repository.TheaterOrCinemaRepository;
 import ProjectIsa.bioskop.service.HallServiceImpl;
+import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
 @RestController
 public class HallController {
 	@Autowired
 	private HallServiceImpl service;
+	@Autowired
+	private TheaterOrCinemaService cinemaService;
 
 	@RequestMapping(
 			value = "/api/halls",
@@ -53,17 +57,6 @@ public class HallController {
 		}
 	}
 
-	@RequestMapping(
-			value = "/api/addHall1",
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			method = RequestMethod.POST)
-	public ResponseEntity<Hall> addHall(@RequestBody Hall hall){
-		
-		Hall newHall = service.addHall(hall);
-		
-		return new ResponseEntity<Hall>(newHall, HttpStatus.OK);
-	}
 	
 	
 	@RequestMapping(
@@ -77,15 +70,13 @@ public class HallController {
 		
 		int row = poluHall.getRows();
 		int col = poluHall.getColumns();
-		int[][] lista = new int[row][col];
-		for(int i = 1; i < row; i++){
-			for(int j = 1; j < col; j++){
-				lista[i][j] = 0;
-			}
-		}
 		
-		TheaterOrCinemaRepository cinemasRepository = new TheaterOrCinemaRepository();
-		ArrayList<TheaterOrCinema> cinemas = (ArrayList<TheaterOrCinema>) cinemasRepository.getTheaterOrCinemas();
+		hall.setMaxRow(row);
+		hall.setMaxColumn(col);
+		
+		List<TheaterOrCinema> cinemas = cinemaService.getTheaterOrCinemas();
+		
+		
 		TheaterOrCinema cinema = new TheaterOrCinema();
 		for(TheaterOrCinema c : cinemas) {
 			if(c.getName().equals(poluHall.getName())){

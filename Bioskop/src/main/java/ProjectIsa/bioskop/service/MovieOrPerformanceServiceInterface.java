@@ -9,4 +9,7 @@ public interface MovieOrPerformanceServiceInterface {
 	MovieOrPerformance add(MovieOrPerformance projection);
 	void delete(MovieOrPerformance projection);
 	MovieOrPerformance findById(Long id);
+	MovieOrPerformance findByName(String name);
+	
+	MovieOrPerformance changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie);
 }
