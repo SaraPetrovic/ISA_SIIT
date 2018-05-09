@@ -1,7 +1,11 @@
 	<div class="container">
-	 <h2>Modal Example</h2>
+	 <h2>Registered User Page</h2>
 	  <!-- Trigger the modal with a button -->
-	  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal"  data-backdrop="static" data-keyboard="false">Update profile</button>
+	  <button id="update-profile-btn" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal"   data-keyboard="false">Update Profile</button>
+	  <button id="view-profile-btn" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#view-profile"   data-keyboard="false">View Profile Info</button>
+	  <button id="reservation1-btn" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#reservation1"   data-keyboard="false">Reservation: step1</button>
+	  <button id="reservation2-btn" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#reservation2"   data-keyboard="false">Reservation: step2</button>
+	  
 	  <!-- Modal -->
 	  <div class="modal fade" id="modal" role="dialog">
 	    <div class="modal-dialog">
@@ -82,14 +86,155 @@
 	    </div>
 	  </div>
 	  </div> 
+	  
+	  
+	  	  <!-- Modal -->
+	  <div class="modal fade" id="view-profile" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="table-responsive">
+	        <table class="table">
+	            
+			    <tbody>
+			      <tr>
+			        <td>First Name</td>
+			        <td id="firstname-text"></td>
+			      </tr>
+			      <tr>
+			        <td>Last Name</td>
+			        <td id="lastname-text"></td>
+			      </tr>
+			      <tr>
+			        <td>E-Mail</td>
+			        <td id="email-text"></td>
+			      </tr>
+			      <tr>
+			        <td>Username</td>
+			        <td id="username-text"></td>
+			      </tr>
+			      <tr>
+			        <td>City</td>
+			        <td id="city-text"></td>
+			      </tr>
+			      <tr>
+			        <td>Street</td>
+			        <td id="street-text"></td>
+			      </tr>
+			    </tbody>
+	        
+	        
+	        
+	        </table>
+	        </div>	
+	    </div>
+	  </div>
+	  </div>
+	  
+	  
+	  	  <!-- Modal -->
+	  <div class="modal fade" id="reservation1" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="row centered-form">
+	        <div class="col-xs-12 col-sm-12 col-md-12 ">
+	        	<div class="panel panel-default">
+	        		<div class="panel-heading">
+				    		<h3 class="panel-title">Reservation Dialog 1 </h3>
+				 			</div>
+				 			<div class="panel-body">
+				    		<form role="form" id="form">
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+			                			<label for="select1">Select cinema or theater:</label>
+ 											<select class="form-control" id="CorT-select">
+	 	
+											</select>
+				    				</div>			    				
+				    			</div>
+				    			<div class="row">	
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<button  id="reservation1-confirm-btn" type="button" class="btn btn-info" onclick="confirmReservation1()">Next</button>
+				    				</div>
+				    			</div>
+				    		</form>
+				    	</div>
+		    		</div>
+	    		</div>
+	    	</div>	        
+	        	
+	    </div>
+	  </div>
+	  </div>
+	  
+
+	  	  <!-- Modal -->
+	  <div class="modal fade" id="reservation2" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="row centered-form">
+	        <div class="col-xs-12 col-sm-12 col-md-12 ">
+	        	<div class="panel panel-default">
+	        		<div class="panel-heading">
+				    		<h3 class="panel-title">Reservation Dialog 2 </h3>
+				 			</div>
+				 			<div class="panel-body">
+				    		<form role="form" id="form">
+				    			<div class="row">
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+			                			<label for="select1">Select movie or performance:</label>
+ 											<select class="form-control" id="MorP-select">
+	 	
+											</select>
+				    				</div>			    				
+				    			</div>
+				    			<div class="row">	
+				    				<div class="col-xs-6 col-sm-6 col-md-6">
+				    					<button  id="reservation2-confirm-btn" type="button" class="btn btn-info" onclick="confirmReservation1()">Next</button>
+				    				</div>
+				    			</div>
+				    		</form>
+				    	</div>
+		    		</div>
+	    		</div>
+	    	</div>	        
+	        	
+	    </div>
+	  </div>
+	  </div>	  
+	  
 
 	  </div>
 
 
+	<script type="text/javascript" src="ReservationLoadData.js"></script>
+
 	<script>
+		
+		loadCinemas();
+		document.getElementById("reservation2-btn").disabled = true;
 	
 		$('#modal').on('hidden.bs.modal', function(){
 	    	$(this).find('form')[0].reset();
+		});
+		
+		
+		$("#update-profile-btn").click(function(){
+			$.getJSON("/api/getLoggedUser", function(loggedUser) {
+				$("#username").val(loggedUser.username);
+				$("#city").val(loggedUser.address.city);
+				$("#street").val(loggedUser.address.street);
+				$("#email").val(loggedUser.email);
+				$("#firstName").val(loggedUser.firstName);
+				$("#lastName").val(loggedUser.lastName);
+				$("#password").val(loggedUser.password);
+				$("#password-confirm").val(loggedUser.password);
+			});
 		});
 		
 		
@@ -117,12 +262,32 @@
 				success: function(response) { 
 					alert("Uspesno ste izmenili profil!");
 					alert(response);
+					$("#modal").modal('toggle');
 				},
-				error: function() {alert("nije uspela izmena!");},
+				error: function() {
+					alert("nije uspela izmena!");
+					$("modal").modal('toggle')
+				},
 				contentType: "application/json",
 				
 			});
 			
+		});
+	
+	</script>
+	
+	<script>
+	
+		$("#view-profile-btn").click(function() {
+			
+			$.getJSON("/api/getLoggedUser", function(loggedUser) {
+				document.getElementById("firstname-text").innerHTML = loggedUser.firstName;
+				document.getElementById("lastname-text").innerHTML = loggedUser.lastName;
+				document.getElementById("email-text").innerHTML = loggedUser.email;
+				document.getElementById("username-text").innerHTML = loggedUser.username;
+				document.getElementById("city-text").innerHTML = loggedUser.address.city;
+				document.getElementById("street-text").innerHTML = loggedUser.address.street;
+			});
 		});
 	
 	</script>
