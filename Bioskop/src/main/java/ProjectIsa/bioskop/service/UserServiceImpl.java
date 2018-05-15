@@ -29,10 +29,14 @@ public class UserServiceImpl implements UserService {
 	public User addUser(User user) {
 		if (user.getAddress() != null){
 			addAddress(user.getAddress());
+		}else{
+			return null;
 		}
 		user.setIsFirstLogin(true);
 		if (user.getPassword() == null){
 			user.setPassword(DEFAULT_ADMIN_PASSWORD);
+		}else{
+			return null;
 		}
 		User existingUser = userDbRepository.findByUsername(user.getUsername());
 		if (existingUser == null){

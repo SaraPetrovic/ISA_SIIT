@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import ProjectIsa.bioskop.repository.UserDBRepository;
 
@@ -11,9 +13,9 @@ import ProjectIsa.bioskop.repository.UserDBRepository;
 
 @SpringBootApplication
 
-//@EntityScan( basePackages = {"ProjectIsa.bioskop.domain"} )
-//@ComponentScan(basePackages = { "ProjectIsa.domain","ProjectIsa.controller", "ProjectIsa.repository", "ProjectIsa.service"} )
-//@ComponentScan(basePackageClasses = UserDBRepository.class)
+
+@EnableTransactionManagement
+@EnableJpaRepositories
 public class BioskopApplication {
 
 	public static void main(String[] args) {

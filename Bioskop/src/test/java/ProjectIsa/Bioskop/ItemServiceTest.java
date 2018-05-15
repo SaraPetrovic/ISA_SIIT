@@ -1,25 +1,24 @@
 package ProjectIsa.Bioskop;
 
-import java.util.Collection;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.assertj.core.api.Assertions.*;
-
-
 
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.ItemOffer;
+import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.domain.UserType;
-import ProjectIsa.bioskop.service.UserService;
-
-import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.service.ThematicItemService;
+import ProjectIsa.bioskop.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,4 +79,5 @@ public class ItemServiceTest {
 		
 		assertThat(itemsBefore).hasSize(itemsAfter.size());
 	}
+
 }
