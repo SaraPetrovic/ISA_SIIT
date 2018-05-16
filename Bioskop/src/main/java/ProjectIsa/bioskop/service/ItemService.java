@@ -15,4 +15,5 @@ public interface ItemService {
 	void deleteItem(ThematicItem item);
 	ItemOffer addItemOffer(ItemOffer offer);
 	List<ItemOffer> getOffers();
+	ThematicItem reserve(ThematicItem item);
 }

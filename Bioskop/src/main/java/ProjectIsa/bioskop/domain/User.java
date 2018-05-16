@@ -3,6 +3,7 @@ package ProjectIsa.bioskop.domain;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -46,7 +47,7 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private String profilePicture;
 
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
 	private Set<ItemOffer> itemOffers;
 
 
