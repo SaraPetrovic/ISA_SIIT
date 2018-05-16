@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -129,6 +131,25 @@ public class UserServiceImpl implements UserService {
 		user.setProfilePicture(originalFilename);
 		userDbRepository.save(user);
 		return user;
+	}
+
+	@Override
+	public User getUser(long id) {
+		User u = userDbRepository.findById(id);
+		if (u == null) {
+			return null;
+		}
+		
+		return u;
+	}
+
+	@Override
+	public List<User> getFriendsOfUser(HttpServletRequest request) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+		//long proba = 2;
+		return userDbRepository.getFriendsList(loggedUser.getId());
+		//return userDbRepository.getFriendsList(proba);
+		
 	}
 	
 

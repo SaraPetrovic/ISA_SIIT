@@ -46,8 +46,6 @@ $("#login-btn").click(function() {
 
 						});
 				}
-			}else{
-				alert("admin nije ulogovan");
 			}
 			
 			if (response.userType == "REGISTEREDUSER") {
@@ -55,7 +53,7 @@ $("#login-btn").click(function() {
 				$("#body").empty();
 				if (retUser != null) {
 					alert(retUser.username);
-					$.get("RegisteredUserHomepage.html", function(RegUserPanel) {
+					$.get("RegUserProfilePanel.html", function(RegUserPanel) {
 						$("#body").append(RegUserPanel);
 					});
 				};
