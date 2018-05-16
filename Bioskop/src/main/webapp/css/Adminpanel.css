@@ -58,3 +58,7 @@ hr {
     .sidenav {padding-top: 0px;}
     .sidenav a {font-size: 18px;}
 }
+#successAlert {
+	visibility : hidden;
+
+}

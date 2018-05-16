@@ -102,15 +102,7 @@ public class UserController {
 					method = RequestMethod.POST)
 	public ResponseEntity<User> changeProfile(@RequestBody User changedUser){
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		System.out.println("\nOld username: " + user.getUsername());
-		System.out.println("\nNew username: " + changedUser.getUsername());
-		
-		System.out.println("\nOld address: " + user.getAddress().getCity() + ", " + user.getAddress().getStreet());
-		System.out.println("\nNew address: " + changedUser.getAddress().getCity() + ", " + changedUser.getAddress().getStreet());
-		
-		System.out.println("\nOld address object: " + user.getAddress());
-		System.out.println("\nNew address object: " + changedUser.getAddress()); 
+		User user = (User) session.getAttribute("user"); 
 		
 		User newUser = userService.changeProfile(user, changedUser);
 		return new ResponseEntity<User>(newUser, HttpStatus.OK);
@@ -168,5 +160,19 @@ public class UserController {
 		}
 		return new ResponseEntity<User>(loggedUser, HttpStatus.OK);
 		
+	}
+	
+	
+	@RequestMapping(value = "api/getFriends",
+					method = RequestMethod.GET,
+					produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<User>> getFriends() {
+		List<User> friendsList = userService.getFriendsOfUser(request);
+		
+		if (friendsList == null) {
+			return new ResponseEntity<List<User>>(friendsList, HttpStatus.CONFLICT);
+		} else {
+			return new ResponseEntity<List<User>>(friendsList, HttpStatus.OK);
+		}
 	}
 }

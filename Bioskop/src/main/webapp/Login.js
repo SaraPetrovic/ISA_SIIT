@@ -1,11 +1,15 @@
 
 $("#login-btn").click(function() {
 	
-	
+	alert("a");
 	var loginData = {};
 	loginData.username = $("#username-field").val();
 	loginData.password = $("#password-field").val();
 	loginData.userType = "SYSTEMADMIN";
+	var itemOffers = [];
+	var itemReservations = [];
+	loginData.itemOffers = itemOffers;
+	loginData.itemReservations = itemReservations;
 	var address = { "city" : "", "street" : ""};
 
 	loginData.address = address;
@@ -17,12 +21,13 @@ $("#login-btn").click(function() {
 	var success = false;
 	var retUser = null;
 	
-	
+	alert(JSON.stringify(loginData))
 	$.ajax({
 		type: "POST",
 		url: "/api/login",
 		data: JSON.stringify(loginData),
 		dataType: "json",
+		
 		success: function(response) { 
 			$("#username-field").hide();
 			$("#password-field").hide();
@@ -41,8 +46,6 @@ $("#login-btn").click(function() {
 
 						});
 				}
-			}else{
-				alert("admin nije ulogovan");
 			}
 			
 			if (response.userType == "REGISTEREDUSER") {
@@ -50,7 +53,7 @@ $("#login-btn").click(function() {
 				$("#body").empty();
 				if (retUser != null) {
 					alert(retUser.username);
-					$.get("RegisteredUserHomepage.html", function(RegUserPanel) {
+					$.get("RegUserProfilePanel.html", function(RegUserPanel) {
 						$("#body").append(RegUserPanel);
 					});
 				};

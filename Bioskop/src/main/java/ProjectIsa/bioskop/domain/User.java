@@ -1,8 +1,9 @@
 package ProjectIsa.bioskop.domain;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
@@ -46,10 +50,27 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private String profilePicture;
 
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user")
-	private Set<ItemOffer> itemOffers;
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
+	private List<ItemOffer> itemOffers;
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
+	private List<ItemReservation> itemReservations;
+	
 
-
+	
+	public List<ItemReservation> getItemReservations() {
+		return itemReservations;
+	}
+	public void setItemReservations(List<ItemReservation> itemReservations) {
+		this.itemReservations = itemReservations;
+	}
+	public List<ItemOffer> getItemOffers() {
+		return itemOffers;
+	}
+	public void setItemOffers(List<ItemOffer> itemOffers) {
+		this.itemOffers = itemOffers;
+	}
 	public String getProfilePicture() {
 		return profilePicture;
 	}
