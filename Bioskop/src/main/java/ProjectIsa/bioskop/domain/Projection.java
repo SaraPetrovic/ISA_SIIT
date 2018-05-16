@@ -6,17 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
 public class Projection {
-	//PROJEKCIJA MORA IMATI SVOJ NAZIV(UNIQUE)
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(nullable = false, unique=true)
+	private String name;
 	@Column(nullable = false)
 	private String date;
 	@Column(nullable = false)
@@ -25,22 +26,33 @@ public class Projection {
 	private Hall hall;
 	@ManyToOne(optional = false)
 	private MovieOrPerformance movieOrPerformance;
-	
+	@ManyToOne(optional = false)
+	private TheaterOrCinema theaterOrCinema;
 	
 	public Projection() {
 		
 	}
-
-
-	public Projection(String date, int price, Hall hall, MovieOrPerformance movieOrPerformance) {
+	public Projection(String naziv, String date, int price, Hall hall, MovieOrPerformance movieOrPerformance, TheaterOrCinema theaterOrCinema) {
 		super();
+		this.name = naziv;
 		this.date = date;
 		this.price = price;
 		this.hall = hall;
 		this.movieOrPerformance = movieOrPerformance;
+		this.theaterOrCinema = theaterOrCinema;
 	}
-
-
+	public TheaterOrCinema getTheaterOrCinema() {
+		return theaterOrCinema;
+	}
+	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
+		this.theaterOrCinema = theaterOrCinema;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String naziv) {
+		this.name = naziv;
+	}
 	public Long getId() {
 		return id;
 	}

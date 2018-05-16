@@ -5,10 +5,26 @@ public class PoluProjection {
 	private int price;
 	private String hallName;
 	private String movieName;
-	private String projectionName;
+	private String projectionForChange;
+	private String projectionName; //new projection name
+	private String cinema;
 	
 	public PoluProjection() {
 		
+	}
+	public String getCinema() {
+		return cinema;
+	}
+
+	public void setCinema(String cinema) {
+		this.cinema = cinema;
+	}
+
+	public String getProjectionName() {
+		return projectionName;
+	}
+	public void setProjectionName(String projectionName) {
+		this.projectionName = projectionName;
 	}
 	public String getDate() {
 		return date;
@@ -34,19 +50,21 @@ public class PoluProjection {
 	public void setMovieName(String movieName) {
 		this.movieName = movieName;
 	}
-	public PoluProjection(String date, int price, String hallName, String movieName, String projectionName) {
+	public PoluProjection(String date, int price, String hallName, String movieName, String projectionName, String newName, String cinema) {
 		super();
 		this.date = date;
 		this.price = price;
 		this.hallName = hallName;
 		this.movieName = movieName;
-		this.projectionName = projectionName;
+		this.projectionForChange = projectionName;
+		this.projectionName = newName;
+		this.cinema = cinema;
 	}
-	public String getProjectionName() {
-		return projectionName;
+	public String getProjectionForChange() {
+		return projectionForChange;
 	}
-	public void setProjectionName(String projectionName) {
-		this.projectionName = projectionName;
+	public void setProjectionForChange(String projectionName) {
+		this.projectionForChange = projectionName;
 	}
 	
 	

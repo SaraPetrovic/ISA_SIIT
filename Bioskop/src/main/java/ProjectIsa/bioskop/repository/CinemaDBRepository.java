@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import ProjectIsa.bioskop.domain.Adresa;
+import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 
 public interface CinemaDBRepository extends Repository<TheaterOrCinema, Long>{
@@ -14,4 +15,4 @@ public interface CinemaDBRepository extends Repository<TheaterOrCinema, Long>{
 	TheaterOrCinema findByName(String name);
 	TheaterOrCinema findById(Long id);
 	Adresa save(Adresa adresa);
-}
+	}

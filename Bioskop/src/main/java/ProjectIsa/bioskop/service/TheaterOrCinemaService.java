@@ -6,14 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Adresa;
+import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
-import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
+import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 @Service
 public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 
 	@Autowired
 	CinemaDBRepository repository;
+	@Autowired
+	ProjectionsDBRepository projectionRepository;
 	
 	@Override
 	public List<TheaterOrCinema> getTheaterOrCinemas() {
@@ -27,10 +30,7 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	@Override
 	public TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc) {
 		
-		System.out.println("usao u ADD");
-		System.out.println(tc.getAdress().getCity());
 		if (tc.getAdress() != null) {
-			System.out.println("Address is NOT NULL");
 			addAddress(tc.getAdress());
 		}
 		
@@ -39,7 +39,6 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 			return null;
 		}
 		
-		System.out.println("Prosao do return");
 		return repository.save(tc);
 	}
 
@@ -82,6 +81,23 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	@Override
 	public TheaterOrCinema findByName(String name) {
 		return repository.findByName(name);
+	}
+
+	@Override
+	public Projection changeRepertoar(TheaterOrCinema theaterOrCinema) {
+		/*
+		Projection projection = theaterOrCinema.getProjections().get(0);
+		for(TheaterOrCinema cinema: repository.findAll()) {
+			if(cinema.getName().equals(theaterOrCinema.getName())) {
+				cinema.removeProjection(projection);
+				repository.save(cinema);
+			}
+		}
+		projectionRepository.delete(projection);
+		return projection;
+		*/
+		Projection p = new Projection();
+		return p;
 	}
 
 	

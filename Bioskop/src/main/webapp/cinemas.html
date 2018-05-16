@@ -11,7 +11,7 @@
 		type: "GET",
 		url: "/api/TheaterOrCinemas",
 		success: function(cinemas){
-			
+			$('#cinemas').empty();
 			var html = '<hr>';
 			$.each(cinemas, function(i, cinema){
 				if(cinemas == null){

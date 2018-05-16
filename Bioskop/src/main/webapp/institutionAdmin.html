@@ -1,14 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link href="css/Adminpanel.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+	<a href="#" onclick="profile()">Profile</a>
+  	<hr>
+  	<a href="#"  onclick="halls()">Hall</a>
+  	<hr>
+  	<a href="#" onclick="movies()">Movie/
+  	Performance</a>
+  	<hr>
+  	<a href="#" onclick="projections()">Projection</a>
+  	<hr>
+  	<a href="#"  onclick="institutions()">Cinema/
+  	Theather
+  	</a>
+  	<hr>
+</div>
+
+
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+<div class="jumbotron" id="jumbotron" style="margin-left:200px;margin-right:0px;padding-left:0px;padding-top:-50px;margin-top:0px;">
+	<div class="container" style="margin-top: 50px;" id="rightBody">
+
+
+  	</div>
+</div>
+</div>
 				<div class="container">
 				<h2>Modal </h2>
 				<!-- Trigger the modal with a button -->
-				<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add hall</button>
-				<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls(); loadMovie()">Add projection</button>
-				<button id="newMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newMovie">Add movie</button>				
-				<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeInstitution" onclick="loadInstitutions1()">Change institution</button>				
-				<button id="changeMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeMovie" onclick="loadMovie1()">Change movie</button>				
-				<button id="changeProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="loadProjections()">Change projection</button>				
-
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>
 
 				<div class="modal fade" id="newHall" role="dialog">
 				    <div class="modal-dialog">
@@ -78,9 +106,24 @@
 							 			<div class="panel-body">
 							    		<form role="form2" id="form2">
 							    			<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div class="form-group">
+							                			<input type="text" name="projName" id="projName" class="form-control input-sm" placeholder="Projection name">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    				      Select movie or performance
       												  <select class="form-control" id="selectMovie">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div>
+     										<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select theater or cinema
+      												  <select class="form-control" id="selectCinema">
        													 	<option value=""></option>
      												  </select>
      											</div>
@@ -145,14 +188,14 @@
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
-							                			<input type="text" name="projectionName" id="projectionName" class="form-control input-sm" placeholder="Name of the projection">
+							                			<input type="text" name="projectionName" id="projectionName" class="form-control input-sm" placeholder="Name">
 							    					</div>
 							    				</div>
 											</div>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
-							                			<input type="text" name="projectionType" id="projectionType" class="form-control input-sm" placeholder="Type of the projection">
+							                			<input type="text" name="projectionType" id="projectionType" class="form-control input-sm" placeholder="Type">
 							    					</div>
 							    				</div>
 							    			</div>
@@ -206,7 +249,7 @@
 				    </div>
 				</div>	
 			   </div>
-			   <div class="modal fade" id="changeInstitution" role="dialog">
+			   <div class="modal fade" id="changeCinema" role="dialog">
 				    <div class="modal-dialog">
 				    
 				      <!-- Modal content-->
@@ -215,7 +258,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Change information about institution </h3>
+							    		<h3 class="panel-title">Change information about cinema/theatre </h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form4" id="form4">
@@ -282,7 +325,7 @@
 							    		<h3 class="panel-title">Change information about new movie or performance</h3>
 							 			</div>
 							 			<div class="panel-body">
-							    		<form role="form3" id="form3">
+							    		<form role="formChangeMovie" id="formChangeMovie">
 								    		<div class="row">
 								    			<div class="col-xs-6 col-sm-6 col-md-6">
 							    				      Select movie or performance
@@ -294,14 +337,14 @@
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
-							                			<input type="text" name="changedName" id="changedName" class="form-control input-sm" placeholder="Name of the projection">
+							                			<input type="text" name="changedName" id="changedName" class="form-control input-sm" placeholder="Name">
 							    					</div>
 							    				</div>
 											</div>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
-							                			<input type="text" name="changedType" id="changedType" class="form-control input-sm" placeholder="Type of the projection">
+							                			<input type="text" name="changedType" id="changedType" class="form-control input-sm" placeholder="Type">
 							    					</div>
 							    				</div>
 							    			</div>
@@ -367,7 +410,7 @@
 							    		<h3 class="panel-title">Change information about projection </h3>
 							 			</div>
 							 			<div class="panel-body">
-							    		<form role="form2" id="form2">
+							    		<form role="formChangeProj" id="formChangeProj">
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    				      Select projection
@@ -375,7 +418,14 @@
        													 	<option value=""></option>
      												  </select>
      											</div>
-     										</div>
+     										</div><br>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="newName" id="newName" class="form-control input-sm" placeholder="Name">
+							    					</div>
+							    				</div>
+							    			</div>
      										<div class="row">
      											<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
@@ -423,8 +473,6 @@
 				</div>	
 			   </div>
 			   
-			   
-			   
 			   	<div class="modal fade" id="newCinema" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -470,13 +518,12 @@
 												
 							    				</div>
 							    			</div>
-							    				<div class="col-xs-6 col-sm-6 col-md-6">
-							    					<div class="form-group">
-							    						<button  id="addEntity" type="button" class="btn btn-info">Add cinema</button>
-							    					</div>
-							    				</div>
+						    				<div class="col-xs-6 col-sm-6 col-md-6">
+						    					<div class="form-group">
+						    						<button  id="addEntity" type="button" class="btn btn-info">Add cinema</button>
+						    					</div>
+						    				</div>
 							    			</div>
-							    			
 							    		</form>
 							    	</div>
 					    		</div>
@@ -485,18 +532,163 @@
 				    </div>
 				  </div>
 				  </div> 
-				  
-			  
 			 </div>
 			 
 	<script type="text/javascript" src="institutionAdminJS.js"></script>
-	<script type="text/javascript">
-	/*
+	<script>
+	
+	var rowIndex = 1;
+	
+	function halls(){
+		$("#rightBody").empty();
+		var hallsBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		hallsBody += ' &nbsp<button id="newHallButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newHall" onclick="loadInstitutions()">Add new hall</button>';
+		hallsBody += '</div><div style="padding:15px;"><div class="row">';
+		hallsBody += '<table class="table" id="hallsTable" style="background-color:white;">' +
+			  '<caption>List of halls</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Number of row</th><th scope="col">Number of column</th>'+
+			  '<th scope="col">Theater/Cinema</th></tr></thead><tbody id="hallsBody"></tbody></table>';
+		$("#rightBody").append(hallsBody);
+		
+		$.ajax({
+			type: "GET",
+			url: "/api/halls",
+			success: function(halls){
+				rowIndex = 1;
+				$.each(halls, function(i, hall){
+					var hallBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					hallBody += '<td>' + hall.name + '</td>';
+					hallBody += '<td>' + hall.maxRow + '</td>';
+					hallBody += '<td>' + hall.maxColumn + '</td>';
+					hallBody += '<td>' + hall.theaterOrCinema.name + '</td></tr>';
+					$("#hallsBody").append(hallBody);
+					rowIndex++;
+				});
+			}
+		});
+	
+	}
+	
+	$("#addHall").click(function() {
+			var poluHall = {};
+			poluHall.id = $("#hallID").val();
+			
+			poluHall.rows = $("#rows").val();
+			poluHall.columns = $("#columns").val();
+			poluHall.name = $("#nameCinemaOrTheater").val();
+			
+			$.ajax({
+			    contentType: 'application/json',
+			    data: JSON.stringify(poluHall),
+			    dataType: 'json',
+			    success: function(response){
+
+			    	alert("Successful add");
+			    	$('#newHall').modal('toggle');
+			    	
+			    	var hallItem = '<tr><th scope="row">' + rowIndex + '</th>';
+			    	hallItem += '<td>' + response.name + '</td>';
+			    	hallItem += '<td>' + response.maxRow + '</td>';
+			    	hallItem += '<td>' + response.maxColumn + '</td>';
+					hallItem += '<td>' + response.theaterOrCinema.name + '</td></tr>';
+			    	$("#hallsBody").append(hallItem);
+			    },
+			    error: function(err){
+			    	alert(err);
+			    },
+			    processData: false,
+			    method: 'POST',
+			    url: '/api/addHall'
+			});
+		});
+	
+	function projections(){
+		$("#rightBody").empty();
+		var projBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		projBody += '&nbsp<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls(); loadMovie(); loadInstitutions2()">Add projection</button>' +
+					'&nbsp<button id="changeProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="loadProjections(); loadMovie2(); loadHalls2()">Change projection</button>';
+		projBody += '</div><div style="padding:15px;"><div class="row">';
+		projBody += '<table class="table" id="projectionsTable" style="background-color:white;">' +
+		  '<caption>List of projections</caption>' +
+		  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Date</th><th scope="col">Price</th>'+
+		  '<th scope="col">Theater/Cinema</th><th scope="col">Hall</th><th scope="col">Movie/Performance</th></tr></thead><tbody id="projectionsBody"></tbody></table>';
+		$("#rightBody").append(projBody);
+		
+		printProjections();
+					
+	}
+	
+	function printProjections(){
+		rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$("#projectionsBody").empty();
+				$.each(projections, function(i, projection){
+					var projectionBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					projectionBody += '<td>' + projection.name + '</td>';
+					projectionBody += '<td>' + projection.date + '</td>';
+					projectionBody += '<td>' + projection.price + '</td>';
+					projectionBody += '<td>' + projection.theaterOrCinema.name + '</td>';
+					projectionBody += '<td>' + projection.hall.name + '</td>';
+					projectionBody += '<td>' + projection.movieOrPerformance.name + '</td></tr>';
+					$("#projectionsBody").append(projectionBody);
+					rowIndex++;
+				});
+			}
+		});
+	}
+	
+	$("#addProjection").click(function(){
+		var projection = {};
+		projection.name = $("#projName").val();
+		projection.date = $("#datetime").val();
+		projection.price = $("#price").val();
+		var hall = {"name" : $("#selectHall").val()};
+		projection["hall"] = {};
+	 	projection["hall"] = hall;
+		var movieOrPerformance = {"name" : $("#selectMovie").val()};
+		var theaterOrCinema = {"name" : $("#selectCinema").val()};
+		projection["movieOrPerformance"] = {};
+	 	projection["movieOrPerformance"] = movieOrPerformance;
+	 	projection["theaterOrCinema"] = {};
+	 	projection["theaterOrCinema"] = theaterOrCinema;
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(projection),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Projection has been successfully added!");
+		    	$('#newProjection').modal('toggle');
+
+		    	var projItem = '<tr><th scope="row">' + rowIndex + '</th>';
+		    	projItem += '<td>' + response.name + '</td>';
+		    	projItem += '<td>' + response.date + '</td>';
+		    	projItem += '<td>' + response.price + '</td>';
+		    	projItem += '<td>' + projection.theaterOrCinema.name + '</td>';
+		    	projItem += '<td>' + response.hall.name + '</td>';
+		    	projItem += '<td>' + response.movieOrPerformance.name + '</td></tr>';
+		    	$("#projectionsBody").append(projItem);
+		    },
+		    error: function(err){
+		    	alert("This name of projection already exists");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/createProjection'
+		});
+		
+	});
+	
 	$("#saveProjectionChange").click(function(){
 		var poluProjection = {};
+		poluProjection.projectionName = $("#newName").val();
 		poluProjection.date = $("#newDatetime").val();
 		poluProjection.price = $("#newPrice").val();
-		poluProjection.projectionName = $("#selectProjectionForChange").val();
+		poluProjection.projectionForChange = $("#selectProjectionForChange").val();
 		poluProjection.hallName = $("#selectNewHall").val();
 		poluProjection.movieName = $("#selectNewMovie").val();
 		
@@ -510,9 +702,9 @@
 
 		    	$('#changeProjection').modal('toggle');
 
+		    	printProjections();
 		    },
 		    error: function(err){
-		    	//alert(err);
 		    	alert("This name already exists");
 		    },
 		    processData: false,
@@ -520,113 +712,83 @@
 		    url: '/api/changeProjection'
 		});
 		
-	});*/
-	</script>
+	});
 	
-	<script>
-	$("#addHall").click(function() {
-			var poluHall = {};
-			poluHall.id = $("#hallID").val();
-			
-			poluHall.rows = $("#rows").val();
-			poluHall.columns = $("#columns").val();
-			poluHall.name = $("#nameCinemaOrTheater").val();
-			
-			$.ajax({
-			    contentType: 'application/json',
-			    //data: "{'rows':'" + rows + "'," + "'columns':'" + columns + "'," + "'name':'" + name + "'," + "'id':'" + id + "'}",
-			    //data: JSON.stringify({rows: rows, columns: columns, name: name, id: id}),
-			    data: JSON.stringify(poluHall),
-			    dataType: 'json',
-			    success: function(response){
-
-			    	alert("Successful add");
-			    	$('#newHall').modal('toggle');
-
-			    },
-			    error: function(err){
-			    	alert(err);
-			    	//alert("This name of hall already exists");
-			    },
-			    processData: false,
-			    method: 'POST',
-			    url: '/api/addHall'
-			});
+	function movies(){
+		$("#rightBody").empty();
+		var movies = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		movies += ' &nbsp<button id="newMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newMovie">Add movie</button>' +				
+				' &nbsp<button id="changeMovieButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeMovie" onclick="loadMovie1()">Change movie</button>';
+		movies += '</div><div style="padding:15px;"><div class="row">';
+		movies += '<table class="table" id="movieTable" style="background-color:white;">' +
+			  '<caption>List of movies/performance</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Type</th><th scope="col">Producer</th>'+
+			  '<th scope="col">Average rating</th></tr></thead><tbody id="moviesBody"></tbody></table>';
+		$("#rightBody").append(movies);
+		
+		printMovies();
+	}
+	
+	function printMovies(){
+		rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/movies",
+			success: function(movies){
+				$("#moviesBody").empty();
+				$.each(movies, function(i, movie){
+					var movieBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					movieBody += '<td>' + movie.name + '</td>';
+					movieBody += '<td>' + movie.type + '</td>';
+					movieBody += '<td>' + movie.producer + '</td>';
+					movieBody += '<td>' + movie.averageRating + '</td></tr>';
+					$("#moviesBody").append(movieBody);
+					rowIndex++;
+				});
+			}
 		});
-	</script>
-	
-	<script>
-	$("#addProjection").click(function(){
-		var poluProjection = {};
-		poluProjection.date = $("#datetime").val();
-		poluProjection.price = $("#price").val();
+	}
 		
-		poluProjection.hallName = $("#selectHall").val();
-		poluProjection.movieName = $("#selectMovie").val();
+	$("#addMovie").click(function(){
+		var movieOrPerformance = {};
 		
+		var isFilm = $('#movie:checked').val()?true:false;
+		
+		movieOrPerformance.name = $("#projectionName").val();
+		movieOrPerformance.type = $("#projectionType").val();
+		movieOrPerformance.producer = $("#producer").val();
+		movieOrPerformance.actors = $("#actors").val();
+		movieOrPerformance.filmDuration = $("#duration").val();
+		movieOrPerformance.img = $("#img").val();
+		movieOrPerformance.averageRating = 0;
+		movieOrPerformance.description = $("#movieDescription").val();
+		movieOrPerformance.isFilm = isFilm;
 		
 		$.ajax({
 		    contentType: 'application/json',
-		    data: JSON.stringify(poluProjection),
+		    data: JSON.stringify(movieOrPerformance),
 		    dataType: 'json',
 		    success: function(response){
 
-		    	alert("Projection has been successfully added!");
+		    	alert("Movie has been successfully added!");
+		    	$('#newMovie').modal('toggle');
 
-		    	$('#newProjection').modal('toggle');
-
+		    	var movieItem = '<tr><th scope="row">' + rowIndex + '</th>';
+		    	movieItem += '<td>' + response.name + '</td>';
+		    	movieItem += '<td>' + response.type + '</td>';
+		    	movieItem += '<td>' + response.producer + '</td>';
+		    	movieItem += '<td>' + response.averageRating + '</td></tr>';
+		    	$("#moviesBody").append(movieItem);
 		    },
 		    error: function(err){
 		    	//alert(err);
-		    	alert("This name of projection already exists");
+		    	alert("This name of movie already exists");
 		    },
 		    processData: false,
 		    type: 'POST',
-		    url: '/api/createProjection'
+		    url: '/api/createMovie'
 		});
-		
 	});
-	
-	</script>
-	<script type="text/javascript">
-		$("#addMovie").click(function(){
-			var movieOrPerformance = {};
-			//var projection = {};
-			var isFilm = $('#movie:checked').val()?true:false;
-			
-			movieOrPerformance.name = $("#projectionName").val();
-			movieOrPerformance.type = $("#projectionType").val();
-			movieOrPerformance.producer = $("#producer").val();
-			movieOrPerformance.actors = $("#actors").val();
-			movieOrPerformance.filmDuration = $("#duration").val();
-			movieOrPerformance.img = $("#img").val();
-			movieOrPerformance.averageRating = 0;
-			movieOrPerformance.description = $("#movieDescription").val();
-			movieOrPerformance.isFilm = isFilm;
-			
-			$.ajax({
-			    contentType: 'application/json',
-			    data: JSON.stringify(movieOrPerformance),
-			    dataType: 'json',
-			    success: function(response){
-	
-			    	alert("Movie has been successfully added!");
-	
-			    	$('#newMovie').modal('toggle');
-	
-			    },
-			    error: function(err){
-			    	//alert(err);
-			    	alert("This name of movie already exists");
-			    },
-			    processData: false,
-			    type: 'POST',
-			    url: '/api/createMovie'
-			});
-		});
-	</script>
-	
-	<script>
 	
 	$("#saveMovieChange").click(function(){
 		var changedMovie = {};
@@ -649,11 +811,13 @@
 		    	alert("Changes has been successfully saved!");
 
 		    	$('#changeMovie').modal('toggle');
+		    	
+		    	printMovies();
 
 		    },
 		    error: function(err){
-		    	//alert(err);
-		    	alert("This name of movie already exists");
+		    	alert(err);
+		    	//alert("This name of movie already exists");
 		    },
 		    processData: false,
 		    type: 'POST',
@@ -662,8 +826,107 @@
 	
 	});
 	
-	</script>
-	<script>
+	function printInstitutions(){
+		rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/TheaterOrCinemas",
+			success: function(theatersOrCinemas){
+				$("#cinemasBody").empty();
+				$.each(theatersOrCinemas, function(i, cinema){
+					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					cinemasBody += '<td>' + cinema.name + '</td>';
+					cinemasBody += '<td>' + cinema.adress.street + ' ' + cinema.adress.city + '</td>';
+					cinemasBody += '<td>' + cinema.averageMark + '</td>';
+					cinemasBody += '<td><button id="viewRepertoire" class="viewRepertoire" onclick="viewRepertoire()">View repertoire</button></td></tr>';
+					$("#cinemasBody").append(cinemasBody);
+					rowIndex++;
+				});
+			}
+		});
+	}
+	
+	function viewRepertoire(){
+		$("#rightBody").empty();
+		var movies = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		movies += '</div><div style="padding:15px;"><div class="row">';
+		movies += '<table class="table" id="movieTable" style="background-color:white;">' +
+			  '<caption>List of projections</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
+			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
+		$("#rightBody").append(movies);
+		var rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$.each(projections, function(i, projection){
+					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					cinemasBody += '<td>' + projection.name + '</td>';
+					cinemasBody += '<td>' + projection.hall.name + '</td>';
+					cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+					cinemasBody += '<td><button id="clickForRemove" class="clickForRemove" onclick="removeProjection()">Remove projection</button></td></tr>';
+					$("#cinemaProjections").append(cinemasBody);
+					var button = document.getElementById('clickForRemove');
+					button.value = projection.name;
+					rowIndex++;
+				});
+			}
+		});
+	}
+	function removeProjection(){
+		
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(movieOrPerformance),
+		    dataType: 'json',
+		    success: function(response){
+
+		    	alert("Projection has been successfully removed!");
+
+		    },
+		    error: function(err){
+		    	alert(err);
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/deleteProjection'
+		});
+		var rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$.each(projections, function(i, projection){
+					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					cinemasBody += '<td>' + projection.name + '</td>';
+					cinemasBody += '<td>' + projection.hall.name + '</td>';
+					cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+					cinemasBody += '<td><button id="removeProjection" class="removeProjection" onclick="removeProjection()">Remove projection</button></td></tr>';
+					$("#cinemaProjections").append(cinemasBody);
+					rowIndex++;
+				});
+			}
+		});
+	}
+	
+	function institutions(){
+		$("#rightBody").empty();
+		var cinemaBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		cinemaBody += '&nbsp<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>'+
+					'&nbsp<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeCinema" onclick="loadInstitutions1()">Change cinema/theater</button>' +
+					'&nbsp<button id="changeRepertoarButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeRepertoar" onclick="loadCinemas()">Change repertoar</button>';
+		cinemaBody += '</div><div style="padding:15px;"><div class="row">';
+		cinemaBody += '<table class="table" id="projectionsTable" style="background-color:white;">' +
+			  '<caption>List of cinemas/theaters</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Address</th><th scope="col">Average rating</th>'+
+			  '</tr></thead><tbody id="cinemasBody"></tbody></table>';
+		$("#rightBody").append(cinemaBody);
+		
+		printInstitutions();
+		
+	}
+	
 	$("#saveInstitutionChanges").click(function(){
 		var changedInstitution = {};
 		
@@ -686,8 +949,9 @@
 
 		    	alert("Changes has been successfully saved!");
 
-		    	$('#changeInstitution').modal('toggle');
-
+		    	$('#changeCinema').modal('toggle');
+		    	
+		    	printInstitutions();
 		    },
 		    error: function(err){
 		    	//alert(err);
@@ -702,8 +966,6 @@
 		
 	});
 	
-	</script>
-	<script>
 	$("#addEntity").click(function() {
 		 var entity = {};
 		 var isCinema = $('#cinema:checked').val()?true:false;
@@ -726,7 +988,15 @@
 		    	alert("Succesful add!");
 				$('#newCinema').modal('toggle');
 
-
+//				var cinemaBody = '<tr><th scope="row">' + rowIndex + '</th>';
+	//			cinemaBody += '<td>' + response.name + '</td>';
+	//			cinemaBody += '<td>' + response.adress.street + ' ' + response.adress.city + '</td>';
+		//		cinemaBody += '<td>' + response.averageMark + '</td></tr>';
+			//	cinemaBody += '<td><button id="viewRepertoire" class="viewRepertoire">View repertoire</button>';
+			//	$("#cinemasBody").append(cinemaBody);
+				
+			printInstitutions();
+				
 		    },
 		    error: function(err){
 		    	alert("name already exists");
