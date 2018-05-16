@@ -22,6 +22,7 @@ public class LoginService implements LoginServiceInterface {
 	public User validation(String username, String password) {
 		Collection<User> allUsers = repository.findAll();
 		for (User u : allUsers) {
+			System.out.println("\n\n\n\nusername : " + username + " password : " + password  + "\n\n\n");
 			if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
 				return u;
 			}

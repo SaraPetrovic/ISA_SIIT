@@ -17,10 +17,13 @@
   	<a href="#"  onclick="cinemaTab()">Cinema/
   	Theather
   	</a>
-  	<hr>
+
+    <hr>
   
   	<a href="#" onclick="itemsTab()">Thematic items</a>
 	<hr>
+	<a href="#" onclick="myOffersTab()">My Offers</a>
+  	<hr>
 </div>
 
 
@@ -412,14 +415,23 @@ function itemsTab(){
 		dataType : 'json',
 		type : 'GET',
 		success : function(items){
-			items.forEach(function(item){
+			var i=new Number(1);
 
+			items.forEach(function(item){
+				if (i == 1){
+					body += '<div class="row">';
+				}
 				if (item.official == true){
-					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price</small> - '+ item.price + '</p> </div> <div class="panel-footer"> <a class="btn btn-primary "  style="display:inline;" >Reserve </a> </div> </div> </div>';
+					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price</small> - '+ item.price + '</p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="reserve('+item.id+')" style="display:inline;" >Reserve </a> </div> </div> </div>';
 
 				}else{
+					
 					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
-
+				}
+				i++;
+				if (i == 4){
+					body += '</div>';
+					i = 1;
 				}
 			});
 
@@ -436,7 +448,6 @@ function itemsTab(){
 	
 }
 function makeOffer(itemId){
-	alert(itemId + $("#price" + itemId).val());
 	var itemOffer = {};
 	itemOffer.price = $("#price" + itemId).val();
 	var item = {};
@@ -457,6 +468,64 @@ function makeOffer(itemId){
 	    processData: false,
 	    type: 'POST',
 	    url: '/api/items/makeOffer'
+	});
+}
+function reserve(itemId){
+
+
+	var item = {};
+	item.id = itemId;
+
+	$.ajax({
+	    contentType: 'application/json',
+	    data: JSON.stringify(item),
+	    dataType: 'json',
+	    success: function(admin){
+			alert("Uspesno napravljena rezervacija!");
+
+
+	    },
+	    error: function(data){
+	    	alert("FAIL");
+	    },
+	    processData: false,
+	    type: 'POST',
+	    url: '/api/items/reserve'
+	});
+	
+}
+function myOffersTab(){
+	$("#bodyAdmin").empty();
+	var body = '';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(itemOffers){
+			var i=new Number(1);
+
+			itemOffers.forEach(function(itemOffer){
+				if (i == 1){
+					body += '<div class="row">';
+				}
+				
+					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+itemOffer.item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+itemOffer.item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+itemOffer.item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ itemOffer.item.id + ')" style="display:inline;" >Update bid </a><input id="price' + itemOffer.item.id +'" value="'+ itemOffer.price +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
+				
+				i++;
+				if (i == 4){
+					body += '</div>';
+					i = 1;
+				}
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyAdmin").append(body);
+		},
+		processData: false,
+		url : '/api/items/myOffers'
 	});
 }
 </script>

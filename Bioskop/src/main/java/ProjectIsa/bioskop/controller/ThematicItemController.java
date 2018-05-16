@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -99,13 +100,21 @@ public class ThematicItemController {
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST)
 	public ResponseEntity<ThematicItem> reserveItem(@RequestBody ThematicItem item){
-		ThematicItem itemBeforeReservation = itemService.getItem(item.getId());
+		System.out.println("\n\n\n\nId itema = " + item.getId() + "\n\n\n\n");
+		Long versionBefore = itemService.getItem(item.getId()).getVersion();
 		while (true){
 			try{
-				ThematicItem reservedItem = itemService.reserve(item);
+				HttpSession session = request.getSession();
+				User user = (User) session.getAttribute("user");
+				if (user == null){
+					return null;
+				}
+				ThematicItem reservedItem = itemService.reserve(item, user);
 				//ako su iste verzije znaci da nije doslo do promene tj da broj preostalih itema = 0
-				if (reservedItem.getVersion() == itemBeforeReservation.getVersion()){
-					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.NOT_FOUND);
+				if (reservedItem.getVersion() == versionBefore){
+					System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
+
+					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.CONFLICT);
 				}else{
 					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.OK);
 				}
@@ -130,9 +139,17 @@ public class ThematicItemController {
 		ThematicItem item = itemService.getItem(offer.getItem().getId());
 		offer.setItem(item);
 		offer.setUser(user);
-		itemService.addItemOffer(offer);
-		return new ResponseEntity<ItemOffer>(offer, HttpStatus.OK);
+		ItemOffer offerToAdd = itemService.addItemOffer(offer);
+		return new ResponseEntity<ItemOffer>(offerToAdd, HttpStatus.OK);
 
+	}
+	@RequestMapping(value = "api/items/myOffers",
+					produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ItemOffer>> getMyOffers(){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		List<ItemOffer> offers = itemService.getItemsByUser(user);
+		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
 	}
 
 
