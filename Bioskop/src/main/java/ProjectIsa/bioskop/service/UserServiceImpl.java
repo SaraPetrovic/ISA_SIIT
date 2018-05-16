@@ -146,9 +146,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getFriendsOfUser(HttpServletRequest request) {
 		User loggedUser = (User) request.getSession().getAttribute("user");
-		//long proba = 2;
+		if (loggedUser == null) {
+			return null;
+		}
 		return userDbRepository.getFriendsList(loggedUser.getId());
-		//return userDbRepository.getFriendsList(proba);
 		
 	}
 	
