@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.service.EmailService;
 import ProjectIsa.bioskop.service.ThematicItemService;
 
 @RestController
@@ -36,6 +37,8 @@ public class ThematicItemController {
 	private ThematicItemService itemService;
 	@Autowired
 	private HttpServletRequest request;
+	@Autowired
+	private EmailService emailService;
 	@RequestMapping(
 			value = "/api/items",
 			method = RequestMethod.GET,
@@ -116,6 +119,7 @@ public class ThematicItemController {
 
 					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.CONFLICT);
 				}else{
+					emailService.sendSimpleMessage("isasittim15@gmail.com", "proba", "cao");
 					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.OK);
 				}
 				
