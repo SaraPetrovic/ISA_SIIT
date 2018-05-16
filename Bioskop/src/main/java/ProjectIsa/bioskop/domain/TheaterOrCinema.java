@@ -1,6 +1,6 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +16,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Entity
-public class TheaterOrCinema {
+public class TheaterOrCinema implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -93,14 +97,16 @@ public class TheaterOrCinema {
 //		this.fastRezTicket = fastRezTicket;
 //	}
 
-	public List<Projection> getProjections() {
-		return projections;
+	
+	public void addProjection(Projection projection) {
+		this.projections.add(projection);
+		projection.setTheaterOrCinema(this);
 	}
 
-	public void setProjections(List<Projection> projections) {
-		this.projections = projections;
+	public void removeProjection(Projection projection) {
+		projection.setTheaterOrCinema(null);
+		this.projections.remove(projection);
 	}
-
 	public double getAverageMark() {
 		return averageMark;
 	}
@@ -109,13 +115,7 @@ public class TheaterOrCinema {
 		this.averageMark = averageMark;
 	}
 
-	public List<Hall> getHalls() {
-		return halls;
-	}
-
-	public void setHalls(List<Hall> halls) {
-		this.halls = halls;
-	}
+	
 
 	public Long getId() {
 		return id;

@@ -4,6 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>My Profile</title>
 <link href="css/Adminpanel.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -11,11 +12,13 @@
 	
   	<a href="#" onclick="profile()">Profile</a>
   	<hr>
-  	<a href="#"  onclick="">Cinemas</a>
+  	<a href="#"  onclick="cinemas()">Cinemas</a>
   	<hr>
-  	<a href="#"  onclick="">Theaters</a>
+  	<a href="#"  onclick="theaters()">Theaters</a>
   	<hr>
-  	<a href="#"  onclick="">Friends</a>
+  	<a href="#"  onclick="friends()">Friends</a>
+  	<hr>
+  	<a href="#" onclick="">Friend Requests</a>
   	<hr>
   	<a href="#" onclick="">Reservations</a>
 	<hr>
@@ -45,7 +48,7 @@ function profile(){
 		dataType : 'json',
 		type : 'GET',
 		success : function(user){
-			$.get("profile.html", function( profile ) {
+			$.get("asd.html", function( profile ) {
 				  $("#bodyRegUser").append(profile);
 				  tableIndex = 1;
 				  $("#profileImage").attr('src', 'images/' + user.profilePicture);
@@ -63,6 +66,143 @@ function profile(){
 		processData: false,
 		url : '/api/profile'
 	});
+}
+
+
+function friends() {
+	$("#bodyRegUser").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" style="margin-top:20px;">';
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/getFriends',
+		dataType : 'json',
+		type : 'GET',
+		success : function(friends){
+			friends.forEach(function(friend){
+
+					body += '<div class="col-md-4">';
+					body +=	  '<div class="panel panel-info">';
+					body +=	     '<div class="panel-heading">';
+					body +=	         '<h3 class="panel-title">' + friend.firstName + ' ' + friend.lastName + '</h3>';
+					body +=      '</div>';
+					body +=      '<div class="panel-body">';
+					body +=	        '<img class="img-responsive" style="height:50px;" src=images/' + friend.profilePicture + '>';
+					body +=	        '<p style="margin-top:15px;word-wrap: break-word;">' + friend.email + '</p>';
+					body +=	        '<p> <small>username: </small>' + friend.username + '</p>';
+					body +=	     '</div>';
+					body +=      '<div class="panel-footer">';
+					body +=	        '<a class="btn btn-primary" style="display:inline;">Remove Friend</a>';
+					body +=      '</div>'
+					body +=   '</div>'
+					body += '</div>'
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyRegUser").append(body);
+		},
+		processData: false
+		
+	});
+	
+}
+
+
+function cinemas() {
+	$("#bodyRegUser").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" style="margin-top:20px;">';
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/TheaterOrCinemas',
+		dataType : 'json',
+		type : 'GET',
+		success : function(cinemas){
+			cinemas.forEach(function(cinema){
+				
+				if (cinema.isCinema == true) {
+					body += '<div class="col-md-4">';
+					body +=	  '<div class="panel panel-info">';
+					body +=	     '<div class="panel-heading">';
+					body +=	         '<h3 class="panel-title">' + cinema.name+ '</h3>';
+					body +=      '</div>';
+					body +=      '<div class="panel-body">';
+					body +=           '<p>Rating: ' + cinema.averageMark + '</p>';
+					body +=	     '</div>';
+					body +=      '<div class="panel-footer">';
+					body +=	        '<a class="btn btn-primary" style="display:inline;">Repertoar</a>';
+					body +=      '</div>'
+					body +=   '</div>'
+					body += '</div>'	
+				}
+				
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyRegUser").append(body);
+		},
+		processData: false
+		
+	});
+	
+}
+
+
+function theaters() {
+	$("#bodyRegUser").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" style="margin-top:20px;">';
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/TheaterOrCinemas',
+		dataType : 'json',
+		type : 'GET',
+		success : function(cinemas){
+			cinemas.forEach(function(cinema){
+				
+				if (cinema.isCinema == false) {
+					body += '<div class="col-md-4">';
+					body +=	  '<div class="panel panel-info">';
+					body +=	     '<div class="panel-heading">';
+					body +=	         '<h3 class="panel-title">' + cinema.name+ '</h3>';
+					body +=      '</div>';
+					body +=      '<div class="panel-body">';
+					body +=           '<p>Rating: ' + cinema.averageMark + '</p>';
+					body +=	     '</div>';
+					body +=      '<div class="panel-footer">';
+					body +=	        '<a class="btn btn-primary" style="display:inline;">Repertoar</a>';
+					body +=      '</div>'
+					body +=   '</div>'
+					body += '</div>'	
+				}
+				
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyRegUser").append(body);
+		},
+		processData: false
+		
+	});
+	
 }
 
 

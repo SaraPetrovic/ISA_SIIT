@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ProjectIsa.bioskop.domain.ChangedInstitution;
+import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
@@ -72,5 +73,19 @@ public class TheaterOrCinemaController {
 		newInstitution.setDescription(changeInstitution.getDescription());
 		TheaterOrCinema newCinema = service.changeInstitution(institution, newInstitution);
 		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
-}
+	}
+	
+	@RequestMapping(
+			value= "/api/changeRepertoar",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<Projection> changeRepertoar(@RequestBody TheaterOrCinema cinema){
+		
+		Projection projection = service.changeRepertoar(cinema);
+		if (projection != null){
+			return new ResponseEntity<Projection>(projection, HttpStatus.OK); 
+		}else{
+			return new ResponseEntity<Projection>(projection, HttpStatus.BAD_REQUEST);
+		}
+	}
 }
