@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ProjectIsa.bioskop.domain.ChangedMovie;
-import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
+import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
+import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
 @RestController
 public class ProjectionController {
@@ -30,6 +30,8 @@ public class ProjectionController {
 	HallServiceImpl hallService;
 	@Autowired
 	MovieOrPerformanceServiceImpl movieService;
+	@Autowired
+	TheaterOrCinemaService cinemaService;
 	
 	@RequestMapping(
 					value = "/api/projections",
@@ -66,18 +68,16 @@ public class ProjectionController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Projection> addProjection(@RequestBody PoluProjection poluProjection){
-		
-		Projection projection = new Projection();
-		projection.setDate(poluProjection.getDate());
-		projection.setPrice(poluProjection.getPrice());
+	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		
 		for(MovieOrPerformance m: movieService.getAll()) {
-			if(m.getName().equals(poluProjection.getMovieName())) {
+			if(m.getName().equals(projection.getMovieOrPerformance().getName())) {
 				projection.setMovieOrPerformance(m);
 			}
 		}
-		projection.setHall(hallService.getHallByName(poluProjection.getHallName()));
+		 
+		projection.setTheaterOrCinema(cinemaService.findByName(projection.getTheaterOrCinema().getName()));
+		projection.setHall(hallService.getHallByName(projection.getHall().getName()));
 		
 		Projection newProjection = service.addProjection(projection);
 		
@@ -87,27 +87,26 @@ public class ProjectionController {
 			return new ResponseEntity<Projection>(newProjection, HttpStatus.OK);
 		}
 	}
-	/*
+	
 	@RequestMapping(value = "api/changeProjection", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Projection> changeInstitution(@RequestBody PoluProjection proj){
+	public ResponseEntity<Projection> changeProjection(@RequestBody PoluProjection proj){
 
-		Projection projection = new Projection();
+		Projection projection = service.getProjectionByName(proj.getProjectionForChange());
 		
-		for(MovieOrPerformance m: movieService.getAll()) {
-			if(m.getName().equals(proj.getProjectionName())) {
-				projection.setMovieOrPerformance(m);
-			}
-		}
-
+		
 		Projection newProjection = new Projection();
 		newProjection.setDate(proj.getDate());
 		newProjection.setPrice(proj.getPrice());
 		newProjection.setHall(hallService.getHallByName(proj.getHallName()));
 		newProjection.setMovieOrPerformance(movieService.findByName(proj.getMovieName()));
-		
+		newProjection.setName(proj.getProjectionName());
+		newProjection.setTheaterOrCinema(projection.getTheaterOrCinema());
 		Projection returnProjection = service.changeProjection(projection, newProjection);
 		return new ResponseEntity<Projection>(returnProjection, HttpStatus.OK);
-}*/
+	}
+	
+	
+	
 }

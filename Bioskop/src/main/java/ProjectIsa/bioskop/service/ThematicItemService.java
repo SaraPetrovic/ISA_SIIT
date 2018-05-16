@@ -5,17 +5,18 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ProjectIsa.bioskop.domain.ItemOffer;
+import ProjectIsa.bioskop.domain.ItemReservation;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.repository.ItemOfferRepository;
+import ProjectIsa.bioskop.repository.ItemReservationRepository;
 import ProjectIsa.bioskop.repository.ThematicItemRepository;
 import ProjectIsa.bioskop.repository.UserDBRepository;
 @Service
@@ -29,6 +30,7 @@ public class ThematicItemService implements ItemService {
 	private UserDBRepository userRepository;
 	@Autowired
 	private ItemOfferRepository offerRepository;
+	@Autowired ItemReservationRepository reservationRepository;
 	@Override
 	public Collection<ThematicItem> getItems() {
 		
@@ -72,11 +74,24 @@ public class ThematicItemService implements ItemService {
 		if (item == null){
 			return null;
 		}
+		if (offer.getPrice() < 0){
+			return null;
+		}
+		ItemOffer offerToAdd = offerRepository.findByUserAndItem(user, item);
+
 		//mora save, proveri da li moze bez toga
 		itemRepository.save(item);
 		userRepository.save(user);
-		ItemOffer itemOffer = offerRepository.save(offer);
-		return itemOffer;
+		if (offerToAdd == null){
+			ItemOffer itemOffer = offerRepository.save(offer);
+			return itemOffer;
+		}else{
+			offerToAdd.setPrice(offer.getPrice());
+			ItemOffer itemOffer = offerRepository.save(offerToAdd);
+			return itemOffer;
+
+		}
+		
 	}
 
 	@Override
@@ -85,15 +100,30 @@ public class ThematicItemService implements ItemService {
 		return offerRepository.findAll();
 	}
 	@Override
-	@Transactional(readOnly = false)
-	public ThematicItem reserve(ThematicItem item){
-		
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public ThematicItem reserve(ThematicItem item, User user){
+		if (user == null || user.getUserType() == UserType.UNREGISTEREDUSER){
+			return null;
+		}
 		ThematicItem itemToReserve =  itemRepository.findOne(item.getId());
 		if (itemToReserve.getQuantity() > 0){
 			itemToReserve.setQuantity(itemToReserve.getQuantity() - 1);
-			return itemRepository.save(itemToReserve);			
+			ThematicItem reservedItem = itemRepository.save(itemToReserve);
+			ItemReservation itemReservation = new ItemReservation();
+			itemReservation.setItem(reservedItem);
+			itemReservation.setUser(user);
+			
+			reservationRepository.save(itemReservation);
+			return reservedItem;			
 		}
 		return itemToReserve;
 			
 	}
+	@Override
+	public List<ItemOffer> getItemsByUser (User user){
+		User loggedUser = userRepository.findByUsername(user.getUsername());
+		return loggedUser.getItemOffers();
+		
+	}
+	
 }

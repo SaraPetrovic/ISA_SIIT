@@ -32,14 +32,6 @@ public class ProbaTest {
 		service.addNewItem(item2);
 	
 	}
-	@Test
-	public void reservationTest1(){
-		ThematicItem item = service.getItem(1L);
-		ThematicItem itemAfterReservation = service.reserve(item);
-		assertEquals(item.getVersion().intValue(), itemAfterReservation.getVersion().intValue() - 1);
-		
-		ThematicItem itemAfterReservation2 = service.reserve(item);
-		assertEquals(itemAfterReservation.getVersion().intValue(), itemAfterReservation2.getVersion().intValue());
-	}
+
 
 }
