@@ -3,6 +3,8 @@ package ProjectIsa.bioskop.service;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.User;
 
@@ -21,5 +23,9 @@ public interface UserService {
 	User changeProfile(User user, User changedUser);
 
 	User changePicure(User user, String originalFilename);
+	
+	User getUser(long id);
+	
+	List<User> getFriendsOfUser(HttpServletRequest request);
 	
 }
