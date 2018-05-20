@@ -20,7 +20,7 @@ $("#login-btn").click(function() {
 	var success = false;
 	var retUser = null;
 	
-	//alert(JSON.stringify(loginData))
+
 	$.ajax({
 		type: "POST",
 		url: "/api/login",
