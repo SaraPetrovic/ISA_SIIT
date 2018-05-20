@@ -28,4 +28,6 @@ public interface UserService {
 	
 	List<User> getFriendsOfUser(HttpServletRequest request);
 	
+	List<User> getFriendRequests(User loggedUser);
+	
 }

@@ -17,4 +17,7 @@ public interface FriendshipServiceInterface {
 	
 	List<Friendship> nadjiPoKljucu(long userID);
 	
+	Friendship acceptFriendship(Friendship friendship, long loggedUserID);
+	Friendship declineFriendship(Friendship friendship, long loggedUserID);
+	
 }

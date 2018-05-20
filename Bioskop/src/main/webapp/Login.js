@@ -1,7 +1,6 @@
 
 $("#login-btn").click(function() {
 	
-	alert("a");
 	var loginData = {};
 	loginData.username = $("#username-field").val();
 	loginData.password = $("#password-field").val();
@@ -21,7 +20,7 @@ $("#login-btn").click(function() {
 	var success = false;
 	var retUser = null;
 	
-	alert(JSON.stringify(loginData))
+	//alert(JSON.stringify(loginData))
 	$.ajax({
 		type: "POST",
 		url: "/api/login",
@@ -52,7 +51,7 @@ $("#login-btn").click(function() {
 				retUser = response;
 				$("#body").empty();
 				if (retUser != null) {
-					alert(retUser.username);
+					//alert(retUser.username);
 					$.get("RegUserProfilePanel.html", function(RegUserPanel) {
 						$("#body").append(RegUserPanel);
 					});

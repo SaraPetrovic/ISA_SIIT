@@ -26,4 +26,17 @@ public interface UserDBRepository extends Repository<User, Long> {
 		+ ") temp",
 	nativeQuery = true)
 	List<User> getFriendsList(long userID);
+	
+	
+	@Query(value = "SELECT temp.* FROM "
+			+ "(SELECT u.* FROM isa.user u "
+			+ "WHERE u.id IN (SELECT f.userid2 FROM isa.friendship f "
+							+ "WHERE f.userid1 = ?1 AND f.status = 2 AND f.action_userid = ?1"
+						+ ") "
+			+ "OR u.id IN (SELECT f.userid1 FROM isa.friendship f "
+							+ "WHERE f.userid2 = ?1 AND f.status = 2 AND f.action_userid = ?1"
+						+ ")"
+		+ ") temp",
+	nativeQuery = true)
+	List<User> getFriendRequests(long userID);
 }
