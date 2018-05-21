@@ -175,4 +175,19 @@ public class UserController {
 			return new ResponseEntity<List<User>>(friendsList, HttpStatus.OK);
 		}
 	}
+	
+	@RequestMapping(value = "api/getFriendRequests",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<User>> getFriendRequests() {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+		
+		List<User> requestList = userService.getFriendRequests(loggedUser);
+		
+		if (requestList == null) {
+			return new ResponseEntity<List<User>>(requestList, HttpStatus.CONFLICT);
+		} else {
+			return new ResponseEntity<List<User>>(requestList, HttpStatus.OK);
+		}
+	}
 }

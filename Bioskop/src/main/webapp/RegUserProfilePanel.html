@@ -18,7 +18,7 @@
   	<hr>
   	<a href="#"  onclick="friends()">Friends</a>
   	<hr>
-  	<a href="#" onclick="">Friend Requests</a>
+  	<a href="#" onclick="friendRequests()">Friend Requests</a>
   	<hr>
   	<a href="#" onclick="">Reservations</a>
 	<hr>
@@ -95,7 +95,7 @@ function friends() {
 					body +=	        '<p> <small>username: </small>' + friend.username + '</p>';
 					body +=	     '</div>';
 					body +=      '<div class="panel-footer">';
-					body +=	        '<a class="btn btn-primary" style="display:inline;">Remove Friend</a>';
+					body +=	        '<button class="btn btn-primary" onclick="removeFriend(' + friend.id + ')">Remove Friend</button>';
 					body +=      '</div>'
 					body +=   '</div>'
 					body += '</div>'
@@ -114,6 +114,141 @@ function friends() {
 }
 
 
+function friendRequests() {
+	$("#bodyRegUser").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" style="margin-top:20px;">';
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/getFriendRequests',
+		dataType : 'json',
+		type : 'GET',
+		success : function(requests){
+			requests.forEach(function(friend){
+
+					body += '<div class="col-md-4">';
+					body +=	  '<div class="panel panel-info">';
+					body +=	     '<div class="panel-heading">';
+					body +=	         '<h3 class="panel-title">' + friend.firstName + ' ' + friend.lastName + '</h3>';
+					body +=      '</div>';
+					body +=      '<div class="panel-body">';
+					body +=	        '<img class="img-responsive" style="height:50px;" src=images/' + friend.profilePicture + '>';
+					body +=	        '<p style="margin-top:15px;word-wrap: break-word;">' + friend.email + '</p>';
+					body +=	        '<p> <small>username: </small>' + friend.username + '</p>';
+					body +=	     '</div>';
+					body +=      '<div class="panel-footer">';
+					body +=	        '<button class="btn btn-primary" onclick="acceptFriend(' + friend.id + ')">Accept</button>';
+					body +=         '<button class="btn" onclick="declineFriend(' + friend.id + ')">Decline</button>';
+					body +=      '</div>'
+					body +=   '</div>'
+					body += '</div>'
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyRegUser").append(body);
+		},
+		processData: false
+		
+	});
+
+}
+
+
+function acceptFriend(friendID) {
+
+	var friendship = {};
+	var primKey = {};
+	primKey.userID1 = friendID;
+	primKey.userID2 = friendID;
+	friendship.primKey = primKey;
+	friendship.actionUserID = friendID;
+	friendship.status = 2;
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/friendships/acceptFriendship',
+		dataType : 'json',
+		type : 'POST',
+		data : JSON.stringify(friendship),
+		success : function(data){
+	    	alert("Successfully accepted friend!");
+	    	friendRequests();
+		},
+		error : function(data){
+			alert('ERROR accepting a friend');
+		},
+		processData: false
+		
+	});	
+	
+}
+
+
+function declineFriend(friendID) {
+
+	var friendship = {};
+	var primKey = {};
+	primKey.userID1 = friendID;
+	primKey.userID2 = friendID;
+	friendship.primKey = primKey;
+	friendship.actionUserID = friendID;
+	friendship.status = 1;
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/friendships/declineFriendship',
+		dataType : 'json',
+		type : 'POST',
+		data : JSON.stringify(friendship),
+		success : function(data){
+	    	alert("Successfully declined friend!");
+	    	friendRequests();
+		},
+		error : function(data){
+			alert('ERROR declining a friend');
+		},
+		processData: false
+		
+	});	
+	
+}
+
+
+function removeFriend(friendID) {
+
+	var friendship = {};
+	var primKey = {};
+	primKey.userID1 = friendID;
+	primKey.userID2 = friendID;
+	friendship.primKey = primKey;
+	friendship.actionUserID = friendID;
+	friendship.status = 1;
+	
+	$.ajax({
+		contentType : 'application/json',
+		url : '/api/friendships/removeFriend',
+		dataType : 'json',
+		type : 'POST',
+		data : JSON.stringify(friendship),
+		success : function(data){
+	    	alert("Successfully removed friend!");
+	    	friends();
+		},
+		error : function(data){
+			alert('ERROR removing a friend');
+		},
+		processData: false
+		
+	});	
+	
+}
+
 function cinemas() {
 	$("#bodyRegUser").empty();
 	var body = '<div class = "row">';
@@ -129,14 +264,17 @@ function cinemas() {
 		success : function(cinemas){
 			cinemas.forEach(function(cinema){
 				
-				if (cinema.isCinema == true) {
+				if (cinema.cinema == true) {
 					body += '<div class="col-md-4">';
 					body +=	  '<div class="panel panel-info">';
 					body +=	     '<div class="panel-heading">';
 					body +=	         '<h3 class="panel-title">' + cinema.name+ '</h3>';
 					body +=      '</div>';
 					body +=      '<div class="panel-body">';
+					body +=           '<p>' + cinema.adress.street + '<br>';
+					body +=           '<small>' + cinema.adress.city + '</small><br></p>';
 					body +=           '<p>Rating: ' + cinema.averageMark + '</p>';
+					body +=           '<p style="margin-top:15px;word-wrap: break-word;"><small>Description: </small>' + cinema.description + '</p>';
 					body +=	     '</div>';
 					body +=      '<div class="panel-footer">';
 					body +=	        '<a class="btn btn-primary" style="display:inline;">Repertoar</a>';
@@ -175,14 +313,17 @@ function theaters() {
 		success : function(cinemas){
 			cinemas.forEach(function(cinema){
 				
-				if (cinema.isCinema == false) {
+				if (cinema.cinema == false) {
 					body += '<div class="col-md-4">';
 					body +=	  '<div class="panel panel-info">';
 					body +=	     '<div class="panel-heading">';
 					body +=	         '<h3 class="panel-title">' + cinema.name+ '</h3>';
 					body +=      '</div>';
 					body +=      '<div class="panel-body">';
-					body +=           '<p>Rating: ' + cinema.averageMark + '</p>';
+					body +=           '<p>' + cinema.adress.street + '<br>';
+					body +=           '<small>' + cinema.adress.city + '</small><br>';
+					body +=           '<small>Rating: </small>' + cinema.averageMark + '<br></p>';
+					body +=           '<p style="margin-top:15px;word-wrap: break-word;"><small>Description: </small>' + cinema.description + '</p>';
 					body +=	     '</div>';
 					body +=      '<div class="panel-footer">';
 					body +=	        '<a class="btn btn-primary" style="display:inline;">Repertoar</a>';
@@ -202,8 +343,8 @@ function theaters() {
 		processData: false
 		
 	});
-	
 }
+
 
 
 </script>
