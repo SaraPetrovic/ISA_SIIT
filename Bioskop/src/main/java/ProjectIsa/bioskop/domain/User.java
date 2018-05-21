@@ -15,13 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements Serializable {
 	/**
 	 * 
@@ -49,16 +51,25 @@ public class User implements Serializable {
 	private Boolean isFirstLogin;
 	@Column(nullable = true)
 	private String profilePicture;
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+	private List<ItemAd> ads;
+	
 
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ItemOffer> itemOffers;
-	@JsonManagedReference
+	
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ItemReservation> itemReservations;
 	
 
-	
+	public List<ItemAd> getAds() {
+		return ads;
+	}
+	public void setAds(List<ItemAd> ads) {
+		this.ads = ads;
+	}
 	public List<ItemReservation> getItemReservations() {
 		return itemReservations;
 	}

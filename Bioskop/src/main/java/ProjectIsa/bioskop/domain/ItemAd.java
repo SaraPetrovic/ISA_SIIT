@@ -10,14 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-
 @Entity
-public class ThematicItem implements Serializable {
+public class ItemAd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -28,41 +25,28 @@ public class ThematicItem implements Serializable {
 	private String name;
 	
 	@Column(nullable = false)
-	private double price;
-	
-	@Column(nullable = false)
 	private String description;
 	
 	@Column(nullable = true)
 	private String picture;
-	@Column(nullable = false)
-	private int quantity;
-	@Column(nullable = false)
-	private boolean isOfficial;
-	@Column(nullable = true)
+	
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "itemAd", cascade = CascadeType.ALL)
+	private List<ItemOffer> offers;
+
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	private User owner;
 
 	@Version
 	private Long version;
 	
-	public boolean isOfficial() {
-		return isOfficial;
-	}
-	public void setOfficial(boolean isOfficial) {
-		this.isOfficial = isOfficial;
-	}
+
 	public User getOwner() {
 		return owner;
 	}
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+
 	public Long getVersion() {
 		return version;
 	}
@@ -82,12 +66,7 @@ public class ThematicItem implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getPrice() {
-		return price;
-	}
-	public void setPrice(double price) {
-		this.price = price;
-	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -100,15 +79,16 @@ public class ThematicItem implements Serializable {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	public ThematicItem(Long id, String name, double price, String description, String picture) {
+	public ItemAd(Long id, String name, String description, String picture, User owner, Long version) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.price = price;
 		this.description = description;
 		this.picture = picture;
+		this.owner = owner;
+		this.version = version;
 	}
-	public ThematicItem() {
+	public ItemAd() {
 		super();
 	}
 	

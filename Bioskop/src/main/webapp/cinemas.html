@@ -14,11 +14,12 @@
 			$('#cinemas').empty();
 			var html = '<hr>';
 			$.each(cinemas, function(i, cinema){
+				alert(cinema.isCinema);
 				if(cinemas == null){
 					html+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
 				}
 				else{
-					//if(cinema.isCinema == true){
+					if(cinema.isCinema == 1){
 						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
 			       		'<div class="col-md-4">'+
 			         	'<h2 font-family:serif>'+cinema.name+'</h2>'+
@@ -27,7 +28,7 @@
 			         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
 			       		'</div>'+
 			    		'</div><hr>';
-				//	}
+					}
 				}
 			});
 			$('#cinemas').append(html);

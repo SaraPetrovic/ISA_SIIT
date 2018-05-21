@@ -56,8 +56,11 @@ public class TheaterOrCinemaController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<TheaterOrCinema> createTheaterOrCinema(@RequestBody TheaterOrCinema item){
+	public ResponseEntity<TheaterOrCinema> addTheaterOrCinema(@RequestBody TheaterOrCinema item){
 		TheaterOrCinema newTheaterOrCinema = service.addTheaterOrCinema(item);
+		if(newTheaterOrCinema == null) {
+			return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
 	}
 	
@@ -75,17 +78,22 @@ public class TheaterOrCinemaController {
 		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
 	}
 	
+	
 	@RequestMapping(
-			value= "/api/changeRepertoar",
+			value = "/api/changeRepertoar",
 			produces = MediaType.APPLICATION_JSON_VALUE,
-			method = RequestMethod.GET)
-	public ResponseEntity<Projection> changeRepertoar(@RequestBody TheaterOrCinema cinema){
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<TheaterOrCinema> changeRepertoar(@RequestBody String item){
 		
-		Projection projection = service.changeRepertoar(cinema);
-		if (projection != null){
-			return new ResponseEntity<Projection>(projection, HttpStatus.OK); 
-		}else{
-			return new ResponseEntity<Projection>(projection, HttpStatus.BAD_REQUEST);
-		}
+		System.out.println("ITEM" + item);
+		String[] splitResult = item.split("\"");
+		Long projectionId = Long.parseLong(splitResult[3].split(" ")[0]);
+		Long cinemaId = Long.parseLong(splitResult[3].split(" ")[1]);
+		
+		TheaterOrCinema cinema = service.getTheaterOrCinema(cinemaId);
+		
+		TheaterOrCinema newTheaterOrCinema = service.changeRepertoar(cinema, projectionId);
+		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
 	}
 }
