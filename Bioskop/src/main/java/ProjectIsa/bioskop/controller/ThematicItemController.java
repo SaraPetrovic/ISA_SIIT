@@ -28,6 +28,7 @@ import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.service.EmailService;
 import ProjectIsa.bioskop.service.ThematicItemService;
+import ProjectIsa.bioskop.service.UserService;
 
 @RestController
 public class ThematicItemController {
@@ -39,6 +40,8 @@ public class ThematicItemController {
 	private HttpServletRequest request;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private UserService userService;
 	@RequestMapping(
 			value = "/api/items",
 			method = RequestMethod.GET,
@@ -152,9 +155,22 @@ public class ThematicItemController {
 	public ResponseEntity<List<ItemOffer>> getMyOffers(){
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		List<ItemOffer> offers = itemService.getItemsByUser(user);
+		
+		//List<ItemOffer> offers = itemService.getItemsByUser(user);
+		User dbUser = userService.getUser(user.getId());
+		List<ItemOffer> offers = dbUser.getItemOffers();
 		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
 	}
+	@RequestMapping(value = "api/items/offers",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ItemOffer>> getOffers(){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+
+		List<ItemOffer> offers = itemService.getOffers();
+		//List<ItemOffer> offers = user.getItemOffers();
+		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
+}
 
 
 }

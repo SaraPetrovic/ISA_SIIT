@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"user_id", "item_id"}))
+
 public class ItemOffer implements Serializable {
 	/**
 	 * 
@@ -24,7 +25,7 @@ public class ItemOffer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@JsonBackReference
+	
 	@ManyToOne(optional = false)
 	private User user;
 	@Column(nullable = false)
