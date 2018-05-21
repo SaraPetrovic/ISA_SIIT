@@ -36,6 +36,11 @@ public class FriendshipService implements FriendshipServiceInterface {
 		userID1 = loggedUser.getId();
 		userID2 = friendship.getPrimKey().getUserID1();
 		
+		// ako korisnik pokusa da doda samog sebe, vrati mu poruku neku!!
+		if (userID1 == userID2) {
+			return null;
+		}
+		
 		// resava se redundantnost -> userID1 UVEK MANJI od userID2
 		if (userID1 < userID2) {
 			friendship.getPrimKey().setUserID1(userID1);
@@ -125,6 +130,13 @@ public class FriendshipService implements FriendshipServiceInterface {
 
 		return null;
 
+	}
+
+
+	@Override
+	public List<Friendship> getAllFriendships() {
+		List<Friendship> friendships = friendshipRepository.findAll();
+		return friendships;
 	}
 
 

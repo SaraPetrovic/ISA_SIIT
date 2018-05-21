@@ -10,6 +10,7 @@ import ProjectIsa.bioskop.domain.User;
 
 public interface FriendshipServiceInterface {
 
+	List<Friendship> getAllFriendships();
 	List<Friendship> getUsersFriendships(long userID);
 	//boolean friendshipExists(FriendshipPrimKey primKey);
 	Friendship getFriendshipByKey(FriendshipPrimKey primKey);

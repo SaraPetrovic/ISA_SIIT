@@ -10,7 +10,7 @@ insert into adresa(id, city, street) values ('14', 'Novi Sad', 'Tolstojeva 15')
 insert into adresa(id, city, street) values ('15', 'Novi Sad', 'Modene 20')
 insert into adresa(id, city, street) values ('16', 'Novi Sad', 'Futoska 140')
 
-insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture) values ('admin', '1234', 'SYSTEMADMIN', '6', 'asd@gmail.com', 'Marko', 'Markovic', false, 'default-profile-picture.jpg')
+insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture) values ('admin', '1234', 'SYSTEMADMIN', '6', 'asd@gmail.com', 'Ivan', 'Ivic', false, 'default-profile-picture.jpg')
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture) values ('ftn', 'ftn', 'SYSTEMADMIN', '7', 'asd@gmail.com', 'Pera', 'Peric', true, 'default-profile-picture.jpg')
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture) values ('reguser', '123123123', 'REGISTEREDUSER', '10', 'reg@gmail.com', 'Nikola', 'Nikolic', false, 'default-profile-picture.jpg')
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture) values ('reguser2', '123123123', 'REGISTEREDUSER', '9', 'reg2@gmail.com', 'Nemanja', 'Nemanjic', false, 'default-profile-picture.jpg')
