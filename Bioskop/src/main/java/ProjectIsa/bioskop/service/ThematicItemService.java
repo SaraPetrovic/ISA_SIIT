@@ -10,13 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ProjectIsa.bioskop.domain.ItemAd;
 import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.ItemReservation;
+import ProjectIsa.bioskop.domain.OfficialItem;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.domain.UserType;
+import ProjectIsa.bioskop.repository.ItemAdRepository;
 import ProjectIsa.bioskop.repository.ItemOfferRepository;
 import ProjectIsa.bioskop.repository.ItemReservationRepository;
+import ProjectIsa.bioskop.repository.OfficialItemRepository;
 import ProjectIsa.bioskop.repository.ThematicItemRepository;
 import ProjectIsa.bioskop.repository.UserDBRepository;
 @Service
@@ -25,23 +29,27 @@ public class ThematicItemService implements ItemService {
 	@Autowired
 	EntityManager em;
 	@Autowired
+	EmailService emailService;
+	@Autowired
 	private ThematicItemRepository itemRepository;
 	@Autowired
 	private UserDBRepository userRepository;
 	@Autowired
 	private ItemOfferRepository offerRepository;
-	@Autowired ItemReservationRepository reservationRepository;
+	@Autowired 
+	private ItemReservationRepository reservationRepository;
+	@Autowired
+	private ItemAdRepository itemAdRepository;
+	@Autowired
+	private OfficialItemRepository officialItemRepository;
+	
 	@Override
 	public Collection<ThematicItem> getItems() {
 		
 		return itemRepository.findAll();
 	}
 
-	@Override
-	public ThematicItem getItem(Long id) {
-		// TODO Auto-generated method stub
-		return itemRepository.findOne(id);
-	}
+
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -70,18 +78,17 @@ public class ThematicItemService implements ItemService {
 		if (user == null){
 			return null;
 		}
-		ThematicItem item = itemRepository.findOne(offer.getItem().getId());
+		ItemAd item = itemAdRepository.findOne(offer.getItem().getId());
 		if (item == null){
 			return null;
 		}
 		if (offer.getPrice() < 0){
 			return null;
 		}
-		ItemOffer offerToAdd = offerRepository.findByUserAndItem(user, item);
+		ItemOffer offerToAdd = offerRepository.findByUserAndItemAd(user, item);
 
 		//mora save, proveri da li moze bez toga
-		itemRepository.save(item);
-		userRepository.save(user);
+
 		if (offerToAdd == null){
 			ItemOffer itemOffer = offerRepository.save(offer);
 			return itemOffer;
@@ -101,20 +108,31 @@ public class ThematicItemService implements ItemService {
 	}
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public ThematicItem reserve(ThematicItem item, User user){
-		if (user == null || user.getUserType() == UserType.UNREGISTEREDUSER){
+	public OfficialItem reserve(OfficialItem item, User user){
+		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
 			return null;
 		}
-		ThematicItem itemToReserve =  itemRepository.findOne(item.getId());
-		if (itemToReserve.getQuantity() > 0){
-			itemToReserve.setQuantity(itemToReserve.getQuantity() - 1);
-			ThematicItem reservedItem = itemRepository.save(itemToReserve);
-			ItemReservation itemReservation = new ItemReservation();
-			itemReservation.setItem(reservedItem);
-			itemReservation.setUser(user);
+		OfficialItem itemToReserve =  officialItemRepository.findOne(item.getId());
+		User userWhoReserve = userRepository.findById(user.getId());
+		ItemReservation itemReservation = reservationRepository.findByUserAndOfficialItem(userWhoReserve, itemToReserve);
+		if (itemReservation == null){
+			if (itemToReserve.getQuantity() > 0){
+				itemToReserve.setQuantity(itemToReserve.getQuantity() - 1);
+				OfficialItem reservedItem = officialItemRepository.save(itemToReserve);
+				itemReservation = new ItemReservation();
+				itemReservation.setItem(reservedItem);
+				itemReservation.setUser(user);
+				String message = "You successfully reserved " + itemToReserve.getName(); 
+				emailService.sendSimpleMessage(user.getEmail(), "Item reservation", message);
+				user.getItemReservations().add(itemReservation);
+				userRepository.save(user);
 			
-			reservationRepository.save(itemReservation);
-			return reservedItem;			
+				return reservedItem;			
+			}
+			
+			// ukoliko vec postoji rezervacija vrati null, korisnik ne moze da napravi 2 rezervacije
+		}else{
+			return null;
 		}
 		return itemToReserve;
 			
@@ -125,5 +143,47 @@ public class ThematicItemService implements ItemService {
 		return loggedUser.getItemOffers();
 		
 	}
+
+	@Override
+	public ItemAd getItemAd(Long id) {
+		// TODO Auto-generated method stub
+		return  itemAdRepository.findOne(id);
+		
+	}
+
+
+
+	@Override
+	public OfficialItem getOfficialItem(Long id) {
+		// TODO Auto-generated method stub
+		return officialItemRepository.findOne(id);
+	}
+
+
+
+	@Override
+	public Collection<OfficialItem> getOfficialItems() {
+		// TODO Auto-generated method stub
+		return officialItemRepository.findAll();
+	}
+
+
+
+	@Override
+	public Collection<ItemAd> getItemAds() {
+		// TODO Auto-generated method stub
+		return itemAdRepository.findAll();
+	}
+
+
+
+	@Override
+	public List<ItemAd> getUserAds(User user) {
+		// TODO Auto-generated method stub
+		User u = userRepository.findById(user.getId());
+		return u.getAds();
+	}
+
+
 	
 }

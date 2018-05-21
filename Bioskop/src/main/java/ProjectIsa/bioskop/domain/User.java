@@ -51,6 +51,10 @@ public class User implements Serializable {
 	private Boolean isFirstLogin;
 	@Column(nullable = true)
 	private String profilePicture;
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+	private List<ItemAd> ads;
+	
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
@@ -60,7 +64,12 @@ public class User implements Serializable {
 	private List<ItemReservation> itemReservations;
 	
 
-	
+	public List<ItemAd> getAds() {
+		return ads;
+	}
+	public void setAds(List<ItemAd> ads) {
+		this.ads = ads;
+	}
 	public List<ItemReservation> getItemReservations() {
 		return itemReservations;
 	}

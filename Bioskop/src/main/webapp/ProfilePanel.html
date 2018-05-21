@@ -4,7 +4,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link href="css/Adminpanel.css" rel="stylesheet">
-
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
 
     <hr>
   
-  	<a href="#" onclick="itemsTab()">Thematic items</a>
+  	<a href="#" onclick="itemsTab()">My Ads</a>
 	<hr>
 	<a href="#" onclick="myOffersTab()">My Offers</a>
   	<hr>
@@ -421,13 +421,10 @@ function itemsTab(){
 				if (i == 1){
 					body += '<div class="row">';
 				}
-				if (item.official == true){
-					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price</small> - '+ item.price + '</p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="reserve('+item.id+')" style="display:inline;" >Reserve </a> </div> </div> </div>';
-
-				}else{
+				
 					
-					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
-				}
+					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a href="ItemAd.html"> More info</a> </div> </div> </div>';
+				
 				i++;
 				if (i == 4){
 					body += '</div>';
@@ -442,7 +439,7 @@ function itemsTab(){
 			$("#bodyAdmin").append(body);
 		},
 		processData: false,
-		url : '/api/items'
+		url : '/api/MyAds'
 	});
 
 	
@@ -481,12 +478,12 @@ function reserve(itemId){
 	    data: JSON.stringify(item),
 	    dataType: 'json',
 	    success: function(admin){
-			alert("Uspesno napravljena rezervacija!");
+			swal("Reserved!", "You successfully reserved item", "success");
 
 
 	    },
 	    error: function(data){
-	    	alert("FAIL");
+	    	swal("Oops!", "You cant reserve this item", "error");
 	    },
 	    processData: false,
 	    type: 'POST',
@@ -529,6 +526,7 @@ function myOffersTab(){
 	});
 }
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
 
 
 </html>
