@@ -35,7 +35,7 @@
 </div>
 </div>
 				<div class="container">
-				<h2>Modal </h2>
+				
 				<!-- Trigger the modal with a button -->
 
 				<div class="modal fade" id="newHall" role="dialog">
@@ -47,7 +47,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Please enter information about new hall </h3>
+							    		<h3 class="panel-title">Please enter informations about new hall </h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form1" id="form1">
@@ -101,7 +101,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Please enter information about new projection </h3>
+							    		<h3 class="panel-title">Please enter informations about new projection </h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form2" id="form2">
@@ -173,7 +173,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Please enter information about new movie or performance</h3>
+							    		<h3 class="panel-title">Please enter informations about new movie or performance</h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form3" id="form3">
@@ -258,7 +258,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Change information about cinema/theatre </h3>
+							    		<h3 class="panel-title">Change informations about cinema/theatre </h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form4" id="form4">
@@ -269,7 +269,7 @@
        													 	<option value=""></option>
      												  </select>
      											</div>
-     										</div>
+     										</div><br>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
@@ -322,7 +322,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Change information about new movie or performance</h3>
+							    		<h3 class="panel-title">Change informations about movie or performance</h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="formChangeMovie" id="formChangeMovie">
@@ -407,7 +407,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Change information about projection </h3>
+							    		<h3 class="panel-title">Change informations about projection </h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="formChangeProj" id="formChangeProj">
@@ -473,6 +473,57 @@
 				</div>	
 			   </div>
 			   
+			   <div class="modal fade" id="newTicket" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="row centered-form">
+				        <div class="col-xs-12 col-sm-12 col-md-12 ">
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+							    		<h3 class="panel-title">Enter informations about new ticket for fast reservation</h3>
+							 			</div>
+							 			<div class="panel-body">
+							    		<form role="ticketForm" id="ticketForm">
+     										<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6">
+							    				      Select projection
+      												  <select class="form-control" id="selectProjectionForTicket">
+       													 	<option value=""></option>
+     												  </select>
+     											</div>
+     										</div><br>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="ticketRow" id="ticketRow" class="form-control input-sm" placeholder="Row number">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="text" name="ticketColumn" id="ticketColumn" class="form-control input-sm" placeholder="Column number">
+							    					</div>
+							    				</div>
+							    			</div>
+     										<br>
+							    			<div class="row">
+     											<div class="col-xs-6 col-sm-6 col-md-6">
+							    					<div align="center" class="form-group">
+						    							<button type="button" id="saveTicket" class="btn btn-info">Add ticket</button>
+     												</div>
+     											</div>
+     										</div>
+							    		</form>
+							    	</div>
+					    		</div>
+				    		</div>
+				    	</div>	
+				    </div>
+				</div>	
+			   </div>
 			   	<div class="modal fade" id="newCinema" role="dialog">
 				    <div class="modal-dialog">
 				    
@@ -482,7 +533,7 @@
 				        <div class="col-xs-12 col-sm-12 col-md-12 ">
 				        	<div class="panel panel-default">
 				        		<div class="panel-heading">
-							    		<h3 class="panel-title">Please enter information about new cinema </h3>
+							    		<h3 class="panel-title">Please enter informations about new cinema/theater</h3>
 							 			</div>
 							 			<div class="panel-body">
 							    		<form role="form" data-toggle="validator" id="formCinema">
@@ -537,8 +588,22 @@
 	<script type="text/javascript" src="institutionAdminJS.js"></script>
 	<script>
 	
-	var rowIndex = 1;
+	var rowHallIndex = 1;
+	var rowMovieIndex = 1;
+	var rowProjectionIndex = 1;
+	var rowCinemaIndex = 1;
 	
+	function validate(formId){
+	    var msg= "";
+	    var fields = document.getElementById(formId).getElementsByTagName("input");
+
+	    for (var i=0; i<fields.length; i++){
+	        if (fields[i].value == "") 
+	            msg = 'Fields must be filled!';
+	        	return false;
+	    }
+	}
+
 	function halls(){
 		$("#rightBody").empty();
 		var hallsBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
@@ -554,27 +619,39 @@
 			type: "GET",
 			url: "/api/halls",
 			success: function(halls){
-				rowIndex = 1;
+				rowHallIndex = 1;
 				$.each(halls, function(i, hall){
-					var hallBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					var hallBody = '<tr><th scope="row">' + rowHallIndex + '</th>';
 					hallBody += '<td>' + hall.name + '</td>';
 					hallBody += '<td>' + hall.maxRow + '</td>';
 					hallBody += '<td>' + hall.maxColumn + '</td>';
 					hallBody += '<td>' + hall.theaterOrCinema.name + '</td></tr>';
 					$("#hallsBody").append(hallBody);
-					rowIndex++;
+					rowHallIndex++;
 				});
 			}
 		});
 	
 	}
 	
-	$("#addHall").click(function() {
+	$("#addHall").click(function(){
+			validate('form1');
 			var poluHall = {};
 			poluHall.id = $("#hallID").val();
 			
-			poluHall.rows = $("#rows").val();
-			poluHall.columns = $("#columns").val();
+			var rows = $("#rows").val();
+			var columns = $("#columns").val();
+			
+			poluHall.rows = rows;
+			poluHall.columns = columns;
+			/*
+			if(rows === parseInt(rows) && columns === parseInt(columns)){
+				poluHall.rows = rows;
+				poluHall.columns = columns;
+			}else{
+				alert("Rows and columns must be number");
+			}*/
+			
 			poluHall.name = $("#nameCinemaOrTheater").val();
 			
 			$.ajax({
@@ -586,12 +663,13 @@
 			    	alert("Successful add");
 			    	$('#newHall').modal('toggle');
 			    	
-			    	var hallItem = '<tr><th scope="row">' + rowIndex + '</th>';
+			    	var hallItem = '<tr><th scope="row">' + rowHallIndex + '</th>';
 			    	hallItem += '<td>' + response.name + '</td>';
 			    	hallItem += '<td>' + response.maxRow + '</td>';
 			    	hallItem += '<td>' + response.maxColumn + '</td>';
 					hallItem += '<td>' + response.theaterOrCinema.name + '</td></tr>';
 			    	$("#hallsBody").append(hallItem);
+			    	rowHallIndex++;
 			    },
 			    error: function(err){
 			    	alert(err);
@@ -619,14 +697,14 @@
 	}
 	
 	function printProjections(){
-		rowIndex = 1;
+		rowProjectionIndex = 1;
 		$.ajax({
 			type: "GET",
 			url: "/api/projections",
 			success: function(projections){
 				$("#projectionsBody").empty();
 				$.each(projections, function(i, projection){
-					var projectionBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					var projectionBody = '<tr><th scope="row">' + rowProjectionIndex + '</th>';
 					projectionBody += '<td>' + projection.name + '</td>';
 					projectionBody += '<td>' + projection.date + '</td>';
 					projectionBody += '<td>' + projection.price + '</td>';
@@ -634,7 +712,7 @@
 					projectionBody += '<td>' + projection.hall.name + '</td>';
 					projectionBody += '<td>' + projection.movieOrPerformance.name + '</td></tr>';
 					$("#projectionsBody").append(projectionBody);
-					rowIndex++;
+					rowProjectionIndex++;
 				});
 			}
 		});
@@ -664,7 +742,7 @@
 		    	alert("Projection has been successfully added!");
 		    	$('#newProjection').modal('toggle');
 
-		    	var projItem = '<tr><th scope="row">' + rowIndex + '</th>';
+		    	var projItem = '<tr><th scope="row">' + rowProjectionIndex + '</th>';
 		    	projItem += '<td>' + response.name + '</td>';
 		    	projItem += '<td>' + response.date + '</td>';
 		    	projItem += '<td>' + response.price + '</td>';
@@ -672,6 +750,7 @@
 		    	projItem += '<td>' + response.hall.name + '</td>';
 		    	projItem += '<td>' + response.movieOrPerformance.name + '</td></tr>';
 		    	$("#projectionsBody").append(projItem);
+		    	rowProjectionIndex++;
 		    },
 		    error: function(err){
 		    	alert("This name of projection already exists");
@@ -730,20 +809,20 @@
 	}
 	
 	function printMovies(){
-		rowIndex = 1;
+		rowMovieIndex = 1;
 		$.ajax({
 			type: "GET",
 			url: "/api/movies",
 			success: function(movies){
 				$("#moviesBody").empty();
 				$.each(movies, function(i, movie){
-					var movieBody = '<tr><th scope="row">' + rowIndex + '</th>';
+					var movieBody = '<tr><th scope="row">' + rowMovieIndex + '</th>';
 					movieBody += '<td>' + movie.name + '</td>';
 					movieBody += '<td>' + movie.type + '</td>';
 					movieBody += '<td>' + movie.producer + '</td>';
 					movieBody += '<td>' + movie.averageRating + '</td></tr>';
 					$("#moviesBody").append(movieBody);
-					rowIndex++;
+					rowMovieIndex++;
 				});
 			}
 		});
@@ -773,12 +852,13 @@
 		    	alert("Movie has been successfully added!");
 		    	$('#newMovie').modal('toggle');
 
-		    	var movieItem = '<tr><th scope="row">' + rowIndex + '</th>';
+		    	var movieItem = '<tr><th scope="row">' + rowMovieIndex + '</th>';
 		    	movieItem += '<td>' + response.name + '</td>';
 		    	movieItem += '<td>' + response.type + '</td>';
 		    	movieItem += '<td>' + response.producer + '</td>';
 		    	movieItem += '<td>' + response.averageRating + '</td></tr>';
 		    	$("#moviesBody").append(movieItem);
+		    	rowMovieIndex++;
 		    },
 		    error: function(err){
 		    	//alert(err);
@@ -827,95 +907,110 @@
 	});
 	
 	function printInstitutions(){
-		rowIndex = 1;
+		rowCinemaIndex = 1;
 		$.ajax({
 			type: "GET",
 			url: "/api/TheaterOrCinemas",
 			success: function(theatersOrCinemas){
+				var cinemasBody;
 				$("#cinemasBody").empty();
-				$.each(theatersOrCinemas, function(i, cinema){
-					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-					cinemasBody += '<td>' + cinema.name + '</td>';
-					cinemasBody += '<td>' + cinema.adress.street + ' ' + cinema.adress.city + '</td>';
-					cinemasBody += '<td>' + cinema.averageMark + '</td>';
-					cinemasBody += '<td><button id="viewRepertoire" class="viewRepertoire" onclick="viewRepertoire()">View repertoire</button></td></tr>';
+				if(theatersOrCinemas == null){
+					cinemasBody = '<p>There is no projection</p>';
+					alert(cinemasBody);
 					$("#cinemasBody").append(cinemasBody);
-					rowIndex++;
-				});
+				}else{
+					$.each(theatersOrCinemas, function(i, cinema){
+						cinemasBody = '<tr><th scope="row">' + rowCinemaIndex + '</th>';
+						cinemasBody += '<td>' + cinema.name + '</td>';
+						cinemasBody += '<td>' + cinema.adress.street + ' ' + cinema.adress.city + '</td>';
+						cinemasBody += '<td>' + cinema.averageMark + '</td>';
+						cinemasBody += '<td><button value="'+cinema.id+'" id="printRepertoar" class="printRepertoar" onclick="printRepertoar(this.value)">View repertoire</button></td>';
+						cinemasBody += '<td><button id="btnAddFastTicket" type="button" class="btn btn-info" data-toggle="modal" data-target="#newTicket">Add ticket</button></td></tr>';
+						$("#cinemasBody").append(cinemasBody);
+						rowCinemaIndex++;
+					});
+				}
+				
 			}
 		});
 	}
-	
-	function viewRepertoire(){
+	function printRepertoar(buttonValue){
 		$("#rightBody").empty();
-		var movies = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
-		movies += '</div><div style="padding:15px;"><div class="row">';
-		movies += '<table class="table" id="movieTable" style="background-color:white;">' +
+		var projectionsHeader = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
+		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
 			  '<caption>List of projections</caption>' +
 			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
 			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
-		$("#rightBody").append(movies);
+		$("#rightBody").append(projectionsHeader);
+		$("#cinemaProjections").empty();
 		var rowIndex = 1;
 		$.ajax({
 			type: "GET",
 			url: "/api/projections",
 			success: function(projections){
 				$.each(projections, function(i, projection){
-					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-					cinemasBody += '<td>' + projection.name + '</td>';
-					cinemasBody += '<td>' + projection.hall.name + '</td>';
-					cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
-					cinemasBody += '<td><button id="clickForRemove" class="clickForRemove" onclick="removeProjection()">Remove projection</button></td></tr>';
-					$("#cinemaProjections").append(cinemasBody);
-					var button = document.getElementById('clickForRemove');
-					button.value = projection.name;
-					rowIndex++;
+					//alert(buttonValue);
+					if(projections != null && buttonValue == projection.theaterOrCinema.id){
+						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+						cinemasBody += '<td>' + projection.name + '</td>';
+						cinemasBody += '<td>' + projection.hall.name + '</td>';
+						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+						cinemasBody += '<td><button id="clickForRemove" value="'+projection.id+' '+projection.theaterOrCinema.id+'" class="clickForRemove" onclick="clickForRemove(this.value)">Remove projection</button></td></tr>';
+						$("#cinemaProjections").append(cinemasBody);
+						rowIndex++;
+					}
 				});
 			}
 		});
 	}
-	function removeProjection(){
+	function clickForRemove(buttonValue){
+		
+		//alert(buttonValue);
 		
 		$.ajax({
 		    contentType: 'application/json',
-		    data: JSON.stringify(movieOrPerformance),
+		    data: JSON.stringify({ "item" : buttonValue }),
 		    dataType: 'json',
 		    success: function(response){
 
 		    	alert("Projection has been successfully removed!");
 
+		    	$.ajax({
+					type: "GET",
+					url: "/api/projections",
+					success: function(projections){
+						$("#cinemaProjections").empty();
+						var rowIndex = 1;
+						$.each(projections, function(i, projection){
+							if(projections != null && projection.theaterOrCinema.id == response.id){
+								var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+								cinemasBody += '<td>' + projection.name + '</td>';
+								cinemasBody += '<td>' + projection.hall.name + '</td>';
+								cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+								cinemasBody += '<td><button  id="remove" class="remove" value="'+projection.id+' '+projection.theaterOrCinema.id+'" onclick="clickForRemove(this.value)">Remove projection</button></td></tr>';
+								$("#cinemaProjections").append(cinemasBody);
+								rowIndex++;
+							}
+						});
+					}
+				});
 		    },
 		    error: function(err){
 		    	alert(err);
 		    },
 		    processData: false,
 		    type: 'POST',
-		    url: '/api/deleteProjection'
-		});
-		var rowIndex = 1;
-		$.ajax({
-			type: "GET",
-			url: "/api/projections",
-			success: function(projections){
-				$.each(projections, function(i, projection){
-					var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-					cinemasBody += '<td>' + projection.name + '</td>';
-					cinemasBody += '<td>' + projection.hall.name + '</td>';
-					cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
-					cinemasBody += '<td><button id="removeProjection" class="removeProjection" onclick="removeProjection()">Remove projection</button></td></tr>';
-					$("#cinemaProjections").append(cinemasBody);
-					rowIndex++;
-				});
-			}
+		    url: '/api/changeRepertoar'
 		});
 	}
+	
 	
 	function institutions(){
 		$("#rightBody").empty();
 		var cinemaBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
 		cinemaBody += '&nbsp<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>'+
-					'&nbsp<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeCinema" onclick="loadInstitutions1()">Change cinema/theater</button>' +
-					'&nbsp<button id="changeRepertoarButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeRepertoar" onclick="loadCinemas()">Change repertoar</button>';
+					'&nbsp<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeCinema" onclick="loadInstitutions1()">Change cinema/theater</button>';
 		cinemaBody += '</div><div style="padding:15px;"><div class="row">';
 		cinemaBody += '<table class="table" id="projectionsTable" style="background-color:white;">' +
 			  '<caption>List of cinemas/theaters</caption>' +
@@ -967,12 +1062,18 @@
 	});
 	
 	$("#addEntity").click(function() {
-		 var entity = {};
-		 var isCinema = $('#cinema:checked').val()?true:false;
+		var entity = {};
+		//var isCinema = $('#cinema:checked').val()?true:false;
+		var checkBox = document.getElementById("cinema");
 
-		 entity.cinema = isCinema;
-		 entity.name = $("#name").val();
-		 var adress3 = { "city" : $("#cityCinema3").val(),
+		if(checkBox.checked == true){
+			entity.isCinema = true;
+		}else{
+			entity.isCinema = false;
+		}
+		
+		entity.name = $("#name").val();
+		var adress3 = { "city" : $("#cityCinema3").val(),
 				 		"street" : $("#streetCinema3").val()};
 		 
 		entity.adress = adress3;
@@ -988,14 +1089,15 @@
 		    	alert("Succesful add!");
 				$('#newCinema').modal('toggle');
 
-//				var cinemaBody = '<tr><th scope="row">' + rowIndex + '</th>';
-	//			cinemaBody += '<td>' + response.name + '</td>';
-	//			cinemaBody += '<td>' + response.adress.street + ' ' + response.adress.city + '</td>';
-		//		cinemaBody += '<td>' + response.averageMark + '</td></tr>';
-			//	cinemaBody += '<td><button id="viewRepertoire" class="viewRepertoire">View repertoire</button>';
-			//	$("#cinemasBody").append(cinemaBody);
-				
-			printInstitutions();
+				var cinemaBody = '<tr><th scope="row">' + rowCinemaIndex + '</th>';
+				cinemaBody += '<td>' + response.name + '</td>';
+				cinemaBody += '<td>' + response.adress.street + ' ' + response.adress.city + '</td>';
+				cinemaBody += '<td>' + response.averageMark + '</td>';
+				cinemaBody += '<td><button id="viewRepertoire" class="viewRepertoire">View repertoire</button></td>';
+				cinemaBody += '&nbsp<td><button id="addFastTicket" type="button" class="btn btn-info" data-toggle="modal" data-target="#newTicket">Add ticket</button></td></tr>';
+				$("#cinemasBody").append(cinemaBody);
+				rowCinemaIndex++;
+			//printInstitutions();
 				
 		    },
 		    error: function(err){

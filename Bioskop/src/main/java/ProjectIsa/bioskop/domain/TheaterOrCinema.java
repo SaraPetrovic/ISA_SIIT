@@ -30,8 +30,8 @@ public class TheaterOrCinema implements Serializable {
 	private Adresa adress;
 	@Column(nullable = false)
 	private String description;
-//	@OneToMany(cascade = CascadeType.ALL)
-//	private List<Ticket> fastRezTicket;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Ticket> fastRezTicket;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
@@ -50,17 +50,17 @@ public class TheaterOrCinema implements Serializable {
 		this.adress = adress;
 		this.description = description;
 	}
-	public TheaterOrCinema(String name, Adresa adress, String description, 
+	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
 			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema, String segment) {
 		super();
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
-//		this.fastRezTicket = fastRezTicket;
+		this.fastRezTicket = fastRezTicket;
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
-		//this.id = id;
+		this.id = id;
 		this.isCinema = isCinema;
 	}
 
@@ -88,15 +88,22 @@ public class TheaterOrCinema implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+/*
+	public List<Ticket> getFastRezTicket() {
+		return fastRezTicket;
+	}
 
-//	public List<Ticket> getFastRezTicket() {
-//		return fastRezTicket;
-//	}
-
-//	public void setFastRezTicket(List<Ticket> fastRezTicket) {
-//		this.fastRezTicket = fastRezTicket;
-//	}
-
+	public void setFastRezTicket(List<Ticket> fastRezTicket) {
+		this.fastRezTicket = fastRezTicket;
+	}
+*/
+	public void addTicket(Ticket ticket) {
+		this.fastRezTicket.add(ticket);
+		ticket.setTheaterOrCinema(this);
+	}
+	public void removeTicket(Ticket ticket) {
+		this.fastRezTicket.remove(ticket);
+	}
 	
 	public void addProjection(Projection projection) {
 		this.projections.add(projection);
@@ -104,7 +111,6 @@ public class TheaterOrCinema implements Serializable {
 	}
 
 	public void removeProjection(Projection projection) {
-		projection.setTheaterOrCinema(null);
 		this.projections.remove(projection);
 	}
 	public double getAverageMark() {
@@ -114,8 +120,6 @@ public class TheaterOrCinema implements Serializable {
 	public void setAverageMark(double averageMark) {
 		this.averageMark = averageMark;
 	}
-
-	
 
 	public Long getId() {
 		return id;
