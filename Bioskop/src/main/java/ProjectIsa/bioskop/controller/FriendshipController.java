@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +42,7 @@ public class FriendshipController {
 		return new ResponseEntity<List<Friendship>>(ret, HttpStatus.OK);
 	}
 	
-/*	@RequestMapping(
-			value = "/api/friendships/nadjiSve",
-			method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Friendship>> nadjiSve() {
-		List<Friendship> ret = friendshipService.nadjiSve();
-		return new ResponseEntity<List<Friendship>>(ret, HttpStatus.OK);
-	}
-*/	
+	
 	@RequestMapping(
 			value = "/api/friendships/findByUser/{userID}",
 			method = RequestMethod.GET,
@@ -88,6 +81,40 @@ public class FriendshipController {
 		}
 		return new ResponseEntity<Friendship>(fsAdded, HttpStatus.CREATED);
 		
+	}
+	
+	
+	@RequestMapping(
+			value = "/api/friendships/acceptFriendship",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Friendship> acceptFriend(@RequestBody Friendship friendshipAccept) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+		
+		Friendship fs = friendshipService.acceptFriendship(friendshipAccept, loggedUser.getId());
+		
+		if (fs == null) {
+			return new ResponseEntity<Friendship>(fs, HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<Friendship>(fs, HttpStatus.OK);
+	}
+
+	
+	@RequestMapping(
+			// REMOVE FRIEND za sad radi isto sto i decline, ako promenis, promeni i ovde!!
+			value = {"/api/friendships/declineFriendship", "/api/friendships/removeFriend"},
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Friendship> declineFrined(@RequestBody Friendship friendshipDecline) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+
+		Friendship fs = friendshipService.declineFriendship(friendshipDecline, loggedUser.getId());
+		
+		if (fs == null) {
+			return new ResponseEntity<Friendship>(fs, HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<Friendship>(fs, HttpStatus.OK);
+
 		
 	}
 	

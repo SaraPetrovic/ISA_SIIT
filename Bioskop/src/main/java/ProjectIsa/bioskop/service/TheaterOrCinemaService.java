@@ -30,6 +30,9 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	@Override
 	public TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc) {
 		
+		if(tc.getName() == "" || tc.getDescription() == "" || tc.getAdress().getCity() == "" || tc.getAdress().getStreet() == "") {
+			return null;
+		}
 		if (tc.getAdress() != null) {
 			addAddress(tc.getAdress());
 		}
@@ -72,8 +75,8 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	
 	@Override
 	public Adresa addAddress(Adresa address) {
-		// TODO Auto-generated method stub
-		System.out.println("usao u ADD ADDRESS");
+
+		//System.out.println("usao u ADD ADDRESS");
 		Adresa newAddress = repository.save(address);
 		return newAddress;
 	}
@@ -84,20 +87,15 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	}
 
 	@Override
-	public Projection changeRepertoar(TheaterOrCinema theaterOrCinema) {
-		/*
-		Projection projection = theaterOrCinema.getProjections().get(0);
-		for(TheaterOrCinema cinema: repository.findAll()) {
-			if(cinema.getName().equals(theaterOrCinema.getName())) {
-				cinema.removeProjection(projection);
-				repository.save(cinema);
-			}
-		}
+	public TheaterOrCinema changeRepertoar(TheaterOrCinema theaterOrCinema, Long projectionId) {
+		
+		
+		Projection projection = projectionRepository.findById(projectionId);
+		
+		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);
-		return projection;
-		*/
-		Projection p = new Projection();
-		return p;
+		repository.save(theaterOrCinema);
+		return theaterOrCinema;
 	}
 
 	

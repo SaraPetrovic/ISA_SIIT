@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.springframework.stereotype.Component;
-
 
 @Entity
 public class Ticket {
@@ -22,20 +20,17 @@ public class Ticket {
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
 	@ManyToOne(optional = false)
-	private MovieOrPerformance projekcija;
+	private Projection projection;
 		
 	public Ticket() {
 		
 	}
-	
-	
-	
-	public Ticket(int row, int column, TheaterOrCinema theaterOrCinema, MovieOrPerformance projekcija) {
+	public Ticket(int row, int column, TheaterOrCinema theaterOrCinema, Projection projekcija) {
 		super();
 		this.row = row;
 		this.column = column;
 		this.theaterOrCinema = theaterOrCinema;
-		this.projekcija = projekcija;
+		this.projection = projekcija;
 	}
 
 
@@ -52,11 +47,11 @@ public class Ticket {
 	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
 		this.theaterOrCinema = theaterOrCinema;
 	}
-	public MovieOrPerformance getProjekcija() {
-		return projekcija;
+	public Projection getProjekcija() {
+		return projection;
 	}
-	public void setProjekcija(MovieOrPerformance projekcija) {
-		this.projekcija = projekcija;
+	public void setProjekcija(Projection projekcija) {
+		this.projection = projekcija;
 	}
 	public int getRow() {
 		return row;

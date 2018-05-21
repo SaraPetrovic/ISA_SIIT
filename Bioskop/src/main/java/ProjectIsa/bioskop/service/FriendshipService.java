@@ -78,6 +78,56 @@ public class FriendshipService implements FriendshipServiceInterface {
 	}
 
 
+	@Override
+	public Friendship acceptFriendship(Friendship friendship, long loggedUserID) {
+		
+		long userToAccept = friendship.getActionUserID();
+		
+		if (userToAccept < loggedUserID) {
+			friendship.getPrimKey().setUserID1(userToAccept);
+			friendship.getPrimKey().setUserID2(loggedUserID);
+		} else {
+			friendship.getPrimKey().setUserID1(loggedUserID);
+			friendship.getPrimKey().setUserID2(userToAccept);
+		}
+		
+		Friendship fsExists = friendshipRepository.findByPrimKey(friendship.getPrimKey());
+		
+		if (fsExists != null) {
+			friendship.setStatus(FriendshipStatus.ACCEPTED);
+			 return friendshipRepository.save(friendship);
+		}
+
+		return null;
+		
+	}
+
+
+	@Override
+	public Friendship declineFriendship(Friendship friendship, long loggedUserID) {
+		
+		long userToAccept = friendship.getActionUserID();
+		
+		if (userToAccept < loggedUserID) {
+			friendship.getPrimKey().setUserID1(userToAccept);
+			friendship.getPrimKey().setUserID2(loggedUserID);
+		} else {
+			friendship.getPrimKey().setUserID1(loggedUserID);
+			friendship.getPrimKey().setUserID2(userToAccept);
+		}
+		
+		Friendship fsExists = friendshipRepository.findByPrimKey(friendship.getPrimKey());
+		
+		if (fsExists != null) {
+			friendship.setStatus(FriendshipStatus.DECLINED);
+			 return friendshipRepository.save(friendship);
+		}
+
+		return null;
+
+	}
+
+
 
 	
 }

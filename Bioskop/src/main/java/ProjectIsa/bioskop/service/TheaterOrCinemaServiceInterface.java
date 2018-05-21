@@ -18,5 +18,5 @@ public interface TheaterOrCinemaServiceInterface {
 	
 	TheaterOrCinema findByName(String name);
 
-	Projection changeRepertoar(TheaterOrCinema cinema);
+	TheaterOrCinema changeRepertoar(TheaterOrCinema cinema, Long projectionId);
 }

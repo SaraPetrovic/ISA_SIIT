@@ -20,6 +20,7 @@ $("#login-btn").click(function() {
 	var success = false;
 	var retUser = null;
 	
+
 	$.ajax({
 		type: "POST",
 		url: "/api/login",
@@ -50,7 +51,7 @@ $("#login-btn").click(function() {
 				retUser = response;
 				$("#body").empty();
 				if (retUser != null) {
-					alert(retUser.username);
+					//alert(retUser.username);
 					$.get("RegUserProfilePanel.html", function(RegUserPanel) {
 						$("#body").append(RegUserPanel);
 					});

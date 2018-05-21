@@ -152,6 +152,14 @@ public class UserServiceImpl implements UserService {
 		return userDbRepository.getFriendsList(loggedUser.getId());
 		
 	}
+
+	@Override
+	public List<User> getFriendRequests(User loggedUser) {
+		if (loggedUser == null) {
+			return null;
+		}
+		return userDbRepository.getFriendRequests(loggedUser.getId());
+	}
 	
 
 

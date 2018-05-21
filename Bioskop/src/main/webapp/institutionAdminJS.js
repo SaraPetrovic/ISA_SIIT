@@ -85,6 +85,7 @@
 		});
 	}
 	
+	
 	function loadInstitutions(){
 		$.ajax({
 			type: "GET",
@@ -136,25 +137,6 @@
 		});
 	}
 	
-	// change repertoar
-	function loadCinemas(){
-		var select;
-		$.ajax({
-			type: "GET",
-			url: "/api/TheaterOrCinemas",
-			success: function(theatersOrCinemas){
-				$("#institutionsSelect").empty();
-				select = document.getElementById("institutionsSelect");
-				$.each(theatersOrCinemas, function(i, cinema){
-					var option = document.createElement("OPTION");
-					select.add(option);
-					option.value = cinema.name;
-					option.text = cinema.name;
-				});
-			}
-		});
-	}
-	
 	function loadRepertoar(){
 		
 		var institutionName = document.getElementById("institutionsSelect");
@@ -197,24 +179,5 @@
 			}
 		});
 	}
-	
-	/*
-	function findHall(name){
-		var institution;
-	
-		$.ajax({
-			type: "GET",
-			url: "/api/halls",
-			success: function(halls){
-				$.each(halls, function(i, hall){
-					if(hall.id === name){
-						institution = hall;
-					}
-				});
-				
-			}
-		});
-		return institution;
-	}*/
 	
 	

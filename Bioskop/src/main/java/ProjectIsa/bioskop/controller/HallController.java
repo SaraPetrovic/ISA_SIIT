@@ -85,7 +85,9 @@ public class HallController {
 		}
 		hall.setTheaterOrCinema(cinema);
 		Hall newHall = service.addHall(hall);
-		
+		if(newHall == null) {
+			return new ResponseEntity<Hall>(newHall, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<Hall>(newHall, HttpStatus.OK);
 	}
 }
