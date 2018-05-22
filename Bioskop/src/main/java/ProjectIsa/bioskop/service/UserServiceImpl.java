@@ -58,7 +58,10 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
+		User exists = userDbRepository.findById(user.getId());
+		if (exists == null) {
+			return;
+		}
 		userDbRepository.delete(user);
 	}
 
