@@ -1,9 +1,12 @@
 package ProjectIsa.Bioskop;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,14 +30,54 @@ public class FriendshipServiceTest {
 	@Autowired
 	HttpServletRequest request;
 	
+	@Test
 	public void testAddFriendship() {
 		List<Friendship> friendships = friendshipService.getAllFriendships();
+
 		int countBefore = friendships.size();
-		FriendshipPrimKey pk = new FriendshipPrimKey(1, 5);
-		Friendship fs = new Friendship(pk, FriendshipStatus.PENDING, 1);
+		long userID1 = Integer.toUnsignedLong(1);
+		long userID2 = Integer.toUnsignedLong(2);
+		FriendshipPrimKey pk = new FriendshipPrimKey();
+		pk.setUserID1(userID2);
+
+		Friendship fs = new Friendship(pk, FriendshipStatus.PENDING, userID1);
+
+		User loggedUser = userService.getUser(userID1);
+		request.getSession().setAttribute("user", loggedUser);
+		friendshipService.addFriendship(fs, request);
 		
-		//request.setAttribute("user", );
-		//friendshipService.addFriendship(friendship, request);
+		friendships = friendshipService.getAllFriendships();
+		
+		assertThat(friendships).hasSize(countBefore + 1);
+		friendshipService.removeFriendship(fs);
+	}
+	
+	@Test
+	public void testFindOne() {
+		// OVDE SAMO ZAMENI, kada odlucimo koji ce uvek biti u bazi......
+		long userID1 = Integer.toUnsignedLong(1);
+		long userID2 = Integer.toUnsignedLong(2);
+		FriendshipPrimKey pk = new FriendshipPrimKey();
+		pk.setUserID1(userID2);
+
+		Friendship fs = new Friendship(pk, FriendshipStatus.PENDING, userID1);
+
+		User loggedUser = userService.getUser(userID1);
+		request.getSession().setAttribute("user", loggedUser);
+		friendshipService.addFriendship(fs, request);
+		
+		Friendship found = friendshipService.getFriendshipByKey(pk);
+		assertThat(found).isNotNull();
+		
+		friendshipService.removeFriendship(found);
+		
+		// npr ako doda samog sebe..
+		pk.setUserID1(userID1);
+		pk.setUserID2(userID1);
+		
+		Friendship notFound = friendshipService.getFriendshipByKey(pk);
+		assertThat(notFound).isNull();
+		
 	}
 	
 }

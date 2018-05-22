@@ -140,6 +140,12 @@ public class FriendshipService implements FriendshipServiceInterface {
 	}
 
 
+	@Override
+	public void removeFriendship(Friendship friendship) {
+		friendshipRepository.delete(friendship);
+	}
+
+
 
 	
 }

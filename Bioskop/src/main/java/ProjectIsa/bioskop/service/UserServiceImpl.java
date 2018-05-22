@@ -34,17 +34,19 @@ public class UserServiceImpl implements UserService {
 		}else{
 			return null;
 		}
+
 		user.setIsFirstLogin(true);
 		if (user.getPassword() == null){
 			user.setPassword(DEFAULT_ADMIN_PASSWORD);
 		}else{
-			return null;
+			//return null;
 		}
+
 		User existingUser = userDbRepository.findByUsername(user.getUsername());
+
 		if (existingUser == null){
 			User newUser = userDbRepository.save(user);
 			return newUser;
-			
 		}
 		return null;
 	}
