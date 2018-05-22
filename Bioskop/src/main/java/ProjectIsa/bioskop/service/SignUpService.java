@@ -56,10 +56,30 @@ public class SignUpService implements SignUpServiceInterface {
 		
 		String text = "\nHello " + newUser.getFirstName() + " " + newUser.getLastName() + "! Please click on the following link"
 				+ " to activate your account! \n"
-				+ UUID_CODE;
+				+ "localhost:9004/api/signup/confirm=" + UUID_CODE;
 		emailService.sendSimpleMessage(newUser.getEmail(), "Confirmation link", text);
 		
 		return UUID_CODE;
+	}
+
+	@Override
+	public User activateUser(String code) {
+		ConfirmationCode cc = codesRepository.findByCode(code);
+		
+		if (cc == null) {
+			return null;
+		}
+		
+		User activatedUser = userService.getUser(cc.getUserID());
+		activatedUser.setActivated(true);
+		User savedActivatedUser = userService.updateUser(activatedUser);
+		if (savedActivatedUser == null) {
+			return null;
+		}
+		
+		codesRepository.delete(cc);
+		
+		return savedActivatedUser;
 	}
 	
 	

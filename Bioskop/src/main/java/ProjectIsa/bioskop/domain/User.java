@@ -156,10 +156,10 @@ public class User implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public boolean isEnabled() {
+	public boolean isActivated() {
 		return activated;
 	}
-	public void setEnabled(boolean enabled) {
+	public void setActivated(boolean enabled) {
 		this.activated = enabled;
 	}
 

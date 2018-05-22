@@ -13,6 +13,7 @@ public interface UserDBRepository extends Repository<User, Long> {
 	void delete(User user);
 	User findByUsername(String username);
 	Adresa save(Adresa adresa);
+	Adresa findByAddress_CityAndAddress_Street(String city, String street);
 	User findById(long id);
 	
 	@Query(value = "SELECT temp.* FROM "

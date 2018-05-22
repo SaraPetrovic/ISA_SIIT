@@ -30,7 +30,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User addUser(User user) {
 		if (user.getAddress() != null){
-			addAddress(user.getAddress());
+			Adresa exists = userDbRepository.findByAddress_CityAndAddress_Street(user.getAddress().getCity(), user.getAddress().getStreet());
+			if ( exists == null) {
+				addAddress(user.getAddress());
+			}
+			else {
+				user.setAddress(exists);
+			}
 		}else{
 			return null;
 		}
@@ -65,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Adresa addAddress(Adresa address) {
-		// TODO Auto-generated method stub
+		
 		Adresa newAddress = userDbRepository.save(address);
 		return newAddress;
 	}
@@ -161,6 +167,16 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		return userDbRepository.getFriendRequests(loggedUser.getId());
+	}
+
+	@Override
+	public User updateUser(User user) {
+		User foundUser = userDbRepository.findByUsername(user.getUsername());
+		if (foundUser == null) {
+			return null;
+		}
+		return userDbRepository.save(user);
+
 	}
 	
 

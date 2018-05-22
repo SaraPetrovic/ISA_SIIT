@@ -7,4 +7,6 @@ public interface SignUpServiceInterface {
 	User validation(User newUserData);
 	
 	String generateConfirmationCode(User newUser);
+	
+	User activateUser(String code);
 }
