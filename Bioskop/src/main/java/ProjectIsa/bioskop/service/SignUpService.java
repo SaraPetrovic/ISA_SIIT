@@ -20,8 +20,8 @@ public class SignUpService implements SignUpServiceInterface {
 	UserService userService;
 	@Autowired
 	EmailServiceImpl emailService;
-	//@Autowired
-	//ConfirmationCodesDBRepository codesRepository;
+	@Autowired
+	ConfirmationCodesDBRepository codesRepository;
 	
 	@Override
 	public User validation(User newUserData) {
