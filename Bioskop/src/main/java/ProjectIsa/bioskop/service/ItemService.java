@@ -19,10 +19,12 @@ public interface ItemService {
 	ThematicItem addNewItem(ThematicItem item);
 	ThematicItem changeItem(ThematicItem item);
 	void deleteItem(ThematicItem item);
-	ItemOffer addItemOffer(ItemOffer offer);
+	ItemOffer addItemOffer(ItemOffer offer,User user);
 	List<ItemOffer> getOffers();
+	ItemOffer getOffer(Long id);
 	List<ItemAd> getUserAds(User user);
 	OfficialItem reserve(OfficialItem item, User user);
 	List<ItemOffer> getItemsByUser(User user);
+	ItemOffer acceptOffer(Long id, User sessionUser);
 	
 }

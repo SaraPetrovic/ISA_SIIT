@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"user_id", "item_ad_id"}))
 
@@ -28,10 +29,17 @@ public class ItemOffer implements Serializable {
 	@Column(nullable = false)
 	private Double price;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
 	private ItemAd itemAd;
+	@Version
+	private Long version;
 	
-	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -64,6 +72,17 @@ public class ItemOffer implements Serializable {
 		this.itemAd = item;
 	}
 	public ItemOffer() {
+	}
+	public ItemOffer(ItemOffer originalOffer){
+		this.id = originalOffer.getId();
+		this.price = originalOffer.getPrice();
+		this.itemAd = new ItemAd();
+		this.itemAd.setName(originalOffer.getItem().getName());
+		this.itemAd.setPicture(originalOffer.getItem().getName());
+		this.user = new User();
+		this.user.setFirstName(originalOffer.getUser().getFirstName());
+		this.user.setLastName(originalOffer.getUser().getLastName());
+
 	}
 	
 	

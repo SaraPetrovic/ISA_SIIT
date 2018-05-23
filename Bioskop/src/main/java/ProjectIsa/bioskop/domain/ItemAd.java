@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class ItemAd implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,16 +32,22 @@ public class ItemAd implements Serializable {
 	@Column(nullable = true)
 	private String picture;
 	
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "itemAd", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "itemAd", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> offers;
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
 	private User owner;
 
 	@Version
 	private Long version;
 	
-
+	public List<ItemOffer> getOffers() {
+		return offers;
+	}
+	public void setOffers(List<ItemOffer> offers) {
+		this.offers = offers;
+	}
 	public User getOwner() {
 		return owner;
 	}

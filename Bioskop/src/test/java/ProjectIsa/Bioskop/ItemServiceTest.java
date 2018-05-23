@@ -1,7 +1,6 @@
 package ProjectIsa.Bioskop;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -12,11 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ProjectIsa.bioskop.domain.Adresa;
+import ProjectIsa.bioskop.domain.ItemAd;
 import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
-import ProjectIsa.bioskop.domain.UserType;
+import ProjectIsa.bioskop.repository.ItemAdRepository;
+import ProjectIsa.bioskop.repository.ItemOfferRepository;
+import ProjectIsa.bioskop.service.ItemService;
 import ProjectIsa.bioskop.service.ThematicItemService;
 import ProjectIsa.bioskop.service.UserService;
 
@@ -29,6 +30,12 @@ public class ItemServiceTest {
 	ThematicItemService service;
 	@Autowired
 	UserService userService;
+	@Autowired
+	ItemOfferRepository offerRepository;
+	@Autowired
+	ItemAdRepository itemAdRepository;
+	@Autowired
+	ItemService itemService;
 	@Test
 	public void testPrice(){
 		List<ThematicItem> items = (List<ThematicItem>)service.getItems();
@@ -82,5 +89,31 @@ public class ItemServiceTest {
 		assertThat(itemsBefore).hasSize(itemsAfter.size());
 	}
 	*/
+	@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testOfferAcceptence(){
+		User owner = userService.getUser("ftn");
+		User userWhoOffer = userService.getUser("admin");
+		ItemAd item = itemAdRepository.findOne(2L);
+		
+		ItemOffer offer1 = offerRepository.findOne(1L);
+		ItemOffer offer2 = offerRepository.findOne(1L);
+		assertThat(offer1 != null);
+		assertThat(offer2 != null);
+		offer2.setPrice(33D);
+		//simlucacija prihvatanja ponude
+		
+		//offer1.setPrice(44D);
+		offerRepository.save(offer2);
+		offerRepository.delete(offer1);
+		//offerRepository.save(offer1);
+		 
+		
+		
+		
+		
+		ItemOffer offer3 = offerRepository.findByUserAndItemAd(userWhoOffer, item);
+		assertThat (offer3.getVersion()).isEqualTo(1);
+		
+	}
 
 }

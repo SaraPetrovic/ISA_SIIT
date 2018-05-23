@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,28 +72,28 @@ public class ThematicItemService implements ItemService {
 		itemRepository.delete(item);
 		
 	}
-
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
 	@Override
-	public ItemOffer addItemOffer(ItemOffer offer) {
-		User user = userRepository.findByUsername(offer.getUser().getUsername());
-		if (user == null){
-			return null;
-		}
+	public ItemOffer addItemOffer(ItemOffer offer,User user) {
 		ItemAd item = itemAdRepository.findOne(offer.getItem().getId());
-		if (item == null){
+		offer.setItem(item);
+		User userWhoOffer = userRepository.findById(user.getId());
+		offer.setUser(userWhoOffer);
+		if (user == null || item == null || offer.getPrice() < 0){
 			return null;
 		}
-		if (offer.getPrice() < 0){
-			return null;
-		}
+		// proverava se da li u bazi postoji ponuda korisnika
 		ItemOffer offerToAdd = offerRepository.findByUserAndItemAd(user, item);
 
-		//mora save, proveri da li moze bez toga
+		
 
 		if (offerToAdd == null){
+			//napravi novu ponudu
+			
 			ItemOffer itemOffer = offerRepository.save(offer);
 			return itemOffer;
 		}else{
+			//update ponude
 			offerToAdd.setPrice(offer.getPrice());
 			ItemOffer itemOffer = offerRepository.save(offerToAdd);
 			return itemOffer;
@@ -124,7 +125,8 @@ public class ThematicItemService implements ItemService {
 				itemReservation.setUser(user);
 				String message = "You successfully reserved " + itemToReserve.getName(); 
 				emailService.sendSimpleMessage(user.getEmail(), "Item reservation", message);
-				user.getItemReservations().add(itemReservation);
+				User userDB = userRepository.findByUsername(user.getUsername());
+				userDB.getItemReservations().add(itemReservation);
 				userRepository.save(user);
 			
 				return reservedItem;			
@@ -182,6 +184,46 @@ public class ThematicItemService implements ItemService {
 		// TODO Auto-generated method stub
 		User u = userRepository.findById(user.getId());
 		return u.getAds();
+	}
+
+
+
+	@Override
+	public ItemOffer getOffer(Long id) {
+		// TODO Auto-generated method stub
+		return offerRepository.findOne(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
+	public ItemOffer acceptOffer(Long id, User sessionUser) {
+		ItemOffer acceptedOffer = offerRepository.findOne(id);
+		List<ItemOffer> offers = offerRepository.findByItemAd(acceptedOffer.getItem());
+		//duboko kopiranje zato sto se item brise iz baze
+		ItemOffer response = new ItemOffer(acceptedOffer);
+		
+		if (acceptedOffer != null && sessionUser != null && sessionUser.getId() == acceptedOffer.getItem().getOwner().getId()){
+			try{
+				for (ItemOffer offer : offers ){
+					if (offer == acceptedOffer){
+						emailService.sendSimpleMessage(acceptedOffer.getUser().getEmail(), "Your bid for cinema prop", "You successfully bought item " 
+					+ acceptedOffer.getItem().getName() + " for " + acceptedOffer.getPrice() + "$." );
+					}else{
+						emailService.sendSimpleMessage(offer.getUser().getEmail(), "Your bid for cinema prop", "You lost on acution for item " 
+								+ acceptedOffer.getItem().getName() + " -- price  " + offer.getPrice() + "$." );
+					}
+					offerRepository.delete(offer);
+					
+				}
+				itemAdRepository.delete(acceptedOffer.getItem());
+				return response;
+			}catch(Exception e){
+				System.out.println("\n\nexception se desio" + e.getClass()+ "\n\n");
+				return null;
+			}
+		}else{
+			return null;
+		}
 	}
 
 

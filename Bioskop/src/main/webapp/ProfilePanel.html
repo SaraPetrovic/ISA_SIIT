@@ -421,10 +421,8 @@ function itemsTab(){
 				if (i == 1){
 					body += '<div class="row">';
 				}
-				
+					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a href="ItemAd.html?itemId=' + item.id + '"> More info</a> </div> </div> </div>';
 					
-					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a href="ItemAd.html"> More info</a> </div> </div> </div>';
-				
 				i++;
 				if (i == 4){
 					body += '</div>';
@@ -437,6 +435,9 @@ function itemsTab(){
 			body += '</div>';
 			body += '<hr>';
 			$("#bodyAdmin").append(body);
+		},
+		error: function(){
+			aler("fail");
 		},
 		processData: false,
 		url : '/api/MyAds'

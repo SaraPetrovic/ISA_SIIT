@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -52,15 +53,15 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private String profilePicture;
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
 	private List<ItemAd> ads;
 	
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> itemOffers;
-	
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemReservation> itemReservations;
 	
 
