@@ -30,4 +30,6 @@ public interface UserService {
 	
 	List<User> getFriendRequests(User loggedUser);
 	
+	User updateUser(User user);
+	
 }

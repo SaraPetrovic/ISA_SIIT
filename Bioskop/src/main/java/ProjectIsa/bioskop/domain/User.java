@@ -55,55 +55,20 @@ public class User implements Serializable {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
 	private List<ItemAd> ads;
-	
-
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> itemOffers;
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemReservation> itemReservations;
-	
+	@Column(nullable = false)
+	private boolean activated;
 
-	public List<ItemAd> getAds() {
-		return ads;
-	}
-	public void setAds(List<ItemAd> ads) {
-		this.ads = ads;
-	}
-	public List<ItemReservation> getItemReservations() {
-		return itemReservations;
-	}
-	public void setItemReservations(List<ItemReservation> itemReservations) {
-		this.itemReservations = itemReservations;
-	}
-	public List<ItemOffer> getItemOffers() {
-		return itemOffers;
-	}
-	public void setItemOffers(List<ItemOffer> itemOffers) {
-		this.itemOffers = itemOffers;
-	}
-	public String getProfilePicture() {
-		return profilePicture;
-	}
-	public void setProfilePicture(String profilePicture) {
-		this.profilePicture = profilePicture;
-	}
-	public Long getId() {
-		return id;
-	}
-	public Boolean getIsFirstLogin() {
-		return isFirstLogin;
-	}
-	public void setIsFirstLogin(Boolean isFirstLogin) {
-		this.isFirstLogin = isFirstLogin;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public User() {
 		super();
+		this.activated = false;
 	}
 	public User(String firstName,String lastName, String username, String password, UserType userType, Adresa address, String email) {
 		super();
@@ -114,6 +79,7 @@ public class User implements Serializable {
 		this.address = address;
 		this.email = email;
 		this.lastName = lastName;
+		this.activated = false;
 	}
 	public String getUsername() {
 		return username;
@@ -157,5 +123,48 @@ public class User implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public List<ItemAd> getAds() {
+		return ads;
+	}
+	public void setAds(List<ItemAd> ads) {
+		this.ads = ads;
+	}
+	public List<ItemReservation> getItemReservations() {
+		return itemReservations;
+	}
+	public void setItemReservations(List<ItemReservation> itemReservations) {
+		this.itemReservations = itemReservations;
+	}
+	public List<ItemOffer> getItemOffers() {
+		return itemOffers;
+	}
+	public void setItemOffers(List<ItemOffer> itemOffers) {
+		this.itemOffers = itemOffers;
+	}
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+	public Long getId() {
+		return id;
+	}
+	public Boolean getIsFirstLogin() {
+		return isFirstLogin;
+	}
+	public void setIsFirstLogin(Boolean isFirstLogin) {
+		this.isFirstLogin = isFirstLogin;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public boolean isActivated() {
+		return activated;
+	}
+	public void setActivated(boolean enabled) {
+		this.activated = enabled;
+	}
+
 	
 }

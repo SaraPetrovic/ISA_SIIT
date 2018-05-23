@@ -1,8 +1,5 @@
 package ProjectIsa.bioskop.service;
 
-
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +17,16 @@ public class LoginService implements LoginServiceInterface {
 	
 	@Override
 	public User validation(String username, String password) {
-		Collection<User> allUsers = repository.findAll();
-		for (User u : allUsers) {
-			System.out.println("\n\n\n\nusername : " + username + " password : " + password  + "\n\n\n");
-			if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-				return u;
-			}
-		
+
+		User u = repository.findByUsername(username);
+		if (u == null) {
+			return null;
 		}
+		
+		if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isActivated()) {
+			return u;
+		}
+		
 		return null;
 	}
 }

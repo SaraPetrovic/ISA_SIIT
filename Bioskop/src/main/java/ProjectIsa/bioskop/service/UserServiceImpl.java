@@ -30,27 +30,38 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User addUser(User user) {
 		if (user.getAddress() != null){
-			addAddress(user.getAddress());
+			Adresa exists = userDbRepository.findByAddress_CityAndAddress_Street(user.getAddress().getCity(), user.getAddress().getStreet());
+			if ( exists == null) {
+				addAddress(user.getAddress());
+			}
+			else {
+				user.setAddress(exists);
+			}
 		}else{
 			return null;
 		}
+
 		user.setIsFirstLogin(true);
 		if (user.getPassword() == null){
 			user.setPassword(DEFAULT_ADMIN_PASSWORD);
 		}else{
-			return null;
+			//return null;
 		}
+
 		User existingUser = userDbRepository.findByUsername(user.getUsername());
+
 		if (existingUser == null){
 			User newUser = userDbRepository.save(user);
 			return newUser;
-			
 		}
 		return null;
 	}
 	@Override
 	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
+		User exists = userDbRepository.findById(user.getId());
+		if (exists == null) {
+			return;
+		}
 		userDbRepository.delete(user);
 	}
 
@@ -63,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Adresa addAddress(Adresa address) {
-		// TODO Auto-generated method stub
+		
 		Adresa newAddress = userDbRepository.save(address);
 		return newAddress;
 	}
@@ -159,6 +170,16 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		return userDbRepository.getFriendRequests(loggedUser.getId());
+	}
+
+	@Override
+	public User updateUser(User user) {
+		User foundUser = userDbRepository.findByUsername(user.getUsername());
+		if (foundUser == null) {
+			return null;
+		}
+		return userDbRepository.save(user);
+
 	}
 	
 
