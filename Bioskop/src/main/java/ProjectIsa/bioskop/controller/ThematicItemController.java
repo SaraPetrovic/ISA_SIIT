@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ProjectIsa.bioskop.domain.ItemAd;
 import ProjectIsa.bioskop.domain.ItemOffer;
+import ProjectIsa.bioskop.domain.OfficialItem;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
-import ProjectIsa.bioskop.service.EmailService;
 import ProjectIsa.bioskop.service.ThematicItemService;
+import ProjectIsa.bioskop.service.UserService;
 
 @RestController
 public class ThematicItemController {
@@ -37,34 +39,91 @@ public class ThematicItemController {
 	private ThematicItemService itemService;
 	@Autowired
 	private HttpServletRequest request;
+
 	@Autowired
-	private EmailService emailService;
+	private UserService userService;
 	@RequestMapping(
-			value = "/api/items",
+			value ="api/items/{id}",
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<ItemAd> getItemAd(@PathVariable(value = "id") Long id){
+		System.out.println("\n\nid = " + id + "\n\n\n");
+		ItemAd item = itemService.getItemAd(id);
+		return new ResponseEntity<ItemAd>(item, HttpStatus.OK);
+	}
+	@RequestMapping(
+			value ="api/offers/{id}",
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<ItemOffer>> getItemOffers(@PathVariable(value = "id") Long id){
+		System.out.println("\n\nid = " + id + "\n\n\n");
+		ItemAd item = itemService.getItemAd(id);
+		List<ItemOffer> offers = item.getOffers();
+		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
+	}
+	@RequestMapping(
+			value="api/offer/accept/{id}"
+			)
+	public ResponseEntity<ItemOffer> acceptOffer(@PathVariable(value = "id") Long id){
+		
+		User sessionUser = (User)request.getSession().getAttribute("user");
+		
+		ItemOffer acceptedOffer = itemService.acceptOffer(id, sessionUser);
+		if (acceptedOffer != null){
+			return new ResponseEntity<ItemOffer>(acceptedOffer, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<ItemOffer>(acceptedOffer, HttpStatus.CONFLICT);
+
+		}
+			
+		
+	}
+	
+	@RequestMapping(
+			value = "/api/officialItems",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<ThematicItem>> getItems() {
+	public ResponseEntity<Collection<OfficialItem>> getItems() {
 		
 		
-		Collection<ThematicItem> items = itemService.getItems();
+		Collection<OfficialItem> items = itemService.getOfficialItems();
 
 
-		return new ResponseEntity<Collection<ThematicItem>>(items,
+		return new ResponseEntity<Collection<OfficialItem>>(items,
 				HttpStatus.OK);
 	}
 	@RequestMapping(
-			value= "/api/item/{id}",
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			method = RequestMethod.GET)
-	public ResponseEntity<ThematicItem> getItem(@PathVariable("id") Long id){
+			value = "/api/itemAds",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<ItemAd>> getItemAds() {
 		
-		ThematicItem item = itemService.getItem(id);
-		if (item != null){
-			return new ResponseEntity<ThematicItem>(item, HttpStatus.OK); 
-		}else{
-			return new ResponseEntity<ThematicItem>(item, HttpStatus.NOT_FOUND);
-		}
+		
+		Collection<ItemAd> items = itemService.getItemAds();
+
+
+		return new ResponseEntity<Collection<ItemAd>>(items,
+				HttpStatus.OK);
 	}
+	@RequestMapping(
+			value = "/api/MyAds",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<ItemAd>> getMyAds() {
+		
+		User user =(User) request.getSession().getAttribute("user");
+		User userDB = userService.getUser(user.getId());
+		Collection<ItemAd> items = userDB.getAds();
+		System.out.println("\n\nbroj itema " +  items.size() + "\n\n");
+
+
+		return new ResponseEntity<Collection<ItemAd>>(items,
+				HttpStatus.OK);
+	}
+	
+	
+	
+
 	@RequestMapping(
 			value = "/api/createItem",
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -102,9 +161,9 @@ public class ThematicItemController {
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE,
 					method = RequestMethod.POST)
-	public ResponseEntity<ThematicItem> reserveItem(@RequestBody ThematicItem item){
+	public ResponseEntity<OfficialItem> reserveItem(@RequestBody OfficialItem item){
 		System.out.println("\n\n\n\nId itema = " + item.getId() + "\n\n\n\n");
-		Long versionBefore = itemService.getItem(item.getId()).getVersion();
+		Long versionBefore = itemService.getOfficialItem(item.getId()).getVersion();
 		while (true){
 			try{
 				HttpSession session = request.getSession();
@@ -112,15 +171,20 @@ public class ThematicItemController {
 				if (user == null){
 					return null;
 				}
-				ThematicItem reservedItem = itemService.reserve(item, user);
-				//ako su iste verzije znaci da nije doslo do promene tj da broj preostalih itema = 0
-				if (reservedItem.getVersion() == versionBefore){
-					System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
+				OfficialItem reservedItem = itemService.reserve(item, user);
+				if (reservedItem != null){
+					if (reservedItem.getVersion() == versionBefore){
+						System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
+	
+						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.CONFLICT);
+					}else{
+						System.out.println("\n\nreserved item != null okk\n\n");
 
-					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.CONFLICT);
+						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.OK);
+					}
 				}else{
-					emailService.sendSimpleMessage("isasittim15@gmail.com", "proba", "cao");
-					return new ResponseEntity<ThematicItem>(reservedItem, HttpStatus.OK);
+					System.out.println("\n\nreserved item == null\n\n");
+					return null;
 				}
 				
 			}catch(ObjectOptimisticLockingFailureException e){
@@ -140,10 +204,9 @@ public class ThematicItemController {
 		if (user == null){
 			System.out.println("\n\n\n\nALERT\n\n\n\n");
 		}
-		ThematicItem item = itemService.getItem(offer.getItem().getId());
-		offer.setItem(item);
-		offer.setUser(user);
-		ItemOffer offerToAdd = itemService.addItemOffer(offer);
+
+		ItemOffer offerToAdd = itemService.addItemOffer(offer, user);
+		
 		return new ResponseEntity<ItemOffer>(offerToAdd, HttpStatus.OK);
 
 	}
@@ -152,9 +215,22 @@ public class ThematicItemController {
 	public ResponseEntity<List<ItemOffer>> getMyOffers(){
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
-		List<ItemOffer> offers = itemService.getItemsByUser(user);
+		
+		//List<ItemOffer> offers = itemService.getItemsByUser(user);
+		User dbUser = userService.getUser(user.getId());
+		List<ItemOffer> offers = dbUser.getItemOffers();
 		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
 	}
+	@RequestMapping(value = "api/items/offers",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ItemOffer>> getOffers(){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+
+		List<ItemOffer> offers = itemService.getOffers();
+		//List<ItemOffer> offers = user.getItemOffers();
+		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
+}
 
 
 }

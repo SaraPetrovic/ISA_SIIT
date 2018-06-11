@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrapTabs.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="Login.js"></script>
+
+<script
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+
+</head>
+<body style="background-color:#efefe9">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Cinema</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<form id="login-form" class="navbar-form navbar-right">
+					<div class="form-group">
+						<input id="username-field" type="text" placeholder="Username"
+							class="form-control">
+					</div>
+					<div class="form-group">
+						<input id="password-field" type="password" placeholder="Password"
+							class="form-control">
+					</div>
+					<button id="login-btn" type="button" class="btn btn-success">Login</button>
+					<button id="admin-button" type="button"
+						class="btn btn-success admin">Administracija</button>
+					<button id="registration-btn" type="button" class="btn btn-success">Registration</button>
+					<button id="logout-btn" type="button" class="btn btnc-success">Log
+						Out</button>
+					<button id="adminCinema-button" type="button"
+						class="btn btn-success admin">Institution's Admin</button>
+
+				</form>
+			</div>
+			<!--/.navbar-collapse -->
+		</div>
+	</nav>
+	<section style="background: #efefe9;">
+		<div class="container">
+			<div class="row">
+				<div class="board">
+					<!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
+					<div class="board-inner" >
+						<ul class="nav nav-tabs" id="myTab" >
+							
+							<li class="active" style="margin-left:30%"><a href="#ads" data-toggle="tab"
+								title="item ads"> <span class="round-tabs one"> <i
+										class="glyphicon glyphicon-shopping-cart"></i>
+								</span>
+							</a></li>
+
+							<li><a href="#official" data-toggle="tab" title="official items">
+									<span class="round-tabs two"> <i
+										class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</a></li>
+							
+							
+
+						</ul>
+					</div>
+
+					<div class="tab-content">
+						<div class="tab-pane fade " id="official">
+							
+							<h3 class="head text-center">
+								OFFICIAL ITEMS
+							</h3>
+							<div id="officialItems" style="background-color:white;">
+							</div>
+							
+						</div>
+						<div class="tab-pane fade in active" id="ads">
+							<h3 class="head text-center">
+								ITEM ADS
+							</h3>
+							<div id="itemAds" style="background-color:white;">
+							</div>
+							
+
+						</div>
+						
+						<div class="clearfix"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+</body>
+<script>
+	$(function() {
+		$('a[title]').tooltip();
+	});
+	
+	body = '<div style="margin-left:20px;margin-right:20px;">';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(items){
+			var i=new Number(1);
+
+			items.forEach(function(item){
+				if (i == 1){
+					body += '<div class="row">';
+				}		
+					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price:</small> '+ item.price + '$</p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="reserve('+item.id+')" style="display:inline;" >Reserve </a> </div> </div> </div>';
+				
+				i++;
+				if (i == 4){
+					body += '</div>';
+					i = 1;
+				}
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+	
+			$("#officialItems").append(body);
+		},
+		processData: false,
+		url : '/api/officialItems'
+	});
+	bodyAd = '<div style="margin-left:20px;margin-right:20px;"';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(items){
+			var i=new Number(1);
+
+			items.forEach(function(item){
+				if (i == 1){
+					bodyAd += '<div class="row">';
+				}
+					bodyAd += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
+				
+				i++;
+				if (i == 4){
+					bodyAd += '</div>';
+					i = 1;
+				}
+			});
+
+			bodyAd += '</div>';
+			bodyAd += '</div>';
+			bodyAd += '</div>';
+	
+			$("#itemAds").append(bodyAd);
+		},
+		processData: false,
+		url : '/api/itemAds'
+	});
+	function makeOffer(itemId){
+		var itemOffer = {};
+		itemOffer.price = $("#price" + itemId).val();
+		var item = {};
+		item.id = itemId;
+		itemOffer.item = item;
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(itemOffer),
+		    dataType: 'json',
+		    success: function(admin){
+		    	swal("Successfull bid!", "Your offer is " + itemOffer.price + "$", "success");
+
+
+		    },
+		    error: function(data){
+		    	swal("Oops!", "You cant bid that item.", "error");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/items/makeOffer'
+		});
+	}
+	function reserve(itemId){
+
+
+		var item = {};
+		item.id = itemId;
+
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(item),
+		    dataType: 'json',
+		    success: function(admin){
+				swal("Reserved!", "You successfully reserved item", "success");
+
+
+		    },
+		    error: function(data){
+		    	swal("Oops!", "You cant reserve this item", "error");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/items/reserve'
+		});
+		
+	}
+</script>
+</html>

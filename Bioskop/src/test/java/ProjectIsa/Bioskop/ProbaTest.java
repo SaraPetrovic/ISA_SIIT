@@ -19,7 +19,7 @@ public class ProbaTest {
 	
 	@Autowired
 	ThematicItemService service;
-
+	/*
 	@Test(expected = ObjectOptimisticLockingFailureException.class)
 	public void reservationTest2(){
 		ThematicItem item1 = service.getItem(1L);
@@ -32,6 +32,7 @@ public class ProbaTest {
 		service.addNewItem(item2);
 	
 	}
+	*/
 
 
 }

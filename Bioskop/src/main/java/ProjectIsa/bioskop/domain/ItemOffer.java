@@ -11,11 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.Version;
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"user_id", "item_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"user_id", "item_ad_id"}))
+
 public class ItemOffer implements Serializable {
 	/**
 	 * 
@@ -24,16 +23,23 @@ public class ItemOffer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@JsonBackReference
+	
 	@ManyToOne(optional = false)
 	private User user;
 	@Column(nullable = false)
 	private Double price;
 	
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
-	private ThematicItem item;
+	@ManyToOne(optional = false)
+	private ItemAd itemAd;
+	@Version
+	private Long version;
 	
-	
+	public Long getVersion() {
+		return version;
+	}
+	public void setVersion(Long version) {
+		this.version = version;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -53,19 +59,30 @@ public class ItemOffer implements Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public ThematicItem getItem() {
-		return item;
+	public ItemAd getItem() {
+		return itemAd;
 	}
-	public void setItem(ThematicItem item) {
-		this.item = item;
+	public void setItem(ItemAd item) {
+		this.itemAd = item;
 	}
-	public ItemOffer(User user, Double price, ThematicItem item) {
+	public ItemOffer(User user, Double price, ItemAd item) {
 		super();
 		this.user = user;
 		this.price = price;
-		this.item = item;
+		this.itemAd = item;
 	}
 	public ItemOffer() {
+	}
+	public ItemOffer(ItemOffer originalOffer){
+		this.id = originalOffer.getId();
+		this.price = originalOffer.getPrice();
+		this.itemAd = new ItemAd();
+		this.itemAd.setName(originalOffer.getItem().getName());
+		this.itemAd.setPicture(originalOffer.getItem().getName());
+		this.user = new User();
+		this.user.setFirstName(originalOffer.getUser().getFirstName());
+		this.user.setLastName(originalOffer.getUser().getLastName());
+
 	}
 	
 	

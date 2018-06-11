@@ -14,7 +14,7 @@ import javax.persistence.UniqueConstraint;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"item_id", "user_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"official_item_id", "user_id"}))
 public class ItemReservation implements Serializable {
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class ItemReservation implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	@ManyToOne(optional = false, cascade = CascadeType.ALL)
-	private ThematicItem item;
+	private OfficialItem officialItem;
 	@JsonBackReference
 	@ManyToOne(optional = false)
 	private User user;
@@ -40,16 +40,16 @@ public class ItemReservation implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public ItemReservation(ThematicItem item, User user) {
+	public ItemReservation(OfficialItem item, User user) {
 		super();
-		this.item = item;
+		this.officialItem = item;
 		this.user = user;
 	}
-	public ThematicItem getItem() {
-		return item;
+	public OfficialItem getItem() {
+		return officialItem;
 	}
-	public void setItem(ThematicItem item) {
-		this.item = item;
+	public void setItem(OfficialItem item) {
+		this.officialItem  = item;
 	}
 	public User getUser() {
 		return user;

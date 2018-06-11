@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Heroic Features - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+    <!-- Custom styles for this template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  </head>
+<body>
+<body style="background-color:#efefe9">
+	<div class="container" style="background-color:white">
+			<div id="item" style="margin-top:50px;"></div>
+			<div class="row" style="margin-top:50px;">
+				<div id="offers"><h1 style="margin-left:50px;">Offers</h1><hr></div>
+				
+				
+			</div>
+
+	</div>
+</body>
+
+<script>
+
+
+var body = '';
+var urlParam = location.search.split('=')[1]
+
+$.ajax({
+	//var url = location.search;
+	//alert(url);
+	
+	contentType : 'application/json',
+	dataType : 'json',
+	type : 'GET',
+	success : function(item){
+
+		body += '<div class="row">'
+		body += '<div class="col-md-5"> '
+		body += '<img src="images/'+ item.picture + '" class="img img-thumbnail" style="width:400px;height:400px;">'
+		body += '</div>'
+		body += '<div class="col-md-7">'
+		body += '<h2>'+ item.name +'</h2>'
+		body += '<hr>'
+		body += '<h2 style="overflow-wrap: break-word;">' + item.description + '</h2>'
+		body += '</div>'
+		body += '</div>'
+		$("#item").append(body)
+
+		},
+	processData: false,
+	url : '/api/items/' + urlParam
+});
+var offersHTML = '';
+$.ajax({
+	//var url = location.search;
+	//alert(url);
+	
+	contentType : 'application/json',
+	dataType : 'json',
+	type : 'GET',
+	success : function(offers){
+		
+		offers.forEach( function(offer){
+		offersHTML += '<div class="col-md-2" style="margin-top:20px;" >'
+		offersHTML += '<div >'
+		offersHTML += '<img src="images/'+offer.user.profilePicture+'" class="img rounded" style="width:150px;height:150px;">'
+		offersHTML += '<a href="#" ><h3 style="text-align:center"><small>' + offer.user.firstName+ ' <br>'+ offer.user.lastName+'</small></h3></a>'
+				
+		offersHTML += '<h3 style="text-align:center"><small>price:</small> '+offer.price+'$</h3>'
+		offersHTML += '<button type="button" onclick="acceptOffer('+ offer.id +')" class="btn btn-info col-md-offset-3">accept</button>'
+		offersHTML += '</div>'
+		offersHTML += '</div>'
+			
+		});
+		$("#offers").append(offersHTML);
+		},
+	processData: false,
+	url : '/api/offers/' + urlParam
+});
+function acceptOffer(offerId){
+	$.ajax({
+		//var url = location.search;
+		//alert(url);
+		
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(acceptedOffer){
+			
+			if (acceptedOffer != null){
+				swal("Success!", "You successfully accepted offer for "  + acceptedOffer.price + "$", "success");
+			}else{
+				swal("Fail!", "You cant accept offer right now...", "error");
+			}
+			},
+		error : function(error){
+			alert("fail");
+		},
+		processData: false,
+		url : '/api/offer/accept/' + offerId
+	});
+}
+</script>
+</html>
