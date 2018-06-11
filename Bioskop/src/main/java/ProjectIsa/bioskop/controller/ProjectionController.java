@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;

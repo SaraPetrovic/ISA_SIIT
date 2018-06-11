@@ -1,37 +1,149 @@
-</br>
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<br/>
-			<h1 class="panel-title" align="center" style="color:black;font-family:serif;font-size:45px;">Cinemas</h1><br/>
+			
+			<h1 id="naslov" class="panel-title" align="center" style="color:black;font-family:serif;font-size:45px;">Cinemas</h1>
 </div></div>
-<div id="cinemas" class="container"></div>
+<table  class="table" id="table" style="background-color:white;">
+	<tr><td>
+			<span id="map" style="width:30%;height:220px;"></span>
+			<span id="mark"></span>
+			<span id="description"></span>
+	</td></tr>
+	<tr><td>
+			<div id="cinemas" class="container"></div>
+	</td></tr>
+</table>
+
 
 <script>
+	var map;
+	var geocoder;
+	
+	function myMap() {
+		var mapProp= {
+		    center:new google.maps.LatLng(45.267136, 19.833549),
+		    zoom:15,
+		};
+		map = new google.maps.Map(document.getElementById("map"),mapProp);
+		
+		geocoder = new google.maps.Geocoder();
+		
+	}
+	
+	function codeAddress(buttonValue){
+		var rez = buttonValue.split(',');
+		var address = rez[1] + ' ' + rez[2];
+		geocoder.geocode( {address:address}, function(results, status) 
+		{
+			if (status == google.maps.GeocoderStatus.OK) 
+		    {
+		    	map.setCenter(results[0].geometry.location);
+		      	var marker = new google.maps.Marker(
+		      	{
+		        	map: map,
+		        	position: results[0].geometry.location
+		    	});
+		    }else {
+		    	alert('Geocode was not successful for the following reason: ' + status);
+		    }
+		});
+	}
+	
 	$.ajax({
 		type: "GET",
 		url: "/api/TheaterOrCinemas",
 		success: function(cinemas){
+			document.getElementById("mark").style.display = "none";
+			document.getElementById("map").style.display = "none";
 			$('#cinemas').empty();
-			var html = '<hr>';
+			var html = '';
 			$.each(cinemas, function(i, cinema){
-				alert(cinema.isCinema);
+				//alert(cinema.isCinema);
 				if(cinemas == null){
 					html+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
 				}
 				else{
-					if(cinema.isCinema == 1){
+					//if(cinema.isCinema == 1){
 						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
-			       		'<div class="col-md-4">'+
-			         	'<h2 font-family:serif>'+cinema.name+'</h2>'+
-			         	'<p>'+cinema.adress.street +' '+ cinema.adress.city+'</p>'+
-			         	'<p>'+cinema.description+'</p>'+
-			         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
-			       		'</div>'+
+			       		
+			         	'<td><h2 font-family:serif>'+cinema.name+'</h2></td>'+
+			         	'<td>'+cinema.adress.street +' '+ cinema.adress.city+'</td><br>'+
+			         	'<td>'+ cinema.description +'</td></tr><br><br>'+
+			         	'<td><button id="viewRepertoire" class="viewRepertoire" value="'+cinema.name+','+cinema.adress.street +','+ cinema.adress.city+','+cinema.description+','+ cinema.averageMark +'" onclick="codeAddress(this.value); viewRepertoireForCinema(this.value); displayMark(this.value)">View details</button></td>'+
+			       		
 			    		'</div><hr>';
-					}
+					//}
 				}
 			});
 			$('#cinemas').append(html);
 		}
 	});
+	
+	function displayMark(buttonValue){
+		var rez = buttonValue.split(',');
+		var mark = rez[4];
+		document.getElementById("mark").style.display = "block";
+		if(mark == 5){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9733;</h2>";
+		}
+		if(mark == 4){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9734;</h2>";
+		}
+		if(mark == 3){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9734;&#9734;</h2>";
+		}
+		if(mark == 2){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9734;&#9734;&#9734;</h2>";
+		}
+		if(mark == 1){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9734;&#9734;&#9734;&#9734;</h2>";
+		}
+		if(mark == 0){
+			document.getElementById("mark").innerHTML = "<h2>&#9734;&#9734;&#9734;&#9734;&#9734;</h2>";
+		}
+	}
+	
+	function viewRepertoireForCinema(buttonValue){
+		var rez = buttonValue.split(',');
+		$("#cinemas").empty();
+		$("#naslov").empty();
+		document.getElementById("naslov").innerHTML = rez[0];
+		document.getElementById("map").style.display = "block";
+		var description = '<br><pre>Street: '+ rez[1] +'</pre><pre>City: '+ rez[2] +'</pre>'+
+    				 	'<pre>Description: '+ rez[3] +'</pre><br>'+
+    				 	'</div></div>';
+		$("#description").append(description);
+		var projectionsHeader = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
+		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
+			  '<caption>List of projections</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
+			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
+		$("#cinemas").append(projectionsHeader);
+		$("#cinemaProjections").empty();
+		var rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$.each(projections, function(i, projection){
+					//alert(buttonValue);
+					if(projections != null && rez[0] == projection.theaterOrCinema.name){
+						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+						cinemasBody += '<td>' + projection.name + '</td>';
+						cinemasBody += '<td>' + projection.hall.name + '</td>';
+						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td></tr>';
+						$("#cinemaProjections").append(cinemasBody);
+						rowIndex++;
+					}
+				});
+			}
+		});
+	}
+	
+	
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsiA8negpX83Hk1V46NYvuQSLe4zctKZg&callback=myMap"
+    async defer></script>
+    

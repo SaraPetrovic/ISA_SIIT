@@ -1,6 +1,5 @@
 package ProjectIsa.bioskop.domain;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,18 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.stereotype.Component;
 
-@Component
 @Entity
-public class TheaterOrCinema implements Serializable {
+public class TheaterOrCinema {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -30,8 +28,8 @@ public class TheaterOrCinema implements Serializable {
 	private Adresa adress;
 	@Column(nullable = false)
 	private String description;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Ticket> fastRezTicket;
+	//@OneToMany(cascade = CascadeType.ALL)
+	//private List<Ticket> fastRezTicket;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
@@ -50,21 +48,29 @@ public class TheaterOrCinema implements Serializable {
 		this.adress = adress;
 		this.description = description;
 	}
-	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
-			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema, String segment) {
+	
+
+	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Projection> projections,
+			double averageMark, List<Hall> halls, boolean isCinema) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
-		this.fastRezTicket = fastRezTicket;
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
-		this.id = id;
 		this.isCinema = isCinema;
 	}
 
-	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -88,31 +94,7 @@ public class TheaterOrCinema implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/*
-	public List<Ticket> getFastRezTicket() {
-		return fastRezTicket;
-	}
 
-	public void setFastRezTicket(List<Ticket> fastRezTicket) {
-		this.fastRezTicket = fastRezTicket;
-	}
-*/
-	public void addTicket(Ticket ticket) {
-		this.fastRezTicket.add(ticket);
-		ticket.setTheaterOrCinema(this);
-	}
-	public void removeTicket(Ticket ticket) {
-		this.fastRezTicket.remove(ticket);
-	}
-	
-	public void addProjection(Projection projection) {
-		this.projections.add(projection);
-		projection.setTheaterOrCinema(this);
-	}
-
-	public void removeProjection(Projection projection) {
-		this.projections.remove(projection);
-	}
 	public double getAverageMark() {
 		return averageMark;
 	}
@@ -121,20 +103,28 @@ public class TheaterOrCinema implements Serializable {
 		this.averageMark = averageMark;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public boolean isCinema() {
 		return isCinema;
 	}
 
 	public void setCinema(boolean isCinema) {
 		this.isCinema = isCinema;
+	}
+
+	public void addHall(Hall hall) {
+		halls.add(hall);
+		hall.setTheaterOrCinema(this);
+	}
+	public void removeHall(Hall hall) {
+		halls.remove(hall);
+	}
+	public void addProjection(Projection projection) {
+		this.projections.add(projection);
+		projection.setTheaterOrCinema(this);
+	}
+
+	public void removeProjection(Projection projection) {
+		this.projections.remove(projection);
 	}
 	
 	

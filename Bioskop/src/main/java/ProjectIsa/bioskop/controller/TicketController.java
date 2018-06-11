@@ -30,9 +30,12 @@ public class TicketController {
 		
 		Collection<Ticket> tickets = service.getTickets();
 
-
-		return new ResponseEntity<Collection<Ticket>>(tickets,
-				HttpStatus.OK);
+		if(tickets != null) {
+			return new ResponseEntity<Collection<Ticket>>(tickets, HttpStatus.OK);	
+		}else {
+			return new ResponseEntity<Collection<Ticket>>(tickets, HttpStatus.NOT_FOUND);
+		}
+		
 	}
 	@RequestMapping(
 			value = "/api/ticket/{id}",
@@ -50,11 +53,15 @@ public class TicketController {
 		}
 	}
 	@RequestMapping(
-			value = "/api/createTicket",
+			value = "/api/addTicket",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket){
+		
+		System.out.println("IME PROJEKCIJE" + ticket.getProjection().getName());
+		
+		//ticket.setTheaterOrCinema(ticket.getProjekcija().getTheaterOrCinema());
 		Ticket newTicket = service.addTicket(ticket);
 		return new ResponseEntity<Ticket>(newTicket, HttpStatus.OK);
 	}
