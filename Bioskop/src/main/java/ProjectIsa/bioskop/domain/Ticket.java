@@ -25,9 +25,9 @@ public class Ticket implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(nullable = false)
-	private int row1;
+	private int red;
 	@Column(nullable = false)
-	private int column1;
+	private int kolona;
 	//@ManyToOne(optional = false)
 	//private TheaterOrCinema theaterOrCinema;
 	@ManyToOne(optional = false)
@@ -39,12 +39,13 @@ public class Ticket implements Serializable{
 		
 	}
 
-	public Ticket(Long id, int row, int column, Projection projection) {
+	public Ticket(Long id, int row, int column, Projection projection, User user) {
 		super();
 		this.id = id;
-		this.row1 = row;
-		this.column1 = column;
+		this.red = row;
+		this.kolona = column;
 		this.projection = projection;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -55,20 +56,20 @@ public class Ticket implements Serializable{
 		this.id = id;
 	}
 
-	public int getRow() {
-		return row1;
+	public int getRed() {
+		return red;
 	}
 
-	public void setRow(int row) {
-		this.row1 = row;
+	public void setRed(int row) {
+		this.red = row;
 	}
 
-	public int getColumn() {
-		return column1;
+	public int getKolona() {
+		return kolona;
 	}
 
-	public void setColumn(int column) {
-		this.column1 = column;
+	public void setKolona(int column) {
+		this.kolona = column;
 	}
 
 	public Projection getProjection() {
@@ -78,7 +79,14 @@ public class Ticket implements Serializable{
 	public void setProjection(Projection projection) {
 		this.projection = projection;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 	
 }
