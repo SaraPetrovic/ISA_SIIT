@@ -2,21 +2,22 @@ package ProjectIsa.bioskop.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"projection_id"}))
-public class Ticket{
+public class Ticket implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -24,14 +25,15 @@ public class Ticket{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(nullable = false)
-	private int row;
+	private int row1;
 	@Column(nullable = false)
-	private int column;
+	private int column1;
 	//@ManyToOne(optional = false)
 	//private TheaterOrCinema theaterOrCinema;
-	@JsonBackReference
 	@ManyToOne(optional = false)
 	private Projection projection;
+	@OneToOne(optional=false, cascade = CascadeType.ALL)
+	private User user;
 		
 	public Ticket() {
 		
@@ -40,8 +42,8 @@ public class Ticket{
 	public Ticket(Long id, int row, int column, Projection projection) {
 		super();
 		this.id = id;
-		this.row = row;
-		this.column = column;
+		this.row1 = row;
+		this.column1 = column;
 		this.projection = projection;
 	}
 
@@ -54,19 +56,19 @@ public class Ticket{
 	}
 
 	public int getRow() {
-		return row;
+		return row1;
 	}
 
 	public void setRow(int row) {
-		this.row = row;
+		this.row1 = row;
 	}
 
 	public int getColumn() {
-		return column;
+		return column1;
 	}
 
 	public void setColumn(int column) {
-		this.column = column;
+		this.column1 = column;
 	}
 
 	public Projection getProjection() {

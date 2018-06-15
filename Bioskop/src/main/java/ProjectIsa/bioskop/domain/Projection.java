@@ -1,7 +1,5 @@
 package ProjectIsa.bioskop.domain;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -37,8 +35,7 @@ public class Projection{
 	private MovieOrPerformance movieOrPerformance;
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
-	@JsonManagedReference
-	@OneToMany(mappedBy = "projection", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Ticket> fastRezTicket;
 	
 	public Projection() {
