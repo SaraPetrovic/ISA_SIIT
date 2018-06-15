@@ -28,8 +28,8 @@ public class TheaterOrCinema {
 	private Adresa adress;
 	@Column(nullable = false)
 	private String description;
-	//@OneToMany(cascade = CascadeType.ALL)
-	//private List<Ticket> fastRezTicket;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Ticket> fastRezTicket;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
@@ -50,13 +50,16 @@ public class TheaterOrCinema {
 	}
 	
 
-	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Projection> projections,
-			double averageMark, List<Hall> halls, boolean isCinema) {
+
+
+	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
+			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
+		this.fastRezTicket = fastRezTicket;
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
@@ -95,12 +98,36 @@ public class TheaterOrCinema {
 		this.description = description;
 	}
 
+	public List<Ticket> getFastRezTicket() {
+		return fastRezTicket;
+	}
+
+	public void setFastRezTicket(List<Ticket> fastRezTicket) {
+		this.fastRezTicket = fastRezTicket;
+	}
+
+	public List<Projection> getProjections() {
+		return projections;
+	}
+
+	public void setProjections(List<Projection> projections) {
+		this.projections = projections;
+	}
+
 	public double getAverageMark() {
 		return averageMark;
 	}
 
 	public void setAverageMark(double averageMark) {
 		this.averageMark = averageMark;
+	}
+
+	public List<Hall> getHalls() {
+		return halls;
+	}
+
+	public void setHalls(List<Hall> halls) {
+		this.halls = halls;
 	}
 
 	public boolean isCinema() {

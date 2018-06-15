@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
 
 <style>
 	.panel {
@@ -249,6 +250,7 @@ function acceptFriend(friendID) {
 		data : JSON.stringify(friendship),
 		success : function(data){
 	    	alert("Successfully accepted friend!");
+	    	//swal("Successfully accepted friend!", "Your offer is " + itemOffer.price + "$", "success");
 	    	friendRequests();
 		},
 		error : function(data){

@@ -36,14 +36,14 @@ public class Projection{
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Ticket> fastRezTicket;
+	private List<Ticket> tickets;
 	
 	public Projection() {
 		
 	}
 
 	public Projection(Long id, String name, String date, int price, Hall hall, MovieOrPerformance movieOrPerformance,
-			TheaterOrCinema theaterOrCinema, List<Ticket> fastRezTicket) {
+			TheaterOrCinema theaterOrCinema, List<Ticket> tickets) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -52,7 +52,7 @@ public class Projection{
 		this.hall = hall;
 		this.movieOrPerformance = movieOrPerformance;
 		this.theaterOrCinema = theaterOrCinema;
-		this.fastRezTicket = fastRezTicket;
+		this.tickets = tickets;
 	}
 
 	public Long getId() {
@@ -110,12 +110,14 @@ public class Projection{
 	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
 		this.theaterOrCinema = theaterOrCinema;
 	}
-	public void addTicket(Ticket ticket) {
-		this.fastRezTicket.add(ticket);
-		ticket.setProjection(this);
+
+	public List<Ticket> getTickets() {
+		return tickets;
 	}
-	public void removeTicket(Ticket ticket) {
-		this.fastRezTicket.remove(ticket);
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
-	
+
+		
 }

@@ -28,8 +28,6 @@ public class Ticket implements Serializable{
 	private int red;
 	@Column(nullable = false)
 	private int kolona;
-	//@ManyToOne(optional = false)
-	//private TheaterOrCinema theaterOrCinema;
 	@ManyToOne(optional = false)
 	private Projection projection;
 	@OneToOne(optional=false, cascade = CascadeType.ALL)
