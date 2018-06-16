@@ -28,7 +28,7 @@ public class Ticket implements Serializable{
 	private int red;
 	@Column(nullable = false)
 	private int kolona;
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	private Projection projection;
 	@OneToOne(optional=true, cascade = CascadeType.ALL)
 	private User user;

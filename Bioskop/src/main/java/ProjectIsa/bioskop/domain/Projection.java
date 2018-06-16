@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Projection implements Serializable{
 	
@@ -37,6 +39,7 @@ public class Projection implements Serializable{
 	private MovieOrPerformance movieOrPerformance;
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Ticket> tickets;
 	
@@ -112,7 +115,7 @@ public class Projection implements Serializable{
 	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
 		this.theaterOrCinema = theaterOrCinema;
 	}
-/*
+
 	public List<Ticket> getTickets() {
 		return tickets;
 	}
@@ -120,6 +123,6 @@ public class Projection implements Serializable{
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
 	}
-*/
+
 		
 }

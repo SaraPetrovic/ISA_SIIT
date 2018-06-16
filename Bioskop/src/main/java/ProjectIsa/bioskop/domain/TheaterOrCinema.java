@@ -12,11 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class TheaterOrCinema implements Serializable{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
@@ -30,12 +30,15 @@ public class TheaterOrCinema implements Serializable{
 	private Adresa adress;
 	@Column(nullable = false)
 	private String description;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Ticket> fastRezTicket;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
 	private double averageMark;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Hall> halls;
 	@Column(nullable = false)
@@ -96,7 +99,7 @@ public class TheaterOrCinema implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/*
+
 	public List<Ticket> getFastRezTicket() {
 		return fastRezTicket;
 	}
@@ -112,7 +115,7 @@ public class TheaterOrCinema implements Serializable{
 	public void setProjections(List<Projection> projections) {
 		this.projections = projections;
 	}
-*/
+
 	public double getAverageMark() {
 		return averageMark;
 	}
@@ -120,7 +123,7 @@ public class TheaterOrCinema implements Serializable{
 	public void setAverageMark(double averageMark) {
 		this.averageMark = averageMark;
 	}
-/*
+
 	public List<Hall> getHalls() {
 		return halls;
 	}
@@ -128,7 +131,7 @@ public class TheaterOrCinema implements Serializable{
 	public void setHalls(List<Hall> halls) {
 		this.halls = halls;
 	}
-*/
+
 	public boolean isCinema() {
 		return isCinema;
 	}

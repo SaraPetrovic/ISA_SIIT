@@ -69,6 +69,11 @@ public class ProjectionController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		
+		String projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
+		String datum = projDate.split(" ")[0];
+		String vreme = projDate.split(" ")[1];
+		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
+		
 		for(MovieOrPerformance movie: movieService.getAll()) {
 			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
 				projection.setMovieOrPerformance(movie);

@@ -56,8 +56,6 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		//vreme pocetka u minutima
 		int start = Integer.parseInt(vreme.split(":")[0]) * 60 + Integer.parseInt(vreme.split(":")[1]);
 		
-		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
-		
 		//ako u odredjenom bioskopu postoje dve proj sa istim nazivom u istoj sali, return null
 		for(Projection p : repository.findAll()) {
 			if(projection.getTheaterOrCinema().getName().equals(p.getTheaterOrCinema().getName()) 
