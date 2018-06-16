@@ -1,15 +1,17 @@
 package ProjectIsa.bioskop.service;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Projection;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
+import ProjectIsa.bioskop.repository.HallDBRepository;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 
 @Service
@@ -18,6 +20,8 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	ProjectionsDBRepository repository;
 	@Autowired
 	CinemaDBRepository cinemaRepository;
+	@Autowired
+	HallDBRepository hallRepository;
 	
 	@Override
 	public Collection<Projection> getProjections() {
@@ -30,22 +34,63 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 
 	@Override
 	public Projection addProjection(Projection projection) {
-		// treba da se odradi provera sale i vremena!!
-		// i pazi dole u toj funkciji getProjectionByName sam isto zakomentarisao sve, vraca null
+		
+		if(projection.getDate() == null || projection.getPrice() == 0){
+			return null;
+		}
 
+		String projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
+		//ako je unesen datum projekcije pre trenutnog, return null
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date currentDate = new Date();
+		try {
+			if((sdf.parse(projDate)).before(currentDate)) {
+				return null;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
-		//if(getProjectionByName(projection.getMovieOrPerformance().getName()) == null) {
-		//	repository.save(projection);
-		//	return projection;
-	//	}
+		String datum = projDate.split(" ")[0];
+		String vreme = projDate.split(" ")[1];
+		//vreme pocetka u minutima
+		int start = Integer.parseInt(vreme.split(":")[0]) * 60 + Integer.parseInt(vreme.split(":")[1]);
 		
-		for(TheaterOrCinema cinema : cinemaRepository.findAll()) {
-			if(cinema.getName().equals(projection.getTheaterOrCinema().getName())) {
-				cinema.addProjection(projection);
-				//cinemaRepository.save(cinema);
+		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
+		
+		//ako u odredjenom bioskopu postoje dve proj sa istim nazivom u istoj sali, return null
+		for(Projection p : repository.findAll()) {
+			if(projection.getTheaterOrCinema().getName().equals(p.getTheaterOrCinema().getName()) 
+					&& projection.getName().equals(p.getName())
+					&& projection.getHall().getName().equals(p.getHall().getName())) {
+				
+				return null;
 			}
 		}
 		
+		// treba da se odradi provera sale, datuma i vremena!!
+		for(Projection proj : repository.findAll()) {
+			String date = proj.getDate().split("T")[0];
+			String time = proj.getDate().split("T")[1];
+			int hours = Integer.parseInt(time.split(":")[0]);
+			int minutes = Integer.parseInt(time.split(":")[1]);
+			//vreme kraja u minutima
+			int end = hours * 60 + minutes + proj.getMovieOrPerformance().getFilmDuration() + 15;
+			
+			if(projection.getTheaterOrCinema().getName().equals(proj.getTheaterOrCinema().getName())
+					&& projection.getHall().getName().equals(proj.getHall().getName())
+					&& datum.equals(date)) {
+				if(!(end <= start)) {
+					return null;
+				}
+			}
+		}
+		
+		//da li je hall iz izabranog bioskopa
+		if(!(projection.getHall().getTheaterOrCinema().getName().equals(projection.getTheaterOrCinema().getName()))) {
+			return null;
+		}
+
 		repository.save(projection);
 		return projection;
 	}
@@ -66,22 +111,6 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		Projection proj = repository.findByName(name);
 		return proj;
 	}
-/*
-	@Override
-	public Boolean termCheck(Projection projection) {
-		for(Projection p: getProjections()) {
-			if(projection.getMovieOrPerformance().getName() == p.getMovieOrPerformance().getName()
-					&& projection.getHall() == p.getHall()) {
-				if(projection.getDate() == p.getDate()) {
-					return false;
-				}//else if(){
-					
-				//}
-			}
-		}
-		return true;
-	}
-	*/
 
 	public Projection changeProjection(Projection projection, Projection newProjection) {
 		
@@ -89,6 +118,16 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 			Projection proj = repository.findByName(newProjection.getName());
 			if (proj != null){
 				return null;	//vec postoji
+			}
+		}
+		
+		//ako u odredjenom bioskopu postoje dve proj sa istim nazivom u istoj sali, return null
+		for(Projection p : repository.findAll()) {
+			if(newProjection.getTheaterOrCinema().getName().equals(p.getTheaterOrCinema().getName()) 
+					&& newProjection.getName().equals(p.getName())
+					&& newProjection.getHall().getName().equals(p.getHall().getName())) {
+				
+				return null;
 			}
 		}
 		projection.setName(newProjection.getName());

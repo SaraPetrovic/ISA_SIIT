@@ -69,14 +69,14 @@ public class ProjectionController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		
-		for(MovieOrPerformance m: movieService.getAll()) {
-			if(m.getName().equals(projection.getMovieOrPerformance().getName())) {
-				projection.setMovieOrPerformance(m);
+		for(MovieOrPerformance movie: movieService.getAll()) {
+			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
+				projection.setMovieOrPerformance(movie);
 			}
 		}
 		 
-		projection.setTheaterOrCinema(cinemaService.findByName(projection.getTheaterOrCinema().getName()));
 		projection.setHall(hallService.getHallByName(projection.getHall().getName()));
+		(cinemaService.findByName(projection.getTheaterOrCinema().getName())).addProjection(projection);
 		
 		Projection newProjection = service.addProjection(projection);
 		

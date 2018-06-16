@@ -1,6 +1,5 @@
 package ProjectIsa.bioskop.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.PoluHall;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
-import ProjectIsa.bioskop.repository.TheaterOrCinemaRepository;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 

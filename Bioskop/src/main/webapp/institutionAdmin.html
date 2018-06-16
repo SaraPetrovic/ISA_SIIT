@@ -5,16 +5,7 @@
 <title>Insert title here</title>
 
 <link href="css/Adminpanel.css" rel="stylesheet">
-
-
-<script type="text/javascript">
-/*   
-$(function () {
-        $('#datetimepicker2').datetimepicker({
-            locale: 'ru'
-        });
-    });*/
-</script>
+<script src="institutionAdminJS.js"></script>
 
 </head>
 <body>
@@ -72,12 +63,12 @@ $(function () {
 							    			<div class="row">
 							    			<div class="col-xs-6 col-sm-6 col-md-6" >
 							    				<div class="form-group">
-							    					<input type="text" name="rows" id="rows" class="form-control input-sm" placeholder="Number of rows">
+							    					<input type="number" min=0 name="rows" id="rows" class="form-control input-sm" placeholder="Number of rows">
 							    				</div>
 							    			</div>
 							    			<div class="col-xs-6 col-sm-6 col-md-6" >
 							    				<div class="form-group">
-							    					<input type="text" name="columns" id="columns" class="form-control input-sm" placeholder="Number of columns">
+							    					<input type="number" min=0 name="columns" id="columns" class="form-control input-sm" placeholder="Number of columns">
 							    				</div>
 							    			</div>
 							    			</div>
@@ -117,13 +108,6 @@ $(function () {
 							 			<div class="panel-body">
 							    		<form role="form2" id="form2">
 							    			<div class="row">
-     											<div class="col-xs-6 col-sm-6 col-md-6">
-							    					<div class="form-group">
-							                			<input type="text" name="projName" id="projName" class="form-control input-sm" placeholder="Projection name">
-							    					</div>
-							    				</div>
-							    			</div>
-							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    				      Select movie or performance
       												  <select class="form-control" id="selectMovie">
@@ -159,7 +143,7 @@ $(function () {
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">
+							    						<input type="number" min=0 name="price" id="price" class="form-control input-sm" placeholder="Price">
 							    					</div>
 							    				</div>
      											<div class="col-xs-6 col-sm-6 col-md-6">
@@ -264,7 +248,7 @@ $(function () {
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="duration" id="duration" class="form-control input-sm" placeholder="Duration">
+							    						<input type="number" min=0 name="duration" id="duration" class="form-control input-sm" placeholder="Duration">
 							    					</div>
 							    				</div>
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
@@ -413,7 +397,7 @@ $(function () {
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="changedDuration" id="changedDuration" class="form-control input-sm" placeholder="Duration">
+							    						<input type="number" min=0 name="changedDuration" id="changedDuration" class="form-control input-sm" placeholder="Duration">
 							    					</div>
 							    				</div>
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
@@ -461,14 +445,14 @@ $(function () {
      										<div class="row">
      											<div class="col-xs-6 col-sm-6 col-md-6">
 							    					<div class="form-group">
-							                			<input type="datetime" name="newDatetime" id="newDatetime" class="form-control input-sm" placeholder="Date and time">
+							                			<input type="datetime-local" name="newDatetime" id="newDatetime" class="form-control input-sm" placeholder="Date and time">
 							    					</div>
 							    				</div>
 							    			</div>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="newPrice" id="newPrice" class="form-control input-sm" placeholder="Price">
+							    						<input type="number" min=0 name="newPrice" id="newPrice" class="form-control input-sm" placeholder="Price">
 							    					</div>
 							    				</div>
 							    			</div>
@@ -529,14 +513,21 @@ $(function () {
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="ticketRow" id="ticketRow" class="form-control input-sm" placeholder="Row number">
+							    						<input type="number" min=0 name="ticketRow" id="ticketRow" class="form-control input-sm" placeholder="Row number">
 							    					</div>
 							    				</div>
 							    			</div>
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
-							    						<input type="text" name="ticketColumn" id="ticketColumn" class="form-control input-sm" placeholder="Column number">
+							    						<input type="number" min=0 name="ticketColumn" id="ticketColumn" class="form-control input-sm" placeholder="Column number">
+							    					</div>
+							    				</div>
+							    			</div>
+							    			<div class="row">
+							    				<div class="col-xs-6 col-sm-6 col-md-6" >
+							    					<div class="form-group">
+							    						<input type="number" min=0 name="ticketPrice" id="ticketPrice" class="form-control input-sm" placeholder="Discount price">
 							    					</div>
 							    				</div>
 							    			</div>
@@ -616,8 +607,6 @@ $(function () {
 				  </div>
 				  </div> 
 			 </div>
-			 
-	<script src="institutionAdminJS.js"></script>
 	
 	
 	<script>
@@ -964,14 +953,11 @@ $(function () {
 		var projection = {"name" : $("#selectProjectionForTicket").val()};		
 		ticket["projection"] = {};
 		
-		//alert($("#selectProjectionForTicket").val());
-		
 		ticket["projection"] = projection;
 		
-		alert(ticket.projection.name);
-		
-		ticket.row = $("#ticketRow").val();
-		ticket.column = $("#ticketColumn").val();
+		ticket.red = $("#ticketRow").val();
+		ticket.kolona = $("#ticketColumn").val();
+		ticket.newPrice = $("#ticketPrice").val();
 		
 		$.ajax({
 		    contentType: 'application/json',
@@ -1025,24 +1011,6 @@ $(function () {
 		});
 	}
 	
-	function loadProjectionForCinema(cinemaId){
-		$.ajax({
-			type: "GET",
-			url: "/api/projections",
-			success: function(projections){
-				$("#selectProjectionForTicket").empty();
-				var select = document.getElementById("selectProjectionForTicket");
-				$.each(projections, function(i, projection){
-					if(projection.theaterOrCinema.id == cinemaId){
-						var option = document.createElement("OPTION");
-						select.add(option);
-						option.value = projection.name;
-						option.text = projection.name;	
-					}
-				});
-			}
-		});
-	}
 	function printRepertoar(buttonValue){
 		$("#rightBody").empty();
 		var projectionsHeader = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
@@ -1138,7 +1106,7 @@ $(function () {
 		ticketsHeader += '<table class="table" id="ticketsTable" style="background-color:white;">' +
 			  '<caption>List of tickets for fast reservation</caption>' +
 			  '<thead><tr><th scope="col">#</th><th scope="col">Projection name</th><th scope="col">Theater/Cinema</th><th scope="col">Hall</th><th scope="col">Row-column</th><th scope="col">Date</th>'+
-			  '<th scope="col">Price</th></tr></thead><tbody id="ticketsBody"></tbody></table>';
+			  '<th scope="col">Price</th><th scope="col">Discount price</th></tr></thead><tbody id="ticketsBody"></tbody></table>';
 		$("#rightBody").append(ticketsHeader);
 		$("#ticketsBody").empty();
 		var rowIndex = 1;
@@ -1151,9 +1119,10 @@ $(function () {
 					ticketsBody += '<td>' + ticket.projection.movieOrPerformance.name + '</td>';
 					ticketsBody += '<td>' + ticket.projection.theaterOrCinema.name + '</td>';
 					ticketsBody += '<td>' + ticket.projection.hall.name + '</td>';
-					ticketsBody += '<td>' + ticket.row + '-' + ticket.column + '</td>';
+					ticketsBody += '<td>' + ticket.red + '-' + ticket.kolona + '</td>';
 					ticketsBody += '<td>' + ticket.projection.date + '</td>';
-					ticketsBody += '<td>' + ticket.projection.price + '</td></tr>';
+					ticketsBody += '<td>' + ticket.projection.price + '</td>';
+					ticketsBody += '<td>' + ticket.newPrice + '</td></tr>';
 					$("#ticketsBody").append(ticketsBody);
 					rowIndex++;
 				});

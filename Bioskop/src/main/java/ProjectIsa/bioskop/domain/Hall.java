@@ -15,7 +15,7 @@ public class Hall {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	@Column(nullable = false, unique=true)
+	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
 	private int maxRow;

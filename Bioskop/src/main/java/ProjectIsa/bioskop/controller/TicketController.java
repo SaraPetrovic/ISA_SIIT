@@ -59,10 +59,10 @@ public class TicketController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket){
 		
-		System.out.println("IME PROJEKCIJE" + ticket.getProjection().getName());
-		
-		//ticket.setTheaterOrCinema(ticket.getProjekcija().getTheaterOrCinema());
 		Ticket newTicket = service.addTicket(ticket);
+		if(newTicket == null) {
+			return new ResponseEntity<Ticket>(newTicket, HttpStatus.BAD_REQUEST); 
+		}
 		return new ResponseEntity<Ticket>(newTicket, HttpStatus.OK);
 	}
 }

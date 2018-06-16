@@ -30,20 +30,31 @@ public class Ticket implements Serializable{
 	private int kolona;
 	@ManyToOne(optional = false)
 	private Projection projection;
-	@OneToOne(optional=false, cascade = CascadeType.ALL)
+	@OneToOne(optional=true, cascade = CascadeType.ALL)
 	private User user;
+	@Column(nullable = false)
+	private int newPrice;
 		
 	public Ticket() {
 		
 	}
 
-	public Ticket(Long id, int row, int column, Projection projection, User user) {
+	public Ticket(Long id, int row, int column, Projection projection, User user, int cena) {
 		super();
 		this.id = id;
 		this.red = row;
 		this.kolona = column;
 		this.projection = projection;
 		this.user = user;
+		this.newPrice = cena;
+	}
+
+	public int getNewPrice() {
+		return newPrice;
+	}
+
+	public void setNewPrice(int newPrice) {
+		this.newPrice = newPrice;
 	}
 
 	public Long getId() {

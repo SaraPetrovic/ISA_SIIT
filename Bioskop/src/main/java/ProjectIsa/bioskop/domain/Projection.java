@@ -1,5 +1,6 @@
 package ProjectIsa.bioskop.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,19 +12,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-
 @Entity
-public class Projection{
+public class Projection implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(nullable = false, unique=true)
+	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
 	private String date;
@@ -110,7 +112,7 @@ public class Projection{
 	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
 		this.theaterOrCinema = theaterOrCinema;
 	}
-
+/*
 	public List<Ticket> getTickets() {
 		return tickets;
 	}
@@ -118,6 +120,6 @@ public class Projection{
 	public void setTickets(List<Ticket> tickets) {
 		this.tickets = tickets;
 	}
-
+*/
 		
 }

@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Hall;
+import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.HallDBRepository;
 @Service
 public class HallServiceImpl implements HallServiceInterface{
 	@Autowired
 	HallDBRepository repository;
+	CinemaDBRepository cinemaRepository;
 	
 	@Override
 	public Collection<Hall> getHalls() {
@@ -27,6 +30,14 @@ public class HallServiceImpl implements HallServiceInterface{
 		if(hall.getName() == "" || hall.getTheaterOrCinema() == null) {
 			return null;
 		}
+		
+		//ako u odredjenom bioskopu postoji hall sa ispit nazivom, return null
+		for(Hall h : repository.findAll()) {
+			if(hall.getTheaterOrCinema().getName().equals(h.getTheaterOrCinema().getName()) && hall.getName().equals(h.getName())) {
+				return null;
+			}
+		}
+		
 		return repository.save(hall);
 		
 	}

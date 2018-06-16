@@ -25,7 +25,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 
 	@Override
 	public Ticket addTicket(Ticket ticket) {
-		//System.out.println("ID PROJEKCIJE");
+
 		Projection projection = projectionRepository.findByName(ticket.getProjection().getName());
 		
 		// PROVERA SLOBODNIH MESTA U SALI ZA TU PROJEKCIJU

@@ -1,5 +1,6 @@
 package ProjectIsa.bioskop.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,14 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.springframework.stereotype.Component;
-
 @Entity
-public class TheaterOrCinema {
+public class TheaterOrCinema implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -49,9 +51,6 @@ public class TheaterOrCinema {
 		this.description = description;
 	}
 	
-
-
-
 	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
 			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema) {
 		super();
@@ -97,7 +96,7 @@ public class TheaterOrCinema {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+/*
 	public List<Ticket> getFastRezTicket() {
 		return fastRezTicket;
 	}
@@ -113,7 +112,7 @@ public class TheaterOrCinema {
 	public void setProjections(List<Projection> projections) {
 		this.projections = projections;
 	}
-
+*/
 	public double getAverageMark() {
 		return averageMark;
 	}
@@ -121,7 +120,7 @@ public class TheaterOrCinema {
 	public void setAverageMark(double averageMark) {
 		this.averageMark = averageMark;
 	}
-
+/*
 	public List<Hall> getHalls() {
 		return halls;
 	}
@@ -129,7 +128,7 @@ public class TheaterOrCinema {
 	public void setHalls(List<Hall> halls) {
 		this.halls = halls;
 	}
-
+*/
 	public boolean isCinema() {
 		return isCinema;
 	}
@@ -153,8 +152,6 @@ public class TheaterOrCinema {
 	public void removeProjection(Projection projection) {
 		this.projections.remove(projection);
 	}
-	
-	
 	
 	
 }
