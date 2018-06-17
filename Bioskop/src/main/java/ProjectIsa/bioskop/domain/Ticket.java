@@ -10,13 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 
 @Entity
 public class Ticket implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
@@ -34,12 +32,17 @@ public class Ticket implements Serializable{
 	private User user;
 	@Column(nullable = false)
 	private int newPrice;
+	@Column(nullable = false)
+	private boolean fastTicket;
+	
+	@Version
+	private Long version;
 		
 	public Ticket() {
 		
 	}
 
-	public Ticket(Long id, int row, int column, Projection projection, User user, int cena) {
+	public Ticket(Long id, int row, int column, Projection projection, User user, int cena, boolean fastTicket) {
 		super();
 		this.id = id;
 		this.red = row;
@@ -47,8 +50,25 @@ public class Ticket implements Serializable{
 		this.projection = projection;
 		this.user = user;
 		this.newPrice = cena;
+		this.fastTicket = fastTicket;
+	}
+	
+	public boolean isFastTicket() {
+		return fastTicket;
 	}
 
+	public void setFastTicket(boolean fastTicket) {
+		this.fastTicket = fastTicket;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
 	public int getNewPrice() {
 		return newPrice;
 	}

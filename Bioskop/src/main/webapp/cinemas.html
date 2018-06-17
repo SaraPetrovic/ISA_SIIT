@@ -66,14 +66,13 @@
 					//if(cinema.isCinema == 1){
 						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
 			       		
-			         	'<td><h2 font-family:serif>'+cinema.name+'</h2></td>'+
-			         	'<td>'+cinema.adress.street +' '+ cinema.adress.city+'</td><br>'+
-			         	'<td>'+ cinema.description +'</td></tr><br><br>'+
-			         	'<td><button id="viewRepertoire" class="viewRepertoire" value="'+cinema.name+','+cinema.adress.street +','+ cinema.adress.city+','+cinema.description+','+ cinema.averageMark +'" onclick="codeAddress(this.value); viewRepertoireForCinema(this.value); displayMark(this.value)">View details</button></td>'+
+			         	'<td><h1 font-family:serif>'+cinema.name+'</h1></td>'+
+			         	'<td><button id="viewDetails" class="viewDetails" value="'+cinema.name+','+cinema.adress.street +','+ cinema.adress.city+','+cinema.description+','+ cinema.averageMark +'" onclick="codeAddress(this.value); viewRepertoireForCinema(this.value); displayMark(this.value)">View details</button></td>'+
 			       		
 			    		'</div><hr>';
 					//}
 				}
+				
 			});
 			$('#cinemas').append(html);
 		}
@@ -117,8 +116,8 @@
 		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
 		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
 			  '<caption>List of projections</caption>' +
-			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
-			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
+			  '<thead><tr><th scope="col">#</th><th scope="col">Movie</th><th scope="col">Date and time</th><th scope="col">Hall</th>'+
+			  '<th scope="col">Price</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
 		$("#cinemas").append(projectionsHeader);
 		$("#cinemaProjections").empty();
 		var rowIndex = 1;
@@ -127,12 +126,12 @@
 			url: "/api/projections",
 			success: function(projections){
 				$.each(projections, function(i, projection){
-					//alert(buttonValue);
 					if(projections != null && rez[0] == projection.theaterOrCinema.name){
 						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-						cinemasBody += '<td>' + projection.name + '</td>';
+						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+						cinemasBody += '<td>' + projection.date + '</td>';
 						cinemasBody += '<td>' + projection.hall.name + '</td>';
-						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td></tr>';
+						cinemasBody += '<td>' + projection.price + '</td></tr>';
 						$("#cinemaProjections").append(cinemasBody);
 						rowIndex++;
 					}

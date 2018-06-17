@@ -40,7 +40,7 @@ public class Projection implements Serializable{
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval = true)
 	private List<Ticket> tickets;
 	
 	public Projection() {

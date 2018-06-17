@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
+import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 import ProjectIsa.bioskop.repository.TicketDBRepository;
 
@@ -44,6 +45,13 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	@Override
 	public Ticket getTicket(Long id) {
 		return repository.findById(id);
+	}
+
+	@Override
+	public Ticket reserve(Ticket ticket, User user) {
+
+		
+	
 	}
 
 }

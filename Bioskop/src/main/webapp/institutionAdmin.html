@@ -6,6 +6,7 @@
 
 <link href="css/Adminpanel.css" rel="stylesheet">
 <script src="institutionAdminJS.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
 
 </head>
 <body>
@@ -969,7 +970,7 @@
 
 		    	$('#newTicket').modal('toggle');
 		    	
-		 		printTicket();
+		 		//printTicket();
 
 		    },
 		    error: function(err){
@@ -1017,8 +1018,8 @@
 		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
 		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
 			  '<caption>List of projections</caption>' +
-			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
-			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
+			  '<thead><tr><th scope="col">#</th><th scope="col">Movie/Performance</th><th scope="col">Hall</th><th scope="col">Date</th>'+
+			  '<th scope="col">Price</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
 		$("#rightBody").append(projectionsHeader);
 		$("#cinemaProjections").empty();
 		var rowIndex = 1;
@@ -1030,9 +1031,10 @@
 					//alert(buttonValue);
 					if(projections != null && buttonValue == projection.theaterOrCinema.id){
 						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-						cinemasBody += '<td>' + projection.name + '</td>';
-						cinemasBody += '<td>' + projection.hall.name + '</td>';
 						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
+						cinemasBody += '<td>' + projection.hall.name + '</td>';
+						cinemasBody += '<td>' + projection.date + '</td>';
+						cinemasBody += '<td>' + projection.price + '</td>';
 						cinemasBody += '<td><button id="clickForRemove" value="'+projection.id+' '+projection.theaterOrCinema.id+'" class="clickForRemove" onclick="clickForRemove(this.value)">Remove projection</button></td></tr>';
 						$("#cinemaProjections").append(cinemasBody);
 						rowIndex++;
