@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.repository.MovieDBRepository;
 
 @Service
@@ -21,18 +20,24 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 	}
 
 	@Override
-	public MovieOrPerformance add(MovieOrPerformance projection) {
-		MovieOrPerformance exsisting = repository.findByName(projection.getName());
+	public MovieOrPerformance add(MovieOrPerformance movie) {
+		
+		if(movie.getName() == "" || movie.getType() == "" || movie.getProducer() == "" || movie.getActors() == "" 
+				|| movie.getDescription() == "" || movie.getFilmDuration() == 0) {
+			return null;
+		}
+		
+		MovieOrPerformance exsisting = repository.findByName(movie.getName());
 		if(exsisting == null) {
-			repository.save(projection);
-			return projection;
+			repository.save(movie);
+			return movie;
 		}
 		return null;
 	}
 
 	@Override
-	public void delete(MovieOrPerformance projection) {
-		repository.delete(projection);
+	public void delete(MovieOrPerformance movie) {
+		repository.delete(movie);
 		
 	}
 

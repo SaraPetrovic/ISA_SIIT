@@ -1,4 +1,24 @@
-	//new projection
+//fast rez ticket
+function loadProjectionForCinema(cinemaId){
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$("#selectProjectionForTicket").empty();
+				var select = document.getElementById("selectProjectionForTicket");
+				$.each(projections, function(i, projection){
+					if(projection.theaterOrCinema.id == cinemaId){
+						var option = document.createElement("OPTION");
+						select.add(option);
+						option.value = projection.name;
+						option.text = projection.name;	
+					}
+				});
+			}
+		});
+	}
+
+//new projection
 	function loadMovie(){
 		$.ajax({
 			type: "GET",
@@ -78,7 +98,7 @@
 					var option = document.createElement("OPTION");
 					select.add(option);
 					option.value = hall.name;
-					option.text = hall.name;
+					option.text = hall.name + " (" + hall.theaterOrCinema.name + ")";
 				});
 				
 			}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Fast reservation tickets</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrapTabs.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+
+</head>
+<body style="background-color:#efefe9">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Cinema</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<form id="login-form" class="navbar-form navbar-right">
+					
+					<button id="logout-btn" type="button" class="btn btnc-success">Log
+						Out</button>
+
+				</form>
+			</div>
+			<!--/.navbar-collapse -->
+		</div>
+	</nav>
+	<section style="background: #efefe9;">
+		<div class="container">
+			<div class="board">
+			<br><h2 style="text-align: center;">Fast reservation tickets for all cinemas or theaters</h2><br>
+				<div id="officialItems" style="background-color:white;">
+				
+				</div>
+			</div>
+		</div>
+	</section>
+
+</body>
+<script>
+	
+	body = '<div class="row">';
+	body += '<div style="margin-left:15px;margin-right:15px;">';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(tickets){
+			var i = 1;
+	
+			tickets.forEach(function(ticket){
+					
+				
+				body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading">' +
+				'<h3 class="panel-title"><b>'+ticket.projection.movieOrPerformance.name+'</b></h3> </div>'+ 
+				'<p style="margin-top:15px;word-wrap: break-word;">Cinema/theater: '+ticket.projection.theaterOrCinema.name+' </p>'+
+				'<p style="margin-top:15px;word-wrap: break-word;">Hall: '+ticket.projection.hall.name+' </p>'+
+				'<p style="margin-top:15px;word-wrap: break-word;">Row - Column: '+ticket.red+' - '+ticket.kolona+' </p>'+
+				'<p> <small>Old price: '+ ticket.projection.price + '</small> <big style="color:red;">New price: '+ ticket.newPrice + '</big></p>' +
+				'<p><a class="btn btn-primary " onclick="reserve('+ticket.id+')" style="display:inline;"> Reserve </a></p></div></div>';
+				
+				i++;
+				if (i == 4){
+					body += '</div></div>';
+					body += '<div class="row">';
+					body += '<div style="margin-left:10px;margin-right:10px;">';
+					i = 1;
+				}
+			});
+	
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+	
+			$("#officialItems").append(body);
+		},
+		processData: false,
+		url : '/api/tickets'
+	});
+
+	function reserve(ticketId){
+		var ticket = {};
+		ticket.id = ticketId;
+
+		$.ajax({
+		    contentType: 'application/json',
+		    data: JSON.stringify(ticket),
+		    dataType: 'json',
+		    success: function(admin){
+				swal("Reserved!", "You successfully reserved ticket", "success");
+		    },
+		    error: function(data){
+		    	swal("Sorry!", "You can't reserve this ticket", "error");
+		    },
+		    processData: false,
+		    type: 'POST',
+		    url: '/api/tickets/reserve'
+		});
+	}
+
+</script>
+
+</html>

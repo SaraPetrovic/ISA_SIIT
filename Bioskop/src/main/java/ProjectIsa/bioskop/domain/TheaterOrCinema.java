@@ -1,5 +1,6 @@
 package ProjectIsa.bioskop.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,14 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class TheaterOrCinema {
+public class TheaterOrCinema implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -28,12 +30,15 @@ public class TheaterOrCinema {
 	private Adresa adress;
 	@Column(nullable = false)
 	private String description;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Ticket> fastRezTicket;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
 	private double averageMark;
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Hall> halls;
 	@Column(nullable = false)
@@ -49,9 +54,6 @@ public class TheaterOrCinema {
 		this.description = description;
 	}
 	
-
-
-
 	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
 			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema) {
 		super();
@@ -153,8 +155,6 @@ public class TheaterOrCinema {
 	public void removeProjection(Projection projection) {
 		this.projections.remove(projection);
 	}
-	
-	
 	
 	
 }
