@@ -1,6 +1,5 @@
 package ProjectIsa.bioskop.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -99,6 +98,12 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		projection.setTheaterOrCinema(newProjection.getTheaterOrCinema());
 		repository.save(projection);
 		return projection;
+	}
+
+	@Override
+	public List<Projection> getCinemasProjections(Long id) {
+		List<Projection> ret = repository.getAllByCinemaId(id);
+		return ret;
 	}
 	
 	

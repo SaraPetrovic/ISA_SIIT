@@ -50,3 +50,5 @@ insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5
 
 insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', '0', 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
 insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', '0', 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('nazivProj', '16.06.2018.', 350.00, 1, 1, 2)  
