@@ -127,7 +127,7 @@ public class ThematicItemController {
 		
 	}
 	@RequestMapping(
-			value = "/api/officialItems/{id}",
+			value = "/api/officialItem/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -239,27 +239,25 @@ public class ThematicItemController {
 			try{
 				HttpSession session = request.getSession();
 				User user = (User) session.getAttribute("user");
-				if (user == null){
-					return null;
+				if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
+					return new ResponseEntity<OfficialItem>(item, HttpStatus.BAD_REQUEST);
 				}
 				OfficialItem reservedItem = itemService.reserve(item, user);
 				if (reservedItem != null){
 					if (reservedItem.getVersion() == versionBefore){
-						System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
-	
+						//nema vise itema u ponudi ukoliko su iste verzije
 						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.NOT_FOUND);
 					}else{
-						System.out.println("\n\nreserved item != null okk\n\n");
-
 						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.OK);
 					}
 				}else{
-					System.out.println("\n\nreserved item == null\n\n");
+					//korisnik je vec rezervisao
 					return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.CONFLICT);
 				}
 				
 			}catch(ObjectOptimisticLockingFailureException e){
-				
+				continue;
+				//ukoliko se desi exception
 			}
 		}
 		

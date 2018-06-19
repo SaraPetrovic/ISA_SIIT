@@ -314,11 +314,11 @@ td, th {
 		    },
 		    error: function(error){
 		    	if (error.status == 409){
-		    		swal("Oops!", "You already reserved this item", "error");
+		    		swal("Error", "You already reserved this item", "error");
 		    	}else if(error.status == 404){
-		    		swal("Oops!", "No items left", "error");
-		    	}else{
-		    		swal("Oops!", "Something went wrong.", "error");
+		    		swal("Error", "No items left", "error");
+		    	}else if (error.status == 400){
+		    		swal("Error", "You must login as registered user in order to reserve this item", "error");
 		    	}
 		    },
 		    processData: false,
@@ -359,8 +359,6 @@ td, th {
 	});
 	$('#officialItemSearch').keyup(function() {
 	    delay(function(){
-	      //alert($('#itemAdSearch').val());
-	     	
 	    	$.ajax({
 	    		contentType : 'application/json',
 	    		dataType : 'json',
