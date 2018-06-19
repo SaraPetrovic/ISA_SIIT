@@ -64,7 +64,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 
 		return null;
 
-
+		/*
 		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
 			return null;
 		}
@@ -76,7 +76,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 		ticketToReserve.setReserved(true);
 		repository.save(ticketToReserve);
 		return ticketToReserve;
-
+		*/
 
 	}
 

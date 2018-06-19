@@ -69,5 +69,5 @@ insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) 
 insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 4)
 insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 5)
 
-insert into ticket(fast_ticket, kolona, new_price, red, version, projection_id, user_id) values (false, 1, 500.00, 1, '0', 1, 3)
+insert into ticket(fast_ticket, kolona, new_price, red, reserved, version, projection_id, user_id) values (false, 1, 500.00, 1, true, '0', 1, 3)
 insert into projection_tickets(projection_id, tickets_id) values (1, 1)
