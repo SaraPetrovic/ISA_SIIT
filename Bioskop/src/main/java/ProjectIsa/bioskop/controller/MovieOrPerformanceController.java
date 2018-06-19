@@ -1,5 +1,8 @@
 package ProjectIsa.bioskop.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import ProjectIsa.bioskop.domain.ChangedMovie;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
@@ -18,7 +23,9 @@ import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 
 @RestController
 public class MovieOrPerformanceController {
-
+	
+	public final static String  DEFAULT_IMAGE_FOLDER = "src/main/webapp/images/";
+	
 	@Autowired 
 	MovieOrPerformanceServiceImpl serviceMovie;
 	
@@ -28,13 +35,13 @@ public class MovieOrPerformanceController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<MovieOrPerformance>> getMovies() {
 	
-	Collection<MovieOrPerformance> movies = serviceMovie.getAll();
-	
-	if(movies == null) {
-		return new ResponseEntity<Collection<MovieOrPerformance>>(movies, HttpStatus.BAD_REQUEST);
-	}else {
-		return new ResponseEntity<Collection<MovieOrPerformance>>(movies, HttpStatus.OK);
-	}
+		Collection<MovieOrPerformance> movies = serviceMovie.getAll();
+		
+		if(movies == null) {
+			return new ResponseEntity<Collection<MovieOrPerformance>>(movies, HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Collection<MovieOrPerformance>>(movies, HttpStatus.OK);
+		}
 
 	}
 	
@@ -84,5 +91,29 @@ public class MovieOrPerformanceController {
 		
 		MovieOrPerformance returnMovie = serviceMovie.changeMovie(movie, newMovie);
 		return new ResponseEntity<MovieOrPerformance>(returnMovie, HttpStatus.OK);
-}
+	}
+	
+	@RequestMapping(value = "api/uploadMovieImage",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			method = RequestMethod.POST)
+	public String uploadImage(@RequestParam("file") MultipartFile file,
+							@RequestParam("itemImage") String imageName) {
+		if (!file.isEmpty()) {
+            try {
+
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(DEFAULT_IMAGE_FOLDER  + imageName )));
+                stream.write(bytes);
+                stream.close();
+                System.out.println("Upload...");
+
+                return "You successfully uploaded " + "images/file.jpg" + "!";
+            } catch (Exception e) {
+                return "You failed to upload " + "images/file.jpg" + " => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload " + "images/file.jpg" + " because the file was empty.";
+        }
+	}
 }

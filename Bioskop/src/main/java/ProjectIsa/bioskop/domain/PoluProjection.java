@@ -1,5 +1,7 @@
 package ProjectIsa.bioskop.domain;
 
+import java.util.Date;
+
 public class PoluProjection {
 	private String date;
 	private int price;
@@ -11,6 +13,16 @@ public class PoluProjection {
 	
 	public PoluProjection() {
 		
+	}
+	public PoluProjection(String date, int price, String hallName, String movieName, String projectionName, String newName, String cinema) {
+		super();
+		this.date = date;
+		this.price = price;
+		this.hallName = hallName;
+		this.movieName = movieName;
+		this.projectionForChange = projectionName;
+		this.projectionName = newName;
+		this.cinema = cinema;
 	}
 	public String getCinema() {
 		return cinema;
@@ -49,16 +61,6 @@ public class PoluProjection {
 	}
 	public void setMovieName(String movieName) {
 		this.movieName = movieName;
-	}
-	public PoluProjection(String date, int price, String hallName, String movieName, String projectionName, String newName, String cinema) {
-		super();
-		this.date = date;
-		this.price = price;
-		this.hallName = hallName;
-		this.movieName = movieName;
-		this.projectionForChange = projectionName;
-		this.projectionName = newName;
-		this.cinema = cinema;
 	}
 	public String getProjectionForChange() {
 		return projectionForChange;

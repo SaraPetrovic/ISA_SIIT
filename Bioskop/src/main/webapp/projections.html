@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <title>Projections</title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- materialize -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+      <!-- Custom styles for this template -->
+      <link href="css/jumbotron.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	  
+		
+   </head>
+<body>
+
+	<div id="body" class="container-body" style="margin-top: 100px">
+		
+	</div>
+
+
+	<script>
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+	
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+	
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		
+		var cinemaID = getUrlParameter('id');
+		
+		
+		$.ajax({
+			contentType : 'application/json',
+			url : '/api/projectionss/' + cinemaID,
+			dataType : 'json',
+			type : 'GET',
+			success : function(projections){
+				var body = '';
+				projections.forEach(function(p){
+
+						body += '<div class="col-md-12">';
+						body +=	  '<div class="panel panel-info">';
+						body +=	     '<div class="panel-heading">';
+						body +=	         '<h3 class="panel-title">Movie: ' + p.movieOrPerformance.name + '</h3>';
+						body +=      '</div>';
+						body +=      '<div class="panel-body">';
+						body +=	        '<p style="margin-top:15px;word-wrap: break-word;">Price: ' + p.price + ' Rsd</p>';
+						body +=	        '<p> <small>Hall: </small>' + p.hall.name + '</p>';
+						body +=	     '</div>';
+						body +=      '<div class="panel-footer">';
+						body +=	        '<button class="btn btn-primary" onclick="reserve(' + p.id + ')">Reserve</button>';
+						body +=      '</div>'
+						body +=   '</div>'
+						body += '</div>'
+				});
+
+				
+				body += '<hr>';
+				$("#body").append(body);
+				
+			},
+			processData: false
+		});
+		
+		
+		function reserve(id) {
+			var redirectLoc = "/reservation.html?id=" + id;
+			window.location.href = redirectLoc;
+		}
+	
+	</script>
+</body>
+</html>

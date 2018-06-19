@@ -56,7 +56,7 @@ public class SignUpService implements SignUpServiceInterface {
 		
 		String text = "\nHello " + newUser.getFirstName() + " " + newUser.getLastName() + "! Please click on the following link"
 				+ " to activate your account! \n"
-				+ "localhost:9004/api/signup/confirm=" + UUID_CODE;
+				+ "<a href=\"localhost:9004/api/signup/confirm=" + UUID_CODE + "/a>";
 		emailService.sendSimpleMessage(newUser.getEmail(), "Confirmation link", text);
 		
 		return UUID_CODE;

@@ -1,5 +1,9 @@
 package ProjectIsa.bioskop.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +80,6 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	@Override
 	public Adresa addAddress(Adresa address) {
 
-		//System.out.println("usao u ADD ADDRESS");
 		Adresa newAddress = repository.save(address);
 		return newAddress;
 	}
@@ -88,9 +91,26 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 
 	@Override
 	public TheaterOrCinema changeRepertoar(TheaterOrCinema theaterOrCinema, Long projectionId) {
-		
-		
+
 		Projection projection = projectionRepository.findById(projectionId);
+		
+		//brisanje samo 24h pre odrzavanja projekcije
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		Date currentDate = new Date();
+		Date projDate = null;
+		try {
+			projDate = sdf.parse(projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1]);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		long millisecondsPerDay = 24 * 60 * 60 * 1000;
+		
+		//date.getTime() - how meny milliseconds have passed since this date
+		if(!(Math.abs(currentDate.getTime() - projDate.getTime()) > millisecondsPerDay)) {
+			return null;
+		}
 		
 		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);

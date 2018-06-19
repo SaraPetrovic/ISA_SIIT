@@ -1,69 +1,120 @@
 package ProjectIsa.bioskop.domain;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 
 @Entity
-public class Ticket {
+public class Ticket implements Serializable{
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(nullable = false)
-	private int row;
+	private int red;
 	@Column(nullable = false)
-	private int column;
-	@ManyToOne(optional = false)
-	private TheaterOrCinema theaterOrCinema;
-	@ManyToOne(optional = false)
+	private int kolona;
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
 	private Projection projection;
+	@OneToOne(optional=true, cascade = CascadeType.ALL)
+	private User user;
+	@Column(nullable = false)
+	private int newPrice;
+	@Column(nullable = false)
+	private boolean fastTicket;
+	
+	@Version
+	private Long version;
 		
 	public Ticket() {
 		
 	}
-	public Ticket(int row, int column, TheaterOrCinema theaterOrCinema, Projection projekcija) {
+
+	public Ticket(Long id, int row, int column, Projection projection, User user, int cena, boolean fastTicket) {
 		super();
-		this.row = row;
-		this.column = column;
-		this.theaterOrCinema = theaterOrCinema;
-		this.projection = projekcija;
+		this.id = id;
+		this.red = row;
+		this.kolona = column;
+		this.projection = projection;
+		this.user = user;
+		this.newPrice = cena;
+		this.fastTicket = fastTicket;
+	}
+	
+	public boolean isFastTicket() {
+		return fastTicket;
 	}
 
+	public void setFastTicket(boolean fastTicket) {
+		this.fastTicket = fastTicket;
+	}
 
+	public Long getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
+	public int getNewPrice() {
+		return newPrice;
+	}
+
+	public void setNewPrice(int newPrice) {
+		this.newPrice = newPrice;
+	}
 
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public TheaterOrCinema getTheaterOrCinema() {
-		return theaterOrCinema;
+
+	public int getRed() {
+		return red;
 	}
-	public void setTheaterOrCinema(TheaterOrCinema theaterOrCinema) {
-		this.theaterOrCinema = theaterOrCinema;
+
+	public void setRed(int row) {
+		this.red = row;
 	}
-	public Projection getProjekcija() {
+
+	public int getKolona() {
+		return kolona;
+	}
+
+	public void setKolona(int column) {
+		this.kolona = column;
+	}
+
+	public Projection getProjection() {
 		return projection;
 	}
-	public void setProjekcija(Projection projekcija) {
-		this.projection = projekcija;
+
+	public void setProjection(Projection projection) {
+		this.projection = projection;
 	}
-	public int getRow() {
-		return row;
+
+	public User getUser() {
+		return user;
 	}
-	public void setRow(int row) {
-		this.row = row;
-	}
-	public int getColumn() {
-		return column;
-	}
-	public void setColumn(int column) {
-		this.column = column;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

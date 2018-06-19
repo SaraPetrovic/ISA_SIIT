@@ -1,6 +1,8 @@
 package ProjectIsa.bioskop.controller;
 
+import java.io.Console;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
@@ -50,6 +51,22 @@ public class ProjectionController {
 
 		
 	}
+	
+	@RequestMapping(
+			value= "/api/projectionss/{cinemaid}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<Projection>> getCinemasProjections(@PathVariable("cinemaid") Long id) {
+		List<Projection> projections = service.getCinemasProjections(id);
+		if (projections == null) {
+			System.out.println("WTF??");
+			return new ResponseEntity<List<Projection>>(projections, HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("TTT");
+		return new ResponseEntity<List<Projection>>(projections, HttpStatus.OK);
+	}
+	
 	@RequestMapping(
 			value= "/api/projections/{id}",
 			produces = MediaType.APPLICATION_JSON_VALUE,
@@ -70,14 +87,19 @@ public class ProjectionController {
 			method = RequestMethod.POST)
 	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
 		
-		for(MovieOrPerformance m: movieService.getAll()) {
-			if(m.getName().equals(projection.getMovieOrPerformance().getName())) {
-				projection.setMovieOrPerformance(m);
+		String projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
+		String datum = projDate.split(" ")[0];
+		String vreme = projDate.split(" ")[1];
+		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
+		
+		for(MovieOrPerformance movie: movieService.getAll()) {
+			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
+				projection.setMovieOrPerformance(movie);
 			}
 		}
 		 
-		projection.setTheaterOrCinema(cinemaService.findByName(projection.getTheaterOrCinema().getName()));
 		projection.setHall(hallService.getHallByName(projection.getHall().getName()));
+		(cinemaService.findByName(projection.getTheaterOrCinema().getName())).addProjection(projection);
 		
 		Projection newProjection = service.addProjection(projection);
 		

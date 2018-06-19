@@ -1,10 +1,10 @@
-insert into adresa(id, city, street) values ('6', 'asd', 'dsa')
-insert into adresa(id, city, street) values ('7', 'asd', 'dsa')
-insert into adresa(id, city, street) values ('8', 'grad3', 'ulica3')
-insert into adresa(id, city, street) values ('9', 'grad4', 'ulica4')
+insert into adresa(id, city, street) values ('6', 'Novi Sad', 'Jevrejska 30')
+insert into adresa(id, city, street) values ('7', 'Novi Sad', 'Jevrejska 10')
+insert into adresa(id, city, street) values ('8', 'Novi Sad', 'Kralja Petra I 1')
+insert into adresa(id, city, street) values ('9', 'Novi Sad', 'Futoska 10')
 insert into adresa(id, city, street) values ('10', 'Novi Sad', 'Bulevar Oslobodjenja 25')
 insert into adresa(id, city, street) values ('11', 'Novi Sad', 'Bulevar Oslobodjenja 66')
-insert into adresa(id, city, street) values ('12', 'Novi Sad', 'adresa 24')
+insert into adresa(id, city, street) values ('12', 'Novi Sad', 'Danila Kisa 24')
 insert into adresa(id, city, street) values ('13', 'Novi Sad', 'Danila Kisa 13')
 insert into adresa(id, city, street) values ('14', 'Novi Sad', 'Tolstojeva 15')
 insert into adresa(id, city, street) values ('15', 'Novi Sad', 'Modene 20')
@@ -41,9 +41,22 @@ insert into isa.friendship(userid1, userid2, action_userid, status) values (3, 7
 insert into isa.friendship(userid1, userid2, action_userid, status) values (6, 7, 6, 2)
 
 
-insert into theater_or_cinema(average_mark, description, is_cinema, name, adress_id) values ('4', 'Opis...', true, 'Cinema1', '10')
-insert into theater_or_cinema(average_mark, description, is_cinema, name, adress_id) values ('5', 'Opis2...', false, 'Theater1', '12')
-insert into theater_or_cinema(average_mark, description, is_cinema, name, adress_id) values ('2', 'Opis3...', false, 'Theater2', '15')
-insert into theater_or_cinema(average_mark, description, is_cinema, name, adress_id) values ('5', 'Opis4...', true, 'Cinema2', '16')
 
 insert into membership(bronze_min, bronze_max, silver_min, silver_max, gold_min, gold_max) values (0, 20, 21, 80, 81, 100)
+
+insert into theater_or_cinema(id,average_mark, description, is_cinema, name, adress_id) values ('5', '4', 'Opis...', true, 'Cinema1', '10')
+insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('2', '5', 'Opis2...', false, 'Theater1', '12')
+insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('3', '2', 'Opis3...', false, 'Theater2', '15')
+insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('4', '5', 'Opis4...', true, 'Cinema2', '16')
+
+insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('1', '12', '12', 'Hall1', '5')
+insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('2', '10', '12', 'Hall2', '2')
+insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('3', '11', '12', 'Hall3', '3')
+insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('4', '24', '30', 'Hall4', '5')
+insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5', '7', '7', 'Hall5', '4')
+
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', '0', 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', '0', 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('nazivProj', '16.06.2018.', 350.00, 1, 1, 2)  
+>>>>>>> df8277687ca0fe3d727d411bb57ade1614f1b5a3
