@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import ProjectIsa.bioskop.domain.Friendship;
 import ProjectIsa.bioskop.domain.FriendshipPrimKey;
-import ProjectIsa.bioskop.domain.User;
 
 public interface FriendshipServiceInterface {
 

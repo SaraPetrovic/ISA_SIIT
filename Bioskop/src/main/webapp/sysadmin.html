@@ -173,8 +173,10 @@
 			    				</div>
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
 			    					<div class="form-group">
-			    						<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="city">						    					</div>
+			    						<input type="text" name="description" id="description" class="form-control input-sm" placeholder="Description" required>
+			    					</div>
 			    				</div>
+
 			    			</div>
 			    			<div class="row">
 			    			<div class="col-xs-6 col-sm-6 col-md-6" >
@@ -184,9 +186,10 @@
 			    			</div>
 			    			<div class="col-xs-6 col-sm-6 col-md-6">
 			    					<div class="form-group">
-			    						<input type="text" name="description" id="description" class="form-control input-sm" placeholder="Description" required>
+			    						<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="city">	
 			    					</div>
 			    			</div>
+
 
 			    			</div>
 			    			<div class="row">
@@ -315,7 +318,7 @@ function admins(){
 	    success: function(admins){
 	    	
 
- 			$.get("adminTable.html", function( adminTable ) {
+ 			$.get("AdminTable.html", function( adminTable ) {
 			  $("#bodyAdmin").append(adminTable);
 // 				  tableIndex = 1;
 				  admins.forEach(function(admin) {
@@ -325,7 +328,8 @@ function admins(){
  						tableData += '<td>' + admin.lastName + '</td>';
  						tableData += '<td>' + admin.username + '</td>';
  						tableData += '<td>' + admin.email + '</td>';
- 						tableData += '<td>' + admin.userType + '</td></tr>';
+ 						tableData += '<td>' + admin.userType + '</td>';
+ 						tableData += '<td><button onclick="deleteAdmin(' + admin.id + ')" type="button" class="btn btn-danger">Delete</button></td></tr>'
  						$("#tableBody").append(tableData);
  						
 					});
@@ -336,6 +340,29 @@ function admins(){
 	    processData: false,
 	    type: 'GET',
 	    url: '/api/admins'
+	});
+}
+function deleteAdmin(id){
+	$.ajax({
+	    contentType: 'application/json',
+	    dataType: 'text',
+	    success: function(data){
+			if (data == "error"){
+		    	swal("Error", "You cant delete that admin", "error");
+
+			}else{
+	    		swal("success", "You successfully deleted admin", "success");
+	    		admins();
+			}
+			
+
+	    },
+	    error: function(data){
+	    	alert("Error", "You cant delete that admin", "error");
+	    },
+	    processData: false,
+	    type: 'DELETE',
+	    url: '/api/users/' + id
 	});
 }
 $("#addEntity").click(function() {
@@ -356,13 +383,14 @@ $("#addEntity").click(function() {
 	    dataType: 'json',
 	    success: function(data){
 
-	    	alert("Succesful add!");
-			$('#newCinema').modal('toggle');
+	    	swal("Success", "You successfully added new cinema/theather", "success");
+			$("#newCinema").modal("toggle");
 			cinemaTab();
 
 	    },
 	    error: function(data){
-	    	alert("name already exists");
+	    	
+	    	swal("error", "Name already exists", "error");
 	    },
 	    processData: false,
 	    type: 'POST',
@@ -377,7 +405,7 @@ function profile(){
 		dataType : 'json',
 		type : 'GET',
 		success : function(user){
-			$.get("asd.html", function( profile ) {
+			$.get("profile.html", function( profile ) {
 				  $("#bodyAdmin").append(profile);
 				  tableIndex = 1;
 				  $("#profileImage").attr('src', 'images/' + user.profilePicture);
@@ -424,24 +452,20 @@ $("#addAdmin").click(function() {
 	    data: JSON.stringify(person),
 	    dataType: 'json',
 	    success: function(admin){
-			
-	    	alert("Admin " + admin.username + " has been successfully added!");
-			var tableData = '';
-			tableData += '<tr>';
-			tableData += '<td>'+ admin.firstName +'</td>';
-			tableData += '<td>' + admin.lastName + '</td>';
-			tableData += '<td>' + admin.username + '</td>';
-			tableData += '<td>' + admin.email + '</td>';
-			tableData += '<td>' + admin.userType + '</td></tr>';
-			$("#tableBody").append(tableData);
-			$("#adminTable").DataTable();
-
-			$('#modal').modal('toggle');
+	    	$('#modal').modal('toggle');
 			admins();
+	    	swal("Success", "Admin " + admin.username + " has been successfully added!", "success");
+			
 
 	    },
 	    error: function(data){
-	    	alert("username already exists");
+	    	if (data.status == '409'){
+		    	swal("error", "Username already exists", "error");
+	    	}else if (data.status == '403'){
+	    		swal("error", "You dont have permision to add admins", "error");
+	    	}else{
+	    		swal("error", "Bad input", "error");
+	    	}
 	    },
 	    processData: false,
 	    type: 'POST',
@@ -644,8 +668,18 @@ function updateMembership(){
 		type : 'POST',
 		data : JSON.stringify(membership),
 		success : function(membership1){
-			alert("UPDATED");
+			swal("Success", "Membership updated", "success");
 
+		},
+		error : function (data){
+			
+			if (data.status == "409"){
+				swal("Error", "Bad input", "error");
+			}else if (data.status == '403'){
+				swal("Error", "Only system admin can change membership", "error");
+			}else{
+				swal("Error", "error", "error");
+			}
 		},
 		processData: false,
 		url : '/api/membership'

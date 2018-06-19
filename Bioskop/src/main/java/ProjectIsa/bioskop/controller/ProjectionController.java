@@ -1,6 +1,5 @@
 package ProjectIsa.bioskop.controller;
 
-import java.io.Console;
 import java.util.Collection;
 import java.util.List;
 

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ProjectIsa.bioskop.domain.Hall;
-import ProjectIsa.bioskop.domain.TheaterOrCinema;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.HallDBRepository;
 @Service

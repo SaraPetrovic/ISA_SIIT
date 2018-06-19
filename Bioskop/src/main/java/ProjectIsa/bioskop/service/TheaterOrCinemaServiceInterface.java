@@ -3,7 +3,6 @@ package ProjectIsa.bioskop.service;
 import java.util.List;
 
 import ProjectIsa.bioskop.domain.Adresa;
-import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 
 public interface TheaterOrCinemaServiceInterface {

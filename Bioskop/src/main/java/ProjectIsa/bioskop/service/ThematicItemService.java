@@ -110,12 +110,9 @@ public class ThematicItemService implements ItemService {
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public OfficialItem reserve(OfficialItem item, User user){
-		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
-			return null;
-		}
 		OfficialItem itemToReserve =  officialItemRepository.findOne(item.getId());
-		User userWhoReserve = userRepository.findById(user.getId());
-		ItemReservation itemReservation = reservationRepository.findByUserAndOfficialItem(userWhoReserve, itemToReserve);
+
+		ItemReservation itemReservation = reservationRepository.findByUserAndOfficialItem(user, itemToReserve);
 		if (itemReservation == null){
 			if (itemToReserve.getQuantity() > 0){
 				itemToReserve.setQuantity(itemToReserve.getQuantity() - 1);
@@ -123,20 +120,28 @@ public class ThematicItemService implements ItemService {
 				itemReservation = new ItemReservation();
 				itemReservation.setItem(reservedItem);
 				itemReservation.setUser(user);
-				String message = "You successfully reserved " + itemToReserve.getName() + "go back to site <a href='http://localhost:9004/'>Cinema</a>"; 
-				emailService.sendSimpleMessage(user.getEmail(), "Item reservation", message);
+				String message = "You successfully reserved " + itemToReserve.getName();
+				new Thread(new Runnable() {
+				     @Override
+					public void run() {
+							emailService.sendSimpleMessage(user.getEmail(), "Item reservation", message);
+
+				     }
+				}).start();
 				User userDB = userRepository.findByUsername(user.getUsername());
 				userDB.getItemReservations().add(itemReservation);
 				userRepository.save(user);
 			
 				return reservedItem;			
+			}else{
+				return itemToReserve;
 			}
 			
 			// ukoliko vec postoji rezervacija vrati null, korisnik ne moze da napravi 2 rezervacije
 		}else{
 			return null;
 		}
-		return itemToReserve;
+		
 			
 	}
 	@Override
@@ -235,14 +240,16 @@ public class ThematicItemService implements ItemService {
 			item.setApproved(approval);
 			if (approval == true){
 				new Thread(new Runnable() {
-				     public void run() {
+				     @Override
+					public void run() {
 				    	 emailService.sendSimpleMessage(item.getOwner().getEmail(), "Item Accepted", "Your ad for item " + item .getName() + " has been approved by admin");
 
 				     }
 				}).start();
 			}else{
 				new Thread(new Runnable() {
-				     public void run() {
+				     @Override
+					public void run() {
 						emailService.sendSimpleMessage(item.getOwner().getEmail(), "Item Declined", "Your ad for item " + item.getName() + " has been declined by admin");
 				     }
 				}).start();

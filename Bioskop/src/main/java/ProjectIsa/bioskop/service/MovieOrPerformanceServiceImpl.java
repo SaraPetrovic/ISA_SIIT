@@ -52,6 +52,7 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 		return repository.findByName(name);
 	}
 
+	@Override
 	public MovieOrPerformance changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie) {
 
 		if (!movie.getName().equals(newMovie.getName())){
