@@ -31,6 +31,8 @@ public class ItemAd implements Serializable {
 	
 	@Column(nullable = true)
 	private String picture;
+	@Column(nullable = false)
+	private Boolean approved;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "itemAd", cascade = CascadeType.REMOVE)
@@ -42,6 +44,15 @@ public class ItemAd implements Serializable {
 	@Version
 	private Long version;
 	
+	
+	
+
+	public Boolean isApproved() {
+		return approved;
+	}
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
 	public List<ItemOffer> getOffers() {
 		return offers;
 	}

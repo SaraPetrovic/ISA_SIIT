@@ -10,6 +10,7 @@ import ProjectIsa.bioskop.domain.User;
 
 public interface ItemOfferRepository extends JpaRepository<ItemOffer, Long> {
 	ItemOffer save(ItemOffer offer);
+	List<ItemOffer> findAllByItemAdOrderByPriceDesc(ItemAd item);
 	List<ItemOffer> findAll();
 	ItemOffer findByUserAndItemAd(User user, ItemAd item);
 	List<ItemOffer > findByUser(User user);

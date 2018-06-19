@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import ProjectIsa.bioskop.domain.Projection;
 
@@ -12,4 +13,7 @@ public interface ProjectionServiceInterface {
 	Projection getProjectionByName(String name);
 	
 	Projection changeProjection(Projection proj, Projection newProj);
+
+	List<Projection> getCinemasProjections(Long id);
+
 }

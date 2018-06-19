@@ -1,6 +1,8 @@
 package ProjectIsa.bioskop.controller;
 
+import java.io.Console;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +51,22 @@ public class ProjectionController {
 
 		
 	}
+	
+	@RequestMapping(
+			value= "/api/projectionss/{cinemaid}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE
+			)
+	public ResponseEntity<List<Projection>> getCinemasProjections(@PathVariable("cinemaid") Long id) {
+		List<Projection> projections = service.getCinemasProjections(id);
+		if (projections == null) {
+			System.out.println("WTF??");
+			return new ResponseEntity<List<Projection>>(projections, HttpStatus.BAD_REQUEST);
+		}
+		System.out.println("TTT");
+		return new ResponseEntity<List<Projection>>(projections, HttpStatus.OK);
+	}
+	
 	@RequestMapping(
 			value= "/api/projections/{id}",
 			produces = MediaType.APPLICATION_JSON_VALUE,

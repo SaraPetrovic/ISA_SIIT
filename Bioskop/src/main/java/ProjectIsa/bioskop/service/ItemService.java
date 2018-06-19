@@ -26,5 +26,13 @@ public interface ItemService {
 	OfficialItem reserve(OfficialItem item, User user);
 	List<ItemOffer> getItemsByUser(User user);
 	ItemOffer acceptOffer(Long id, User sessionUser);
+	ItemAd makeApproval(ItemAd item, Boolean approval);
+	List<ItemOffer> findOffersByItem(ItemAd item);
+	List<ItemAd> findAdByNameOrDescriptrionContaining(String param);
+	List<OfficialItem> findByNameOrDescriptrionContaining(String param);
+	List<ItemAd> findApproved(Boolean approved);
+	OfficialItem addOfficialItem(OfficialItem item);
+	void deteItem(OfficialItem item);
+
 	
 }

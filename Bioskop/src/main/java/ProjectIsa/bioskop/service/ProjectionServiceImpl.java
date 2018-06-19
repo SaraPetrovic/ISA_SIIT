@@ -1,10 +1,12 @@
 package ProjectIsa.bioskop.service;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -148,6 +150,12 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		projection.setTheaterOrCinema(newProjection.getTheaterOrCinema());
 		repository.save(projection);
 		return projection;
+	}
+
+	@Override
+	public List<Projection> getCinemasProjections(Long id) {
+		List<Projection> ret = repository.getAllByCinemaId(id);
+		return ret;
 	}
 	
 	

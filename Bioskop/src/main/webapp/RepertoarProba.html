@@ -1,0 +1,112 @@
+<div id="cinemasDIV">
+
+</div>
+<script>
+	var projections;
+	$.ajax({
+		type: "GET",
+		url: "/api/TheaterOrCinemas",
+		success: function(cinemas){
+			$('#cinemasDIV').empty();
+			var body = '';
+			$.each(cinemas, function(i, cinema){
+				if(cinemas == null){
+					body+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
+				}
+				else{
+					
+					body += '<div class="col-md-12">';
+					body +=	  '<div class="panel panel-info">';
+					body +=	     '<div class="panel-heading">';
+					body +=	         '<h3 class="panel-title">' + cinema.name + '</h3>';
+					body +=      '</div>';
+					body +=      '<div class="panel-body">';
+					body +=	        '<p style="margin-top:15px;word-wrap: break-word;">' + cinema.description + '</p>';
+					body +=	     '</div>';
+					body +=      '<div class="panel-footer">';
+					body +=	        '<button class="btn btn-primary" onclick="repertoire(' + cinema.id + ')">Repertoire</button>';
+					body +=      '</div>'
+					body +=   '</div>'
+					body += '</div>'
+
+					projections = cinema.projections;
+					alert(JSON.stringify(projections));
+				}
+			});
+			$('#cinemasDIV').append(body);
+		}, error: function(data) {
+			alert("ERR");
+		}
+	});
+	
+	
+	function repertoire(id) {
+		var redirectLoc = "/projections.html?id=" + id;
+		window.location.href = redirectLoc;
+	}
+	
+	
+	function displayMark(buttonValue){
+		var rez = buttonValue.split(',');
+		var mark = rez[4];
+		document.getElementById("mark").style.display = "block";
+		if(mark == 5){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9733;</h2>";
+		}
+		if(mark == 4){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9734;</h2>";
+		}
+		if(mark == 3){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9734;&#9734;</h2>";
+		}
+		if(mark == 2){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9734;&#9734;&#9734;</h2>";
+		}
+		if(mark == 1){
+			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9734;&#9734;&#9734;&#9734;</h2>";
+		}
+		if(mark == 0){
+			document.getElementById("mark").innerHTML = "<h2>&#9734;&#9734;&#9734;&#9734;&#9734;</h2>";
+		}
+	}
+	
+	function viewRepertoireForCinema(buttonValue){
+		var rez = buttonValue.split(',');
+		$("#cinemas").empty();
+		$("#naslov").empty();
+		document.getElementById("naslov").innerHTML = rez[0];
+		document.getElementById("map").style.display = "block";
+		var description = '<br><pre>Street: '+ rez[1] +'</pre><pre>City: '+ rez[2] +'</pre>'+
+    				 	'<pre>Description: '+ rez[3] +'</pre><br>'+
+    				 	'</div></div>';
+		$("#description").append(description);
+		var projectionsHeader = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
+		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
+		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
+			  '<caption>List of projections</caption>' +
+			  '<thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Hall</th><th scope="col">Date</th>'+
+			  '<th scope="col">Movie/Performance</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
+		$("#cinemas").append(projectionsHeader);
+		$("#cinemaProjections").empty();
+		var rowIndex = 1;
+		$.ajax({
+			type: "GET",
+			url: "/api/projections",
+			success: function(projections){
+				$.each(projections, function(i, projection){
+					//alert(buttonValue);
+					if(projections != null && rez[0] == projection.theaterOrCinema.name){
+						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
+						cinemasBody += '<td>' + projection.name + '</td>';
+						cinemasBody += '<td>' + projection.hall.name + '</td>';
+						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td></tr>';
+						$("#cinemaProjections").append(cinemasBody);
+						rowIndex++;
+					}
+				});
+			}
+		});
+	}
+	
+	
+</script>

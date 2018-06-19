@@ -18,15 +18,19 @@ insert into user(username, password, usertype, address_id, email, firstname, las
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture, activated) values ('sara', 'sara', 'CINEMAADMIN', '11', 'sarapetrovic03@gmail.com', 'Sara', 'Petrovic', true, 'default-profile-picture.jpg', true)
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture, activated) values ('reguser3', '123123123', 'REGISTEREDUSER', '13', 'reg@gmail.com', 'Mara', 'Maric', false, 'default-profile-picture.jpg', true)
 insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture, activated) values ('reguser4', '123123123', 'REGISTEREDUSER', '14', 'reg@gmail.com', 'Ana', 'Anic', false, 'default-profile-picture.jpg', true)
+insert into user(username, password, usertype, address_id, email, firstname, lastname, is_first_login, profile_picture, activated) values ('fan', 'fan', 'FANZONEADMIN', '16', 'srbulovicdusan@gmail.com', 'Pera', 'Peric', true, 'default-profile-picture.jpg', true)
 
 
-insert into item_ad( name, description ,version, owner_id, picture) values ( 'majica', 'opis' ,0,2 , 'item1.jpg')
-insert into item_ad( name, description ,version, owner_id, picture) values ( 'kapa', 'opis' ,0, 2,'item.jpg')
-insert into item_ad( name, description ,version, owner_id, picture) values ( 'duks', 'opis' ,0, 2,'item2.jpg')
+
+insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'kapa', 'opis' ,0, 2,'item.jpg', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false)
 insert into official_item( name, price,description,version, quantity, picture) values ( 'duks', '700', 'opis', 0 ,2, 'item2.jpg')
 
 insert into item_reservation (id, user_id, official_item_id) values ('1' , '1', '1')
 insert into item_offer(user_id, price, item_ad_id, version) values ('1', '500', '2', '0')
+insert into item_offer(user_id, price, item_ad_id, version) values ('3', '700', '2', '0')
 insert into item_offer(user_id, price, item_ad_id, version) values ('2', '500', '3', '0')
 
 insert into isa.friendship(userid1, userid2, action_userid, status) values (2, 3, 3, 2)
@@ -36,6 +40,9 @@ insert into isa.friendship(userid1, userid2, action_userid, status) values (2, 7
 insert into isa.friendship(userid1, userid2, action_userid, status) values (3, 7, 3, 2)
 insert into isa.friendship(userid1, userid2, action_userid, status) values (6, 7, 6, 2)
 
+
+
+insert into membership(bronze_min, bronze_max, silver_min, silver_max, gold_min, gold_max) values (0, 20, 21, 80, 81, 100)
 
 insert into theater_or_cinema(id,average_mark, description, is_cinema, name, adress_id) values ('5', '4', 'Opis...', true, 'Cinema1', '10')
 insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('2', '5', 'Opis2...', false, 'Theater1', '12')
@@ -50,3 +57,6 @@ insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5
 
 insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', '0', 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
 insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', '0', 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('nazivProj', '16.06.2018.', 350.00, 1, 1, 2)  
+

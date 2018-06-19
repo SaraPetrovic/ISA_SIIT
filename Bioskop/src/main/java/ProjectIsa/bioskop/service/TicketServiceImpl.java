@@ -61,6 +61,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 
 	@Override
 	public Ticket reserve(Ticket ticket, User user) {
+
 		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
 			return null;
 		}
@@ -72,6 +73,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 		ticketToReserve.setReserved(true);
 		repository.save(ticketToReserve);
 		return ticketToReserve;
+
 	
 	}
 

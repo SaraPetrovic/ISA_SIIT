@@ -58,7 +58,6 @@ public class User implements Serializable {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> itemOffers;
-
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemReservation> itemReservations;

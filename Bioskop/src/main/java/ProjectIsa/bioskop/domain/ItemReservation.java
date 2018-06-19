@@ -23,7 +23,7 @@ public class ItemReservation implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false, cascade = CascadeType.MERGE)
 	private OfficialItem officialItem;
 	@JsonBackReference
 	@ManyToOne(optional = false)

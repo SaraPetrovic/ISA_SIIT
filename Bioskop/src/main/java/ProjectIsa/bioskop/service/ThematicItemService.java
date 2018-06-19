@@ -123,7 +123,7 @@ public class ThematicItemService implements ItemService {
 				itemReservation = new ItemReservation();
 				itemReservation.setItem(reservedItem);
 				itemReservation.setUser(user);
-				String message = "You successfully reserved " + itemToReserve.getName(); 
+				String message = "You successfully reserved " + itemToReserve.getName() + "go back to site <a href='http://localhost:9004/'>Cinema</a>"; 
 				emailService.sendSimpleMessage(user.getEmail(), "Item reservation", message);
 				User userDB = userRepository.findByUsername(user.getUsername());
 				userDB.getItemReservations().add(itemReservation);
@@ -225,6 +225,96 @@ public class ThematicItemService implements ItemService {
 			return null;
 		}
 	}
+
+
+
+	@Override
+	public ItemAd makeApproval(ItemAd item, Boolean approval) {
+		// TODO Auto-generated method stub
+		if (item != null){
+			item.setApproved(approval);
+			if (approval == true){
+				new Thread(new Runnable() {
+				     public void run() {
+				    	 emailService.sendSimpleMessage(item.getOwner().getEmail(), "Item Accepted", "Your ad for item " + item .getName() + " has been approved by admin");
+
+				     }
+				}).start();
+			}else{
+				new Thread(new Runnable() {
+				     public void run() {
+						emailService.sendSimpleMessage(item.getOwner().getEmail(), "Item Declined", "Your ad for item " + item.getName() + " has been declined by admin");
+				     }
+				}).start();
+				itemAdRepository.delete(item);
+			}
+			return item;
+		}else{
+			return null;
+		}
+	}
+
+
+
+
+	@Override
+	public List<ItemAd> findAdByNameOrDescriptrionContaining(String param) {
+		List<ItemAd> items = itemAdRepository.findByNameContainingOrDescriptionContainingAllIgnoringCase(param, param);
+		return items;
+	}
+
+
+
+	@Override
+	public List<OfficialItem> findByNameOrDescriptrionContaining(String param) {
+		List<OfficialItem> items = officialItemRepository.findByNameContainingOrDescriptionContainingAllIgnoringCase(param, param);
+		return items;
+	}
+
+
+
+	@Override
+	public List<ItemOffer> findOffersByItem(ItemAd item) {
+		List<ItemOffer> offers = offerRepository.findAllByItemAdOrderByPriceDesc(item);
+		return offers;
+	}
+
+
+
+	@Override
+	public List<ItemAd> findApproved(Boolean approved) {
+		List<ItemAd> items = itemAdRepository.findByApproved(approved);
+		return items;
+	}
+
+
+	@Override
+	public OfficialItem addOfficialItem(OfficialItem item) {
+		OfficialItem addedItem = officialItemRepository.save(item);
+		return addedItem;
+	}
+
+
+	@Override
+	public void deteItem(OfficialItem item) {
+		officialItemRepository.delete(item);
+		
+	}
+
+
+	
+	public OfficialItem updateOfficialItem(OfficialItem itemToChange, OfficialItem newItem) {
+		itemToChange.setDescription(newItem.getDescription());
+		itemToChange.setName(newItem.getName());
+		itemToChange.setPrice(newItem.getPrice());
+		itemToChange.setQuantity(newItem.getQuantity());
+		OfficialItem updatedItem = officialItemRepository.save(itemToChange);
+		return updatedItem;
+	}
+
+
+	
+
 
 
 	

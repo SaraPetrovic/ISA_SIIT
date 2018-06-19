@@ -11,9 +11,33 @@
 	<script src="Login.js"></script>
 
 <script
-	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 350px;
+    overflow-y: scroll;
+}
+
+
+</style>
 </head>
 <body style="background-color:#efefe9">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -52,6 +76,7 @@
 			<!--/.navbar-collapse -->
 		</div>
 	</nav>
+
 	<section style="background: #efefe9;">
 		<div class="container">
 			<div class="row">
@@ -83,14 +108,30 @@
 							<h3 class="head text-center">
 								OFFICIAL ITEMS
 							</h3>
+							<div class="row" style="margin-bottom:20px;">
+								<div class="col-sm-4 col-md-offset-4">
+									<div class="input-group">	
+    									<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    									<input id="officialItemSearch" type="text" class="form-control" name="search" placeholder="Search items...">
+    								</div>
+  								</div>
+  							</div>
 							<div id="officialItems" style="background-color:white;">
 							</div>
 							
 						</div>
 						<div class="tab-pane fade in active" id="ads">
-							<h3 class="head text-center">
+							<h3 class="head text-center" style="margin-top:0px;">
 								ITEM ADS
 							</h3>
+							<div class="row" style="margin-bottom:20px;">
+								<div class="col-sm-4 col-md-offset-4">
+									<div class="input-group">	
+    									<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    									<input id="itemAdSearch" type="text" class="form-control" name="search" placeholder="Search items...">
+    								</div>
+  								</div>
+  							</div>
 							<div id="itemAds" style="background-color:white;">
 							</div>
 							
@@ -103,70 +144,132 @@
 				</div>
 			</div>
 		</div>
+		
+		
+		
 	</section>
+	<!-- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Item offers</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 <script>
+	function printOfferTable(offers){
+		
+		var table = '<table>';
+		table += '<tr><th colspan="2">User</th><th>Price</th></tr>';
+		offers.forEach(function(offer){
+			table += '<tr><td><img class="img-responsive" style="height:50px;width:50px;" src = "images/'+ offer.user.profilePicture + '"></td><td>'+ offer.user.firstName+ ' ' + offer.user.lastName + ' </td><td>' + offer.price + '$</td> </tr>';
+			
+		});
+        table += '</table>';
+        $('.modal-body').empty();
+        $('.modal-body').append(table);
+	}
+	function showOffers(itemId){
+		$.ajax({
+    		contentType : 'application/json',
+    		dataType : 'json',
+    		type : 'GET',
+    		success : function(offers){
+    			if(offers.length != 0){
+    				printOfferTable(offers);
+    			}else{
+    				$('.modal-body').empty();
+    				$('.modal-body').append('<h3 align="center" style="color:grey;">No offers.</h3>');
+    			}
+    				
+    			
+    		},
+    		processData: false,
+    		url : 'api/items/offers/' + itemId
+    	});
+		$("#modal").appendTo('body').modal('show');
+		
+	}
 	$(function() {
 		$('a[title]').tooltip();
 	});
+	function printOfficialItems(items){
+		var i=new Number(1);
+		$("#officialItems").empty();
+		body = '<div style="margin-left:20px;margin-right:20px;">';
+		items.forEach(function(item){
+			if (i == 1){
+				body += '<div class="row">';
+			}		
+				body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price:</small> '+ item.price + '$</p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="reserve('+item.id+')" style="display:inline;" >Reserve </a> </div> </div> </div>';
+			
+			i++;
+			if (i == 4){
+				body += '</div>';
+				i = 1;
+			}
+		});
+
+		body += '</div>';
+		body += '</div>';
+		body += '</div>';
+
+		$("#officialItems").append(body);
+	}
 	
-	body = '<div style="margin-left:20px;margin-right:20px;">';
 	$.ajax({
 		contentType : 'application/json',
 		dataType : 'json',
 		type : 'GET',
 		success : function(items){
-			var i=new Number(1);
-
-			items.forEach(function(item){
-				if (i == 1){
-					body += '<div class="row">';
-				}		
-					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <p> <small>price:</small> '+ item.price + '$</p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="reserve('+item.id+')" style="display:inline;" >Reserve </a> </div> </div> </div>';
-				
-				i++;
-				if (i == 4){
-					body += '</div>';
-					i = 1;
-				}
-			});
-
-			body += '</div>';
-			body += '</div>';
-			body += '</div>';
-	
-			$("#officialItems").append(body);
+			printOfficialItems(items);
 		},
 		processData: false,
 		url : '/api/officialItems'
 	});
-	bodyAd = '<div style="margin-left:20px;margin-right:20px;"';
+	function printItemAds(items){
+		bodyAd = '<div style="margin-left:20px;margin-right:20px;">';
+		var i=new Number(1);
+
+		items.forEach(function(item){
+			if (i == 1){
+				bodyAd += '<div class="row">';
+			}
+				bodyAd += '<div class="col-md-4 item"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:70%;margin-left:5px;margin-right:5px;" ><a class="btn btn-primary "  onclick="showOffers('+ item.id + ')" style="display:block;margin-top:5px;" >Show all offers </a> </div> </div> </div>';
+			
+			i++;
+			if (i == 4){
+				bodyAd += '</div>';
+				i = 1;
+			}
+		});
+
+		bodyAd += '</div>';
+		bodyAd += '</div>';
+		bodyAd += '</div>';
+		$("#itemAds").empty();
+		$("#itemAds").append(bodyAd);
+	}
+	
 	$.ajax({
 		contentType : 'application/json',
 		dataType : 'json',
 		type : 'GET',
 		success : function(items){
-			var i=new Number(1);
-
-			items.forEach(function(item){
-				if (i == 1){
-					bodyAd += '<div class="row">';
-				}
-					bodyAd += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
-				
-				i++;
-				if (i == 4){
-					bodyAd += '</div>';
-					i = 1;
-				}
-			});
-
-			bodyAd += '</div>';
-			bodyAd += '</div>';
-			bodyAd += '</div>';
-	
-			$("#itemAds").append(bodyAd);
+			printItemAds(items);
 		},
 		processData: false,
 		url : '/api/itemAds'
@@ -209,8 +312,14 @@
 
 
 		    },
-		    error: function(data){
-		    	swal("Oops!", "You cant reserve this item", "error");
+		    error: function(error){
+		    	if (error.status == 409){
+		    		swal("Oops!", "You already reserved this item", "error");
+		    	}else if(error.status == 404){
+		    		swal("Oops!", "No items left", "error");
+		    	}else{
+		    		swal("Oops!", "Something went wrong.", "error");
+		    	}
 		    },
 		    processData: false,
 		    type: 'POST',
@@ -218,5 +327,59 @@
 		});
 		
 	}
+	var delay = (function(){
+		  var timer = 0;
+		  return function(callback, ms){
+		    clearTimeout (timer);
+		    timer = setTimeout(callback, ms);
+		  };
+	})();
+	$('#itemAdSearch').keyup(function() {
+	    delay(function(){
+	      //alert($('#itemAdSearch').val());
+	     	
+	    	$.ajax({
+	    		contentType : 'application/json',
+	    		dataType : 'json',
+	    		type : 'GET',
+	    		success : function(items){
+	    			
+	    			printItemAds(items);
+	    			if (items.length == 0){
+	    				var noResultMessage = '<h3 style="margin-top:50px;color:grey;" align="center"> No results found. </h3>';
+	    				$("#itemAds").append(noResultMessage);
+	    			}
+	    		},
+	    		processData: false,
+	    		url : '/api/itemAds/' + $("#itemAdSearch").val()
+	    	});
+	    	  
+	      
+	    }, 300 );
+	});
+	$('#officialItemSearch').keyup(function() {
+	    delay(function(){
+	      //alert($('#itemAdSearch').val());
+	     	
+	    	$.ajax({
+	    		contentType : 'application/json',
+	    		dataType : 'json',
+	    		type : 'GET',
+	    		success : function(items){
+	    			
+	    				printOfficialItems(items);
+	    				if(items.length == 0) {
+	    					var noResultMessage = '<h3 style="margin-top:50px;color:grey;" align="center"> No results found. </h3>';
+	    					$("#officialItems").append(noResultMessage);
+	    				}
+	    			
+	    		},
+	    		processData: false,
+	    		url : '/api/officialItems/' + $("#officialItemSearch").val()
+	    	});
+	    	  
+	      
+	    }, 300 );
+	});
 </script>
 </html>
