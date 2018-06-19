@@ -62,33 +62,30 @@ public class ProjectionController {
 			return new ResponseEntity<Projection>(projection, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
 	@RequestMapping(
 			value = "/api/createProjection",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Projection> addProjection(@RequestBody Projection projection){
-		
-		String projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
-		String datum = projDate.split(" ")[0];
-		String vreme = projDate.split(" ")[1];
-		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
+	public ResponseEntity<String> addProjection(@RequestBody Projection projection){
 		
 		for(MovieOrPerformance movie: movieService.getAll()) {
 			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
 				projection.setMovieOrPerformance(movie);
 			}
 		}
-		 
+		
 		projection.setHall(hallService.getHallByName(projection.getHall().getName()));
 		(cinemaService.findByName(projection.getTheaterOrCinema().getName())).addProjection(projection);
 		
-		Projection newProjection = service.addProjection(projection);
+		String message = service.addProjection(projection);
 		
-		if(newProjection == null) {
-			return new ResponseEntity<Projection>(newProjection, HttpStatus.BAD_REQUEST);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Projection is successfully added!\"}", HttpStatus.OK);			
 		}else {
-			return new ResponseEntity<Projection>(newProjection, HttpStatus.OK);
+			return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 		}
 	}
 	

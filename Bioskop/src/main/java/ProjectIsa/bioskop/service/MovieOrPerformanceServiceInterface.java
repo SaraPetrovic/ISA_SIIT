@@ -6,10 +6,10 @@ import ProjectIsa.bioskop.domain.MovieOrPerformance;
 
 public interface MovieOrPerformanceServiceInterface {
 	Collection<MovieOrPerformance> getAll();
-	MovieOrPerformance add(MovieOrPerformance projection);
+	String add(MovieOrPerformance projection);
 	void delete(MovieOrPerformance projection);
 	MovieOrPerformance findById(Long id);
 	MovieOrPerformance findByName(String name);
 	
-	MovieOrPerformance changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie);
+	String changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie);
 }

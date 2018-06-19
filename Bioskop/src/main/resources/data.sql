@@ -39,7 +39,7 @@ insert into isa.friendship(userid1, userid2, action_userid, status) values (6, 7
 
 insert into theater_or_cinema(id,average_mark, description, is_cinema, name, adress_id) values ('5', '4', 'Opis...', true, 'Cinema1', '10')
 insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('2', '5', 'Opis2...', false, 'Theater1', '12')
-insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('3', '2', 'Opis3...', false, 'Theater2', '15')
+insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('3', '2', 'Opis3...', false, 'Theater2', '8')
 insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('4', '5', 'Opis4...', true, 'Cinema2', '16')
 
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('1', '12', '12', 'Hall1', '5')

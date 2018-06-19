@@ -64,20 +64,20 @@ public class MovieOrPerformanceController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<MovieOrPerformance> addMovie(@RequestBody MovieOrPerformance movie){
-		MovieOrPerformance newMovie = serviceMovie.add(movie);
+	public ResponseEntity<String> addMovie(@RequestBody MovieOrPerformance movie){
+		String message = serviceMovie.add(movie);
 		
-		if(newMovie == null) {
-			return new ResponseEntity<MovieOrPerformance>(newMovie, HttpStatus.BAD_REQUEST);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Movie/performance is successfully added!\"}", HttpStatus.OK);			
 		}else {
-			return new ResponseEntity<MovieOrPerformance>(newMovie, HttpStatus.OK);
+			return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@RequestMapping(value = "api/changeMovie", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<MovieOrPerformance> changeInstitution(@RequestBody ChangedMovie changeMovie){
+	public ResponseEntity<String> changeInstitution(@RequestBody ChangedMovie changeMovie){
 		
 		MovieOrPerformance movie = serviceMovie.findByName(changeMovie.getSelectMovie());
 		MovieOrPerformance newMovie = new MovieOrPerformance();
@@ -89,8 +89,11 @@ public class MovieOrPerformanceController {
 		newMovie.setImg(changeMovie.getImg());
 		newMovie.setDescription(changeMovie.getDescription());
 		
-		MovieOrPerformance returnMovie = serviceMovie.changeMovie(movie, newMovie);
-		return new ResponseEntity<MovieOrPerformance>(returnMovie, HttpStatus.OK);
+		String message = serviceMovie.changeMovie(movie, newMovie);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Movie/performance is successfully changed!\"}", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "api/uploadMovieImage",

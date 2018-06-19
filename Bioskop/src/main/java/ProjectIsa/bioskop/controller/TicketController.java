@@ -35,7 +35,6 @@ public class TicketController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Ticket>> getTickets() {
 		
-		
 		Collection<Ticket> tickets = service.getTickets();
 
 		if(tickets != null) {
@@ -51,7 +50,6 @@ public class TicketController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Ticket> getTicket(@PathVariable("id") Long id) {
 		
-		
 		Ticket ticket = service.getTicket(id);
 
 		if (ticket != null){
@@ -60,46 +58,46 @@ public class TicketController {
 			return new ResponseEntity<Ticket>(ticket, HttpStatus.NOT_FOUND);
 		}
 	}
+	
 	@RequestMapping(
 			value = "/api/addTicket",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket){
+	public ResponseEntity<String> addTicket(@RequestBody Ticket ticket){
 		
-		Ticket newTicket = service.addTicket(ticket);
-		if(newTicket == null) {
-			return new ResponseEntity<Ticket>(newTicket, HttpStatus.BAD_REQUEST); 
+		String message = service.addTicket(ticket);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Tickes is successfully added!\"}", HttpStatus.OK);
 		}
-		return new ResponseEntity<Ticket>(newTicket, HttpStatus.OK);
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);		
 	}
+	
 	@RequestMapping(value = "api/tickets/reserve",
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Ticket> reserveItem(@RequestBody Ticket ticket){
-		System.out.println("\n\n\n\nId itema = " + ticket.getId() + "\n\n\n\n");
+	public ResponseEntity<Ticket> reserveTicket(@RequestBody Ticket ticket){
+		System.out.println("\n\nId ticketa = " + ticket.getId() + "\n\n");
 		Long versionBefore = service.getTicket(ticket.getId()).getVersion();
 		while (true){
 			try{
 				HttpSession session = request.getSession();
 				User user = (User) session.getAttribute("user");
-				if (user == null){
-					return null;
-				}
+				
 				Ticket reservedTicket = service.reserve(ticket, user);
 				if (reservedTicket != null){
 					if (reservedTicket.getVersion() == versionBefore){
-						System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
+						System.out.println("\n\nVracam konfilkt\n\n");
 		
 						return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.CONFLICT);
 					}else{
-						System.out.println("\n\nreserved item != null okk\n\n");
+						System.out.println("\n\nreserved ticket != null okk\n\n");
 		
 						return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.OK);
 					}
 				}else{
-					System.out.println("\n\nreserved item == null\n\n");
+					System.out.println("\n\nreserved ticket == null\n\n");
 					return null;
 				}
 				
