@@ -600,7 +600,7 @@
 				    	</div>	
 				    </div>
 				  </div>
-				  </div> 
+				</div> 
 			 </div>
 	
 	
@@ -608,48 +608,54 @@
 	function fillSeatSelect(){
 		var id = $("#selectProjectionForTicket").val();
 		$("#seatSelect").empty();
-		
+		alert(id);
 		$.ajax({
 			type: "GET",
 			url: "/api/projections/" + id,
 			success: function(projection){
-				alert("TU SMO");
 				var maxRow = projection.hall.maxRow;
 				var maxColumn = projection.hall.maxColumn;
-				alert(maxRow + "-" + maxColumn);
-				var tickets = [];
-				tickets = projection.tickets;
-				var i, j;
-				var select = document.getElementById("seatSelect");
-				if(tickets == null){
-					alert("TICKETS NULL");
-					for (i = 1; i < maxRow + 1; i++) {
-					    for (j = 1; j < maxColumn + 1; j++) {
-					    	var option = document.createElement("OPTION");
-							select.add(option);
-							option.value = i + "-" + j;
-							option.text = i + "-" + j;
-					    }
-					}
-				}else{
-					alert("NISU NULL");
-					for (i = 1; i < maxRow + 1; i++) {
-					    for (j = 1; j < maxColumn + 1; j++) {
-					    	$.each(tickets, function(i, ticket){
-					    		alert(JSON.stringify(ticket));
-								if(ticket.red != i && ticket.kolona != j){
-									var option = document.createElement("OPTION");
+				
+				$.ajax({
+					type: "GET",
+					url: "/api/projections/" + id + "/tickets",
+					success: function(tickets){
+						alert(maxRow + "-" + maxColumn);						
+						var i, j;
+						var select = document.getElementById("seatSelect");
+						if(tickets.length == 0){
+							alert("TICKETS NULL");
+							for (i = 1; i < maxRow + 1; i++) {
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	var option = document.createElement("OPTION");
 									select.add(option);
 									option.value = i + "-" + j;
 									option.text = i + "-" + j;
-								}
-							});  
-					    }
+							    }
+							}
+						}else{
+							alert("NISU NULL");
+							for (i = 1; i < maxRow + 1; i++) {
+								alert("RED");
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	alert("KOLONA");
+							    	$.each(tickets, function(i, ticket){
+							    		alert("TIKETI");
+										if(ticket.red != i && ticket.kolona != j){
+											var option = document.createElement("OPTION");
+											select.add(option);
+											option.value = i + "-" + j;
+											option.text = i + "-" + j;
+										}
+									});  
+							    }
+							}
+						}
+					},
+					error: function(err){
+						swal("Not found!", "Projection doesn't exists!", "info");
 					}
-				}
-			},
-			error: function(err){
-				swal("Not found!", "Projection doesn't exists!", "info");
+				});
 			}
 		});
 	}
@@ -1075,8 +1081,9 @@
 		    dataType: 'json',
 		    success: function(response){
 
-		    	printRepertoar(cinemaId);
 		    	swal("Success!", response.msg, "success");
+		    	printRepertoar(cinemaId);
+		    	
 		    },
 		    error: function(err){
 		    	swal("Error!", response.responseJSON.msg, "error");

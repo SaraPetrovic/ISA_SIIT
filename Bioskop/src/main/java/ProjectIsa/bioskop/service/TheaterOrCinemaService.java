@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 @Service
@@ -117,7 +118,15 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		if(!(Math.abs(currentDate.getTime() - projDate.getTime()) > millisecondsPerDay)) {
 			return "You can not delete projection!";
 		}
-		
+		/*
+		if(projection.getTickets().size() != 0) {
+			for(Ticket t: projection.getTickets()) {
+				if(t.isReserved() == true) {
+					return "";
+				}
+			}
+			
+		}*/
 		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);
 		repository.save(theaterOrCinema);

@@ -62,22 +62,20 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	@Override
 	public Ticket reserve(Ticket ticket, User user) {
 
-		return null;
-
-		/*
 		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
 			return null;
 		}
 		
 		Ticket ticketToReserve = repository.findOne(ticket.getId());
 		User userWhoReserve = userRepository.findById(user.getId());
-		
 		ticketToReserve.setUser(userWhoReserve);
 		ticketToReserve.setReserved(true);
+		Projection projection = projectionRepository.findById(ticketToReserve.getProjection().getId());
+		projection.addTicket(ticketToReserve);
+		projectionRepository.save(projection);
 		repository.save(ticketToReserve);
 		return ticketToReserve;
-		*/
-
+		
 	}
 
 }
