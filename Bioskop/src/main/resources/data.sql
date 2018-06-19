@@ -59,4 +59,4 @@ insert into movie_or_performance(id, actors, average_rating, description, film_d
 insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', '0', 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
 
 insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('nazivProj', '16.06.2018.', 350.00, 1, 1, 2)  
->>>>>>> df8277687ca0fe3d727d411bb57ade1614f1b5a3
+
