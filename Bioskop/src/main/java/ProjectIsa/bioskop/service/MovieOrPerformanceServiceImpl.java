@@ -20,19 +20,19 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 	}
 
 	@Override
-	public MovieOrPerformance add(MovieOrPerformance movie) {
+	public String add(MovieOrPerformance movie) {
 		
 		if(movie.getName() == "" || movie.getType() == "" || movie.getProducer() == "" || movie.getActors() == "" 
 				|| movie.getDescription() == "" || movie.getFilmDuration() == 0) {
-			return null;
+			return "Please enter all required data!";
 		}
 		
 		MovieOrPerformance exsisting = repository.findByName(movie.getName());
 		if(exsisting == null) {
 			repository.save(movie);
-			return movie;
+			return null;
 		}
-		return null;
+		return "Movie/performance with the same name already exists!";
 	}
 
 	@Override
@@ -52,12 +52,17 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 		return repository.findByName(name);
 	}
 
-	public MovieOrPerformance changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie) {
+	public String changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie) {
 
+		if(newMovie.getName() == " " || newMovie.getType() == "" || newMovie.getProducer() == "" || newMovie.getActors() == "" 
+				|| newMovie.getDescription() == "" || newMovie.getFilmDuration() == 0) {
+			return "Please enter all required data!";
+		}
+		
 		if (!movie.getName().equals(newMovie.getName())){
 			MovieOrPerformance mov = repository.findByName(newMovie.getName());
 			if (mov != null){
-				return null;
+				return "Movie/performance with the same name already exists!";
 			}
 		}
 		movie.setName(newMovie.getName());
@@ -68,7 +73,7 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 		movie.setImg(newMovie.getImg());
 		movie.setDescription(newMovie.getDescription());
 		repository.save(movie);
-		return movie;
+		return null;
 	}
 
 }

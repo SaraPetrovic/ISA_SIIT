@@ -8,8 +8,9 @@ function noPreview() {
   $('addItem').attr('disabled', '');
 }
 
-function selectImage(e) {
+function selectImage(e){
   $('#file').css("color", "green");
+
   $('#image-preview-div').css("display", "block");
   $('#preview-img').attr('src', e.target.result);
   $('#preview-img').css('max-width', '550px');
@@ -21,17 +22,15 @@ function selectImage(e) {
 
   $('#max-size').html((maxsize/1024).toFixed(2));
 
-  $('#addItem').click( function() {
+  $('#officialItemBtn').click( function() {
 	//generete random image id
-	  var extension = $('#file').val().split(/[. ]+/).pop();
-	$('#itemImage').val( Math.random().toString(36).substr(2, 9) + "." + extension);
     $('#message').empty();
     $('#loading').show();
-    var thematicItem = {}
-	thematicItem.name = $('#itemName').val();
-    thematicItem.description = $('#itemDescription').val();
-    thematicItem.price = $('#price').val();
-    thematicItem.picture = $('#itemImage').val();
+    var officialItem = {}
+	officialItem.name = $('#itemName').val();
+    officialItem.description = $('#itemDescription').val();
+    officialItem.price = $('#price').val();
+    officialItem.quantity = $("#itemQuantity").val();
     $.ajax({
       url: "api/uploadImage",
       type: "POST",
@@ -39,28 +38,32 @@ function selectImage(e) {
       contentType: false,
       cache: false,
       processData: false,
-      success: function(data)
+      success: function(pictureName)
       {
+    	  officialItem.picture = pictureName;
         $('#loading').hide();
-        $('#message').html(data);
+        $.ajax({
+    	    contentType: 'application/json',
+    	    data: JSON.stringify(officialItem),
+    	    dataType: 'json',
+    	    success: function(data){
+    			$('#newItem').modal('hide');
+    			$("#image-preview-div").css("display", "none");
+    			officialItems();
+    	    },
+    	    error: function(data){
+    	    	alert("greska");
+    	    },
+    	    processData: false,
+    	    type: 'POST',
+    	    url: '/api/officialItems'
+    	});
       }
     });
-	$.ajax({
-	    contentType: 'application/json',
-	    data: JSON.stringify(thematicItem),
-	    dataType: 'json',
-	    success: function(data){
-			$('#newItem').modal('hide');
-
-
-	    },
-	    error: function(data){
-	    	alert("greska");
-	    },
-	    processData: false,
-	    type: 'POST',
-	    url: '/api/createItem'
-	});
+    
+    //$('#newItem').modal('hide');
+    
+//	
   });
 
   $('#file').change(function() {
@@ -87,10 +90,11 @@ function selectImage(e) {
 
       return false;
     }
-
-    $('#upload-button').removeAttr("disabled");
-
+    
+    $('#officialItemBtn').removeClass("disabled");
+    $('#officialItemBtn').prop("disabled",false);
     var reader = new FileReader();
+
     reader.onload = selectImage;
     reader.readAsDataURL(this.files[0]);
 

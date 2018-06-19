@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,6 +29,7 @@ import ProjectIsa.bioskop.domain.ItemOffer;
 import ProjectIsa.bioskop.domain.OfficialItem;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.ThematicItemService;
 import ProjectIsa.bioskop.service.UserService;
 
@@ -56,7 +58,7 @@ public class ThematicItemController {
 			produces = MediaType.APPLICATION_JSON_VALUE
 			)
 	public ResponseEntity<List<ItemOffer>> getItemOffers(@PathVariable(value = "id") Long id){
-		System.out.println("\n\nid = " + id + "\n\n\n");
+		
 		ItemAd item = itemService.getItemAd(id);
 		List<ItemOffer> offers = item.getOffers();
 		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
@@ -93,6 +95,84 @@ public class ThematicItemController {
 				HttpStatus.OK);
 	}
 	@RequestMapping(
+			value = "/api/officialItems",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OfficialItem> addItem(@RequestBody OfficialItem item) {
+		
+		
+		OfficialItem addedItem = itemService.addOfficialItem(item);
+
+
+		return new ResponseEntity<OfficialItem>(addedItem,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/api/officialItems",
+			method = RequestMethod.PUT,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OfficialItem> ChangeItem(@RequestBody OfficialItem newItem) {
+		
+		OfficialItem itemToChange = itemService.getOfficialItem(newItem.getId());
+		if (itemToChange != null){
+			OfficialItem updatedItem = itemService.updateOfficialItem(itemToChange, newItem);
+			return new ResponseEntity<OfficialItem>(updatedItem,
+					HttpStatus.OK);
+		}else{
+			return new ResponseEntity<OfficialItem>(itemToChange, HttpStatus.NOT_FOUND);
+		}
+
+		
+	}
+	@RequestMapping(
+			value = "/api/officialItems/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OfficialItem> getItem(@PathVariable("id") Long id) {
+		OfficialItem item = itemService.getOfficialItem(id);
+		if (item != null){
+			return new ResponseEntity<OfficialItem>(item, HttpStatus.OK);
+		}else{
+			return new ResponseEntity<OfficialItem>(item, HttpStatus.NOT_FOUND);
+
+		}
+		
+	}
+	@RequestMapping(
+			value = "/api/officialItems/{id}",
+			method = RequestMethod.DELETE,
+			produces = MediaType.TEXT_PLAIN_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public String addItem(@PathVariable("id") Long id) {
+		OfficialItem item = itemService.getOfficialItem(id);
+		String message = "";
+		if (item != null){
+			itemService.deteItem(item);
+			message ="Suceess";
+			
+		}else{
+			message = "NotFound";
+			
+		}
+		return message;
+	}
+	@RequestMapping(
+			value = "/api/officialItems/{search}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<OfficialItem>> searchOfficialItemsByNameAndDescription(@PathVariable("search") String searchParam) {
+		
+		
+		List<OfficialItem> items = itemService.findByNameOrDescriptrionContaining(searchParam);
+
+
+		return new ResponseEntity<Collection<OfficialItem>>(items,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
 			value = "/api/itemAds",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -100,6 +180,19 @@ public class ThematicItemController {
 		
 		
 		Collection<ItemAd> items = itemService.getItemAds();
+
+
+		return new ResponseEntity<Collection<ItemAd>>(items,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/api/itemAds/{search}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<ItemAd>> searchItemAdsByNameAndDescription(@PathVariable("search") String searchParam) {
+		
+		System.out.println("\n\nsearch param is : " + searchParam + "\n\n");
+		List<ItemAd> items = itemService.findAdByNameOrDescriptrionContaining(searchParam);
 
 
 		return new ResponseEntity<Collection<ItemAd>>(items,
@@ -134,29 +227,7 @@ public class ThematicItemController {
 		return new ResponseEntity<ThematicItem>(createdItem, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "api/uploadImage",
-			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-			method = RequestMethod.POST)
-	public String uploadImage(@RequestParam("file") MultipartFile file,
-							@RequestParam("itemImage") String imageName) {
-		if (!file.isEmpty()) {
-            try {
 
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(DEFAULT_IMAGE_FOLDER  + imageName )));
-                stream.write(bytes);
-                stream.close();
-                System.out.println("Uploadujem...");
-
-                return "You successfully uploaded " + "images/file.jpg" + "!";
-            } catch (Exception e) {
-                return "You failed to upload " + "images/file.jpg" + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + "images/file.jpg" + " because the file was empty.";
-        }
-	}
 	@RequestMapping(value = "api/items/reserve",
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE,
@@ -176,7 +247,7 @@ public class ThematicItemController {
 					if (reservedItem.getVersion() == versionBefore){
 						System.out.println("\n\n\n\nVracam konfilkt\n\n\n\n");
 	
-						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.CONFLICT);
+						return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.NOT_FOUND);
 					}else{
 						System.out.println("\n\nreserved item != null okk\n\n");
 
@@ -184,7 +255,7 @@ public class ThematicItemController {
 					}
 				}else{
 					System.out.println("\n\nreserved item == null\n\n");
-					return null;
+					return new ResponseEntity<OfficialItem>(reservedItem, HttpStatus.CONFLICT);
 				}
 				
 			}catch(ObjectOptimisticLockingFailureException e){
@@ -224,15 +295,76 @@ public class ThematicItemController {
 	@RequestMapping(value = "api/items/offers",
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ItemOffer>> getOffers(){
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
+		
 
 		List<ItemOffer> offers = itemService.getOffers();
 		//List<ItemOffer> offers = user.getItemOffers();
 		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
-}
+	}
+	@RequestMapping(value = "api/items/offers/{ItemAdId}",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ItemOffer>> getOffersByItem(@PathVariable("ItemAdId") Long id){
+		
+		ItemAd item = itemService.getItemAd(id); 
+		List<ItemOffer> offers = itemService.findOffersByItem(item);
+		//List<ItemOffer> offers = user.getItemOffers();
+		return new ResponseEntity<List<ItemOffer>>(offers, HttpStatus.OK);
+	}
+	@RequestMapping(value = "api/items/approve/{id}/{approval}")
+	public ResponseEntity<ItemAd> approveItemAd(@PathVariable("id") Long itemId, @PathVariable("approval") Boolean approval){
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		ItemAd itemToApprove = itemService.getItemAd(itemId); 
+		if (user != null && user.getUserType() == UserType.FANZONEADMIN){
+			
+			ItemAd approvedItem = itemService.makeApproval(itemToApprove, approval);
+			if (approvedItem != null){
+				return new ResponseEntity<ItemAd>(approvedItem, HttpStatus.OK);
+			}else{
+				return new ResponseEntity<ItemAd>(itemToApprove, HttpStatus.NOT_FOUND);
+			}
+			
+		}else{
+			return new ResponseEntity<ItemAd>(itemToApprove, HttpStatus.FORBIDDEN);
+		}
+	}
 
+	@RequestMapping(value = "api/items/unapproved",
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ItemAd>> getUnapprovedItems(){
+		
+		List<ItemAd> items = itemService.findApproved(false); 
+		//List<ItemOffer> offers = user.getItemOffers();
+		return new ResponseEntity<List<ItemAd>>(items, HttpStatus.OK);
+	}
+	@RequestMapping(value = "api/uploadImage",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			produces = MediaType.TEXT_PLAIN_VALUE,
+			method = RequestMethod.POST)
+	public String uploadImage(@RequestParam("file") MultipartFile file) {
 
+		if (!file.isEmpty()) {
+            try {
+            	String newName = UUID.randomUUID().toString() + ".jpg";
+            	System.out.println("\n\nsyze : " + file.getSize() + "\n\n");
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File(DEFAULT_IMAGE_FOLDER  + newName )));
+                stream.write(bytes);
+                stream.close();
+                
+        		
+                return newName;
+            } catch (Exception e) {
+                return "Not Found";
+            }
+        } else {
+            return "Not Found";
+        }
+    
+
+	}
+	
 }
 
 	

@@ -26,15 +26,16 @@ public class Ticket implements Serializable{
 	private int red;
 	@Column(nullable = false)
 	private int kolona;
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = false)
 	private Projection projection;
-	@OneToOne(optional=true, cascade = CascadeType.ALL)
+	@OneToOne(optional=true)
 	private User user;
 	@Column(nullable = false)
 	private int newPrice;
 	@Column(nullable = false)
 	private boolean fastTicket;
-	
+	@Column(nullable = true)
+	private boolean reserved;
 	@Version
 	private Long version;
 		
@@ -42,7 +43,7 @@ public class Ticket implements Serializable{
 		
 	}
 
-	public Ticket(Long id, int row, int column, Projection projection, User user, int cena, boolean fastTicket) {
+	public Ticket(Long id, int row, int column, Projection projection, User user, int cena, boolean fastTicket, boolean reserved) {
 		super();
 		this.id = id;
 		this.red = row;
@@ -51,8 +52,17 @@ public class Ticket implements Serializable{
 		this.user = user;
 		this.newPrice = cena;
 		this.fastTicket = fastTicket;
+		this.reserved = reserved;
 	}
 	
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
+	}
+
 	public boolean isFastTicket() {
 		return fastTicket;
 	}

@@ -56,13 +56,12 @@ public class HallController {
 	}
 
 	
-	
 	@RequestMapping(
 			value = "/api/addHall",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Hall> addHall1(@RequestBody PoluHall poluHall){
+	public ResponseEntity<String> addHall1(@RequestBody PoluHall poluHall){
 		Hall hall = new Hall();
 		hall.setName(poluHall.getId());
 		
@@ -82,10 +81,10 @@ public class HallController {
 			}
 		}
 		hall.setTheaterOrCinema(cinema);
-		Hall newHall = service.addHall(hall);
-		if(newHall == null) {
-			return new ResponseEntity<Hall>(newHall, HttpStatus.BAD_REQUEST);
+		String message = service.addHall(hall);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Hall is successfully added!\"}", HttpStatus.OK);
 		}
-		return new ResponseEntity<Hall>(newHall, HttpStatus.OK);
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 }

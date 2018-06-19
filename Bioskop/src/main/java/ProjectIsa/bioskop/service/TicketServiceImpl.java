@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 import ProjectIsa.bioskop.repository.TicketDBRepository;
+import ProjectIsa.bioskop.repository.UserDBRepository;
 
 @Service
 public class TicketServiceImpl implements TicketServiceInterface{
@@ -18,6 +21,8 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	TicketDBRepository repository;
 	@Autowired
 	ProjectionsDBRepository projectionRepository;
+	@Autowired
+	UserDBRepository userRepository;
 	
 	@Override
 	public Collection<Ticket> getTickets() {
@@ -25,16 +30,23 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	}
 
 	@Override
-	public Ticket addTicket(Ticket ticket) {
+	public String addTicket(Ticket ticket) {
 
-		Projection projection = projectionRepository.findByName(ticket.getProjection().getName());
-		
-		// PROVERA SLOBODNIH MESTA U SALI ZA TU PROJEKCIJU
+		if(ticket.getNewPrice() == 0) {
+			return "Please enter all required data!";
+		}
+		Projection projection = projectionRepository.findById(ticket.getProjection().getId());
 		
 		ticket.setProjection(projection);
-
+		ticket.setReserved(false);
+		ticket.setFastTicket(true);
 		repository.save(ticket);
-		return ticket;
+		projection.addTicket(ticket);
+		projectionRepository.save(projection);
+		List<Ticket> tickets = projection.getTickets();
+		System.out.println("BROJ KARATA " + tickets.size());
+		
+		return null;
 	}
 
 	@Override
@@ -49,8 +61,23 @@ public class TicketServiceImpl implements TicketServiceInterface{
 
 	@Override
 	public Ticket reserve(Ticket ticket, User user) {
+
 		return null;
+
+
+		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
+			return null;
+		}
 		
+		Ticket ticketToReserve = repository.findOne(ticket.getId());
+		User userWhoReserve = userRepository.findById(user.getId());
+		
+		ticketToReserve.setUser(userWhoReserve);
+		ticketToReserve.setReserved(true);
+		repository.save(ticketToReserve);
+		return ticketToReserve;
+
+
 	}
 
 }

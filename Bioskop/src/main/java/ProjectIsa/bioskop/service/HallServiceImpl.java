@@ -25,20 +25,21 @@ public class HallServiceImpl implements HallServiceInterface{
 	}
 
 	@Override
-	public Hall addHall(Hall hall) {
+	public String addHall(Hall hall) {
 		
 		if(hall.getName() == "" || hall.getTheaterOrCinema() == null) {
-			return null;
+			return "Please enter all required data!";
 		}
 		
 		//ako u odredjenom bioskopu postoji hall sa ispit nazivom, return null
 		for(Hall h : repository.findAll()) {
 			if(hall.getTheaterOrCinema().getName().equals(h.getTheaterOrCinema().getName()) && hall.getName().equals(h.getName())) {
-				return null;
+				return "Hall with the same name already exists!";
 			}
 		}
 		
-		return repository.save(hall);
+		repository.save(hall);
+		return null;
 		
 	}
 

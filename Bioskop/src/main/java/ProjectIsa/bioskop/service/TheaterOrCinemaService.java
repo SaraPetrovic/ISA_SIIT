@@ -32,10 +32,10 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	}
 
 	@Override
-	public TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc) {
+	public String addTheaterOrCinema(TheaterOrCinema tc) {
 		
 		if(tc.getName() == "" || tc.getDescription() == "" || tc.getAdress().getCity() == "" || tc.getAdress().getStreet() == "") {
-			return null;
+			return "Please enter all required data!";
 		}
 		if (tc.getAdress() != null) {
 			addAddress(tc.getAdress());
@@ -43,10 +43,11 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		
 		TheaterOrCinema t = repository.findByName(tc.getName());
 		if (t != null) {
-			return null;
+			return "Cinema/theater with the same name already exists!";
 		}
 		
-		return repository.save(tc);
+		repository.save(tc);
+		return null;
 	}
 
 	@Override
@@ -60,12 +61,17 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	}
 
 	@Override
-	public TheaterOrCinema changeInstitution(TheaterOrCinema institution, TheaterOrCinema newInstitution) {
+	public String changeInstitution(TheaterOrCinema institution, TheaterOrCinema newInstitution) {
+		
+		if(newInstitution.getName() == "" || newInstitution.getDescription() == "" || newInstitution.getAdress().getCity() == "" 
+				|| newInstitution.getAdress().getStreet() == "") {
+			return "Please enter all required data!";
+		}
 		
 		if (!institution.getName().equals(newInstitution.getName())){
 			TheaterOrCinema cinema = repository.findByName(newInstitution.getName());
 			if (cinema != null){
-				return null;
+				return "Cinema/theater with the same name already exists!";
 			}
 		}
 		institution.setName(newInstitution.getName());
@@ -73,7 +79,7 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		institution.setAdress(newInstitution.getAdress());
 		repository.save(institution.getAdress());
 		repository.save(institution);
-		return institution;
+		return null;
 	}
 	
 	
@@ -90,11 +96,10 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	}
 
 	@Override
-	public TheaterOrCinema changeRepertoar(TheaterOrCinema theaterOrCinema, Long projectionId) {
+	public String changeRepertoar(TheaterOrCinema theaterOrCinema, Long projectionId) {
 
 		Projection projection = projectionRepository.findById(projectionId);
 		
-		//brisanje samo 24h pre odrzavanja projekcije
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
 		Date currentDate = new Date();
@@ -102,20 +107,21 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		try {
 			projDate = sdf.parse(projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1]);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			return e.getMessage();
 		}
 		
 		long millisecondsPerDay = 24 * 60 * 60 * 1000;
 		
+		//brisanje samo 24h pre odrzavanja projekcije
 		//date.getTime() - how meny milliseconds have passed since this date
 		if(!(Math.abs(currentDate.getTime() - projDate.getTime()) > millisecondsPerDay)) {
-			return null;
+			return "You can not delete projection!";
 		}
 		
 		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);
 		repository.save(theaterOrCinema);
-		return theaterOrCinema;
+		return null;
 	}
 
 	
