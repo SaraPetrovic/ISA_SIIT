@@ -11,9 +11,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.HallDBRepository;
+import ProjectIsa.bioskop.repository.MovieDBRepository;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 
 @Service
@@ -24,6 +26,8 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	CinemaDBRepository cinemaRepository;
 	@Autowired
 	HallDBRepository hallRepository;
+	@Autowired
+	MovieDBRepository movieRepository;
 	
 	@Override
 	public Collection<Projection> getProjections() {
@@ -35,26 +39,34 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	}
 
 	@Override
-	public Projection addProjection(Projection projection) {
+	public String addProjection(Projection projection) {
 		
 		if(projection.getDate() == null || projection.getPrice() == 0){
-			return null;
+			return "Please enter all required data!";
 		}
+		
 
-		String projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
+		String projDate = null;
+		try{
+			projDate = projection.getDate().split("T")[0] + " " + projection.getDate().split("T")[1];
+		}catch(Exception e) {
+			return "Not valid date input!";
+		}
 		//ako je unesen datum projekcije pre trenutnog, return null
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date currentDate = new Date();
 		try {
 			if((sdf.parse(projDate)).before(currentDate)) {
-				return null;
+				return "Not valid date input!";
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			return e.getMessage();
 		}
 		
 		String datum = projDate.split(" ")[0];
 		String vreme = projDate.split(" ")[1];
+		projection.setName(projection.getMovieOrPerformance().getName() + " " + datum + " " + vreme + "h");
+		
 		//vreme pocetka u minutima
 		int start = Integer.parseInt(vreme.split(":")[0]) * 60 + Integer.parseInt(vreme.split(":")[1]);
 		
@@ -64,7 +76,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 					&& projection.getName().equals(p.getName())
 					&& projection.getHall().getName().equals(p.getHall().getName())) {
 				
-				return null;
+				return "Occupied hall in that term!";
 			}
 		}
 		
@@ -81,18 +93,18 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 					&& projection.getHall().getName().equals(proj.getHall().getName())
 					&& datum.equals(date)) {
 				if(!(end <= start)) {
-					return null;
+					return "Occupied hall in that term!";
 				}
 			}
 		}
 		
 		//da li je hall iz izabranog bioskopa
 		if(!(projection.getHall().getTheaterOrCinema().getName().equals(projection.getTheaterOrCinema().getName()))) {
-			return null;
+			return "The chosen hall is not from selected cinema!";
 		}
 
 		repository.save(projection);
-		return projection;
+		return null;
 	}
 
 	@Override

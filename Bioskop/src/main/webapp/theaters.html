@@ -1,40 +1,117 @@
-</br>
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<br/>
-			<h1 class="panel-title" align="center" style="color:black;font-family:serif;font-size:45px;">Theaters</h1><br/>
-</div></div>
-<div id="theaters" class="container"></div>
+<!DOCTYPE html>
+<html>
+
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <title>Theaters</title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- materialize -->
+      
+      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+      <!-- Custom styles for this template -->
+      <link href="css/jumbotron.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <link rel="stylesheet" href="js/jquery.rateyo-lib/jquery.rateyo.css">
+      
+</head>
+<body>
+	<script src="js/jquery.rateyo-lib/jquery.rateyo.js"></script>
+
+	<div id="body" class="container-body" style="margin-top: 100px">
+		<div class="jumbotron">
+	         <div class="container">
+	            <h1>Theaters</h1>
+	            <p>We are in the Theater View now!</p>
+	         </div>
+	      </div>
+	
+		<div id="theater-panels">
+				
+		</div>	
+	</div>
+</body>
 
 <script>
+
+	var allTheaters = [];
+	var ratings = [];
 	$.ajax({
 		type: "GET",
 		url: "/api/TheaterOrCinemas",
 		success: function(theaters){
-			$('#theaters').empty();
-			var html = '<hr>';
+			allTheaters = theaters;
+			
+			var body = '';
 			$.each(theaters, function(i, theater){
 				if(theaters == null){
-					html+='<br></br><br></br><br><br></br><br></br><br></br><p><h1>There is no theater at this moment.<h1></p>';
+					// ovde uradi neki alert i redirect
+					body+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
 				}
 				else{
-					//if(theater.isCinema == false){
-						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
-			       		'<div class="col-xs-6 col-sm-6 col-md-6" ><div class="form-group">'+
-			         	'<h2 font-family:serif>'+theater.name+'</h2>'+
-			         	'<p>'+theater.adress.street +' '+ theater.adress.city+'</p>'+
-			         	'<p>'+theater.description+'</p>'+
-			         	'<p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>'+
-			       		'</div></div>'+
-			       		/*
-			       		'<div class="col-xs-6 col-sm-6 col-md-6" ><div class="form-group">'+
-			       		'<button id="changeInfo" type="button" class="btn btn-info">Change informations</button>'+		       		
-			       		'</div></div>'+*/
-			       		'</div><hr>';
-					//}
+					if(theater.cinema == 0){
+						var r = {};
+						r.id = theater.id;
+						r.rating = theater.averageMark;
+						ratings.push(r);
+						body += '<div class="col-md-6">';
+						body +=	  '<div class="panel panel-primary">';
+						body +=	     '<div class="panel-heading">';
+						body +=	         '<h2 class="panel-title">' + theater.name + '</h2>';
+						body +=      '</div>';
+						body +=      '<div class="panel-body">';
+						body +=			'<p>' + theater.adress.street + ', ' + theater.adress.city + '</p>';
+						body +=	        '<p style="margin-top:15px;word-wrap: break-word;">' + theater.description + '</p>';
+						body +=  		'<span id="mark_' + theater.id + '">' + '</span>';
+						body +=	     '</div>';
+						body +=      '<div class="panel-footer">';
+						body +=	        '<button class="btn btn-primary" onclick="repertoire(' + theater.id + ')">Repertoire</button>';
+						body +=      '</div>'
+						body +=   '</div>'
+						body += '</div>'
+					}
 				}
+				
 			});
-			$('#theaters').append(html);
-		}
+			$('#theater-panels').append(body);
+			
+			for (var i = 0; i < ratings.length; i++) {
+				var id = ratings[i].id;
+				var mark = ratings[i].rating;
+				$("#mark_" + id).rateYo({
+					starWidth: "20px",
+					readOnly: true,
+					rating: mark
+				});
+			}
+			
+			
+		},
+		error: function() {alert("nije uspeo ajax za dobavljanje bioskopa");},
+		contentType: "application/json",
+		processData: false,
+		async: false
 	});
+	
+	
+	
+	
+	function repertoire(id) {
+		var redirectLoc = "/theaterProfile.html?id=" + id;
+		window.location.href = redirectLoc;
+	}
+	
+	
 </script>
+
+</html>
+
+    

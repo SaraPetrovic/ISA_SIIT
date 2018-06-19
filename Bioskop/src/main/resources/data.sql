@@ -46,7 +46,7 @@ insert into membership(bronze_min, bronze_max, silver_min, silver_max, gold_min,
 
 insert into theater_or_cinema(id,average_mark, description, is_cinema, name, adress_id) values ('5', '4', 'Opis...', true, 'Cinema1', '10')
 insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('2', '5', 'Opis2...', false, 'Theater1', '12')
-insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('3', '2', 'Opis3...', false, 'Theater2', '15')
+insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('3', '2', 'Opis3...', false, 'Theater2', '8')
 insert into theater_or_cinema(id, average_mark, description, is_cinema, name, adress_id) values ('4', '5', 'Opis4...', true, 'Cinema2', '16')
 
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('1', '12', '12', 'Hall1', '5')
@@ -55,8 +55,19 @@ insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('3
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('4', '24', '30', 'Hall4', '5')
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5', '7', '7', 'Hall5', '4')
 
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', '0', 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', '0', 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', 4.1, 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', 3.6, 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
 
-insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('nazivProj', '16.06.2018.', 350.00, 1, 1, 2)  
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 16.06.2018. 18.00', '16.06.2018.', 350.00, 1, 1, 4)  
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 16.06.2018. 22.00', '16.06.2018.', 350.00, 1, 1, 4)  
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('Occupation 16.06.2018. 18.00', '16.06.2018.', 350.00, 2, 2, 4)  
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('Occupation 16.06.2018. 21.00', '16.06.2018.', 350.00, 2, 2, 4)  
+insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('Occupation 16.06.2018. 15.00', '16.06.2018.', 350.00, 3, 2, 4)  
+insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 1)
+insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 2)
+insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 3)
+insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 4)
+insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 5)
 
+insert into ticket(fast_ticket, kolona, new_price, red, reserved, version, projection_id, user_id) values (false, 1, 500.00, 1, true, '0', 1, 3)
+insert into projection_tickets(projection_id, tickets_id) values (1, 1)

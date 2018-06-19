@@ -56,26 +56,30 @@ public class TheaterOrCinemaController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<TheaterOrCinema> addTheaterOrCinema(@RequestBody TheaterOrCinema item){
-		TheaterOrCinema newTheaterOrCinema = service.addTheaterOrCinema(item);
-		if(newTheaterOrCinema == null) {
-			return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> addTheaterOrCinema(@RequestBody TheaterOrCinema item){
+		String message = service.addTheaterOrCinema(item);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Cinema/theater is successfully added!\"}", HttpStatus.OK);
 		}
-		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value = "api/changeInstitution", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<TheaterOrCinema> changeInstitution(@RequestBody ChangedInstitution changeInstitution){
+	public ResponseEntity<String> changeInstitution(@RequestBody ChangedInstitution changeInstitution){
 		
 		TheaterOrCinema institution = service.findByName(changeInstitution.getSelectInstitution());
 		TheaterOrCinema newInstitution = new TheaterOrCinema();
 		newInstitution.setName(changeInstitution.getName());
 		newInstitution.setAdress(changeInstitution.getAdress());
 		newInstitution.setDescription(changeInstitution.getDescription());
-		TheaterOrCinema newCinema = service.changeInstitution(institution, newInstitution);
-		return new ResponseEntity<TheaterOrCinema>(newCinema, HttpStatus.OK);
+		
+		String message = service.changeInstitution(institution, newInstitution);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Cinema/theater is successfully changed!\"}", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 	
 	
@@ -84,16 +88,35 @@ public class TheaterOrCinemaController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<TheaterOrCinema> changeRepertoar(@RequestBody String item){
+	public ResponseEntity<String> changeRepertoar(@RequestBody String item){
 		
-		System.out.println("ITEM" + item);
 		String[] splitResult = item.split("\"");
 		Long projectionId = Long.parseLong(splitResult[3].split(" ")[0]);
 		Long cinemaId = Long.parseLong(splitResult[3].split(" ")[1]);
 		
 		TheaterOrCinema cinema = service.getTheaterOrCinema(cinemaId);
 		
-		TheaterOrCinema newTheaterOrCinema = service.changeRepertoar(cinema, projectionId);
-		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
+		String message = service.changeRepertoar(cinema, projectionId);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Projection is successfully removed!\"}", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(
+			value = "/api/TheaterOrCinema/{cinemaID}/projections",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<List<Projection>> getCinemasProjections(@PathVariable("cinemaID") Long id) {
+		TheaterOrCinema t = service.getTheaterOrCinema(id);
+		List<Projection> ret = null;
+		if (t != null) {
+			ret = t.getProjections();
+		}
+		if (ret == null) {
+			return new ResponseEntity<List<Projection>>(ret, HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<List<Projection>>(ret, HttpStatus.OK);
 	}
 }

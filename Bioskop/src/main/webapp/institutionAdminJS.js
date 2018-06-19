@@ -4,17 +4,62 @@ function loadProjectionForCinema(cinemaId){
 			type: "GET",
 			url: "/api/projections",
 			success: function(projections){
+				var proj = 0;
 				$("#selectProjectionForTicket").empty();
 				var select = document.getElementById("selectProjectionForTicket");
-				$.each(projections, function(i, projection){
+				$.each(projections, function(m, projection){
 					if(projection.theaterOrCinema.id == cinemaId){
+						proj = 1;
 						var option = document.createElement("OPTION");
 						select.add(option);
-						option.value = projection.name;
+						option.value = projection.id;
 						option.text = projection.name;	
 					}
 				});
-			}
+				if(proj == 0){
+					swal("Sorry,", "You must create projections before you create ticket!", "info");
+					$("#newTicket").modal("hide");
+				}
+				
+				if(projections.length == 1){
+					$("#seatSelect").empty();
+					var i, j;
+					var select = document.getElementById("seatSelect");
+					
+					$.each(projections, function(i, projection){
+						var maxRow = projection.hall.maxRow;
+						var maxColumn = projection.hall.maxColumn;
+						if(projection.tickets == null){
+							for (i = 1; i < maxRow + 1; i++) {
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	var option = document.createElement("OPTION");
+							    	option.value = i + "-" + j;
+									option.text = i + "-" + j;
+							    	select.add(option);
+									
+							    }
+							}
+						}else{
+							for (i = 1; i < maxRow + 1; i++) {
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	$.each(tickets, function(i, ticket){
+										if(ticket.red != i && ticket.kolona != j){
+											var option = document.createElement("OPTION");
+											select.add(option);
+											option.value = i + "-" + j;
+											option.text = i + "-" + j;
+										}
+									});  
+							    }
+							}
+						}
+					});
+				}
+			},
+			error: function(err){
+				swal("Sorry,", "You must create projections before you create ticket!", "info");
+		    	$("#newTicket").modal("hide");
+			},
 		});
 	}
 

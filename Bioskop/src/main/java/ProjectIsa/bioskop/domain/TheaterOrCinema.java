@@ -32,9 +32,6 @@ public class TheaterOrCinema implements Serializable{
 	private String description;
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Ticket> fastRezTicket;
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
 	private List<Projection> projections;
 	@Column(nullable = false)
 	private double averageMark;
@@ -54,14 +51,13 @@ public class TheaterOrCinema implements Serializable{
 		this.description = description;
 	}
 	
-	public TheaterOrCinema(Long id, String name, Adresa adress, String description, List<Ticket> fastRezTicket,
+	public TheaterOrCinema(Long id, String name, Adresa adress, String description,
 			List<Projection> projections, double averageMark, List<Hall> halls, boolean isCinema) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.adress = adress;
 		this.description = description;
-		this.fastRezTicket = fastRezTicket;
 		this.projections = projections;
 		this.averageMark = averageMark;
 		this.halls = halls;
@@ -98,14 +94,6 @@ public class TheaterOrCinema implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public List<Ticket> getFastRezTicket() {
-		return fastRezTicket;
-	}
-
-	public void setFastRezTicket(List<Ticket> fastRezTicket) {
-		this.fastRezTicket = fastRezTicket;
 	}
 
 	public List<Projection> getProjections() {

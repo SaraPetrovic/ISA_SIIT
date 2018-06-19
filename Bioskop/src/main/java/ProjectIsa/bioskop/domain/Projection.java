@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Projection implements Serializable{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
@@ -39,7 +36,7 @@ public class Projection implements Serializable{
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
 	@JsonIgnore
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Ticket> tickets;
 	
 	public Projection() {
@@ -123,5 +120,7 @@ public class Projection implements Serializable{
 		this.tickets = tickets;
 	}
 
-		
+	public void addTicket(Ticket ticket) {
+		this.tickets.add(ticket);
+	}
 }

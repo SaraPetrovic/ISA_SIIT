@@ -61,23 +61,24 @@
 			var i = 1;
 	
 			tickets.forEach(function(ticket){
+				if(ticket.fastTicket == true && ticket.reserved == false){
+					body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading">' +
+					'<h3 class="panel-title"><b>'+ticket.projection.movieOrPerformance.name+'</b></h3> </div>'+ 
+					'<p style="margin-top:15px;word-wrap: break-word;">Cinema/theater: '+ticket.projection.theaterOrCinema.name+' </p>'+
+					'<p style="margin-top:15px;word-wrap: break-word;">Hall: '+ticket.projection.hall.name+' </p>'+
+					'<p style="margin-top:15px;word-wrap: break-word;">Row - Column: '+ticket.red+' - '+ticket.kolona+' </p>'+
+					'<p> <small>Old price: '+ ticket.projection.price + '</small> <big style="color:red;">New price: '+ ticket.newPrice + '</big></p>' +
+					'<p><a class="btn btn-primary " onclick="reserve('+ticket.id+')" style="display:inline;"> Reserve </a></p></div></div>';
 					
-				
-				body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading">' +
-				'<h3 class="panel-title"><b>'+ticket.projection.movieOrPerformance.name+'</b></h3> </div>'+ 
-				'<p style="margin-top:15px;word-wrap: break-word;">Cinema/theater: '+ticket.projection.theaterOrCinema.name+' </p>'+
-				'<p style="margin-top:15px;word-wrap: break-word;">Hall: '+ticket.projection.hall.name+' </p>'+
-				'<p style="margin-top:15px;word-wrap: break-word;">Row - Column: '+ticket.red+' - '+ticket.kolona+' </p>'+
-				'<p> <small>Old price: '+ ticket.projection.price + '</small> <big style="color:red;">New price: '+ ticket.newPrice + '</big></p>' +
-				'<p><a class="btn btn-primary " onclick="reserve('+ticket.id+')" style="display:inline;"> Reserve </a></p></div></div>';
-				
-				i++;
-				if (i == 4){
-					body += '</div></div>';
-					body += '<div class="row">';
-					body += '<div style="margin-left:10px;margin-right:10px;">';
-					i = 1;
+					i++;
+					if (i == 4){
+						body += '</div></div>';
+						body += '<div class="row">';
+						body += '<div style="margin-left:10px;margin-right:10px;">';
+						i = 1;
+					}	
 				}
+				
 			});
 	
 			body += '</div>';
@@ -99,10 +100,10 @@
 		    data: JSON.stringify(ticket),
 		    dataType: 'json',
 		    success: function(admin){
-				swal("Reserved!", "You successfully reserved ticket", "success");
+				swal("Reserved!", "You successfully reserved ticket!", "success");
 		    },
 		    error: function(data){
-		    	swal("Sorry!", "You can't reserve this ticket", "error");
+		    	swal("Sorry!", "You can't reserve this ticket!", "error");
 		    },
 		    processData: false,
 		    type: 'POST',

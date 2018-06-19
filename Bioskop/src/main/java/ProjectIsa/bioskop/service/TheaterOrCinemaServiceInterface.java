@@ -7,15 +7,15 @@ import ProjectIsa.bioskop.domain.TheaterOrCinema;
 
 public interface TheaterOrCinemaServiceInterface {
 	List<TheaterOrCinema> getTheaterOrCinemas();
-	TheaterOrCinema addTheaterOrCinema(TheaterOrCinema tc);
+	String addTheaterOrCinema(TheaterOrCinema tc);
 	void deleteTheaterOrCinema(TheaterOrCinema tc);
 	TheaterOrCinema getTheaterOrCinema(Long id);
 	
-	TheaterOrCinema changeInstitution(TheaterOrCinema institution, TheaterOrCinema newInstitution);
+	String changeInstitution(TheaterOrCinema institution, TheaterOrCinema newInstitution);
 	
 	Adresa addAddress(Adresa address);
 	
 	TheaterOrCinema findByName(String name);
 
-	TheaterOrCinema changeRepertoar(TheaterOrCinema cinema, Long projectionId);
+	String changeRepertoar(TheaterOrCinema cinema, Long projectionId);
 }
