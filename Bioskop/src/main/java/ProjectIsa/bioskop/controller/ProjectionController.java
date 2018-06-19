@@ -1,6 +1,5 @@
 package ProjectIsa.bioskop.controller;
 
-import java.io.Console;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
+import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
@@ -80,6 +80,26 @@ public class ProjectionController {
 			return new ResponseEntity<Projection>(projection, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@RequestMapping(
+			value = "/api/projections/{id}/tickets",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<List<Ticket>> getProjectionsTickets(@PathVariable("id") Long id) {
+		Projection p = service.getProjection(id);
+		List<Ticket> ret = null;
+		
+		if (p != null) {
+			ret = p.getTickets();
+		}
+		
+		if (ret == null) {
+			return new ResponseEntity<List<Ticket>>(ret, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<List<Ticket>>(ret, HttpStatus.OK);
+	}
+	
 	@RequestMapping(
 			value = "/api/createProjection",
 			produces = MediaType.APPLICATION_JSON_VALUE,

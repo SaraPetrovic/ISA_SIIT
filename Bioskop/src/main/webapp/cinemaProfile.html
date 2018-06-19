@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <title>Repertoire</title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- materialize -->
+      
+      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+      <!-- Custom styles for this template -->
+      <link href="css/jumbotron.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>	
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsiA8negpX83Hk1V46NYvuQSLe4zctKZg&callback=myMap" async defer></script>
+      <link rel="stylesheet" href="js/jquery.rateyo-lib/jquery.rateyo.css">
+      
+      
+	
+</head>
+<body>
+	<script src="js/jquery.rateyo-lib/jquery.rateyo.js"></script>
+	
+	<div id="header" class="container-body" style="margin-top: 100px">
+		<div class="jumbotron">
+	         <div class="container">
+	            <h1 id="cinema-name-header"></h1>
+	            <div id="rating"></div>
+	         </div>
+	      </div>	
+	</div>
+	
+	<div id="body">
+		<div>
+			<div class="col-md-5">
+				<div id="cinema-details" class="well"></div>
+			</div>
+			<div class="col-md-7">
+				<div class="well" id="map" style="width:60%;height:220px;"></div>
+			</div>
+			
+		</div>
+		<div id="projections-panels">
+			
+			
+		</div>
+	
+	</div>
+</body>
+
+<script>
+	var map;
+	var geocoder;
+	
+	function myMap() {
+		var mapProp= {
+		    center:new google.maps.LatLng(45.267136, 19.833549),
+		    zoom:15,
+		};
+		map = new google.maps.Map(document.getElementById("map"),mapProp);
+		
+		geocoder = new google.maps.Geocoder();
+		
+	}
+	
+	// ova treba da se pozove cim se otvori stranica
+	function codeAddress(street, city){
+		var address = street + ' ' + city;
+		geocoder.geocode( {address:address}, function(results, status) 
+		{
+			if (status == google.maps.GeocoderStatus.OK) 
+		    {
+		    	map.setCenter(results[0].geometry.location);
+		      	var marker = new google.maps.Marker(
+		      	{
+		        	map: map,
+		        	position: results[0].geometry.location
+		    	});
+		    }else {
+		    	alert('Geocode was not successful for the following reason: ' + status);
+		    }
+		});
+	};
+	
+	var getUrlParameter = function getUrlParameter(sParam) {
+	    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+	        sURLVariables = sPageURL.split('&'),
+	        sParameterName,
+	        i;
+
+	    for (i = 0; i < sURLVariables.length; i++) {
+	        sParameterName = sURLVariables[i].split('=');
+
+	        if (sParameterName[0] === sParam) {
+	            return sParameterName[1] === undefined ? true : sParameterName[1];
+	        }
+	    }
+	};
+	var cinemaID = "";
+	var cinemaRating = 0;
+	$(document).ready(function(){
+		cinemaID = getUrlParameter('id');
+		var body = '';
+		// dobavi bioskop
+		$.ajax({
+			type: "GET",
+			url: "/api/TheaterOrCinema/" + cinemaID,
+			success: function(cinema) {	
+				$("#cinema-name-header").text(cinema.name);
+				cinemaRating = cinema.averageMark;
+				
+				body += '<p>Address: ' + cinema.adress.street + ', ' + cinema.adress.city + '</p>';
+				body += '<p>Description: ' + cinema.description + '</p>';
+				
+				$("#cinema-details").append(body);
+			},
+			error: function() {alert("nije uspeo ajax za dobavljanje bioskopa");},
+			contentType: "application/json",
+			processData: false,
+			async: false
+		});
+		
+		// postavi rating
+		$("#rating").rateYo({
+		    starWidth: "40px",
+		    readOnly: true,
+		    rating: cinemaRating,
+		  });
+		
+		
+		var sortedProjections = {};
+		
+		$.ajax({
+			type: "GET",
+			url: "/api/TheaterOrCinema/" + cinemaID + "/projections",
+			contentType: "application/json",
+			processData: false,
+			async: false,
+			success: function(projections) {
+				if(projections == null){
+					// ovde uradi neki alert i redirect
+					alert("projections returned null!");
+				}
+				var movieName = '';
+				$.each(projections, function(i, projection){
+					movieName = projection.movieOrPerformance.name;
+					if (sortedProjections.hasOwnProperty(movieName)) {
+						sortedProjections[movieName].push(projection);
+					} else {
+						sortedProjections[movieName] = [];
+						sortedProjections[movieName].push(projection);
+					}
+					
+				});
+				
+			},
+			error: function() {
+				alert("ERR getting cinemas projections");
+			}
+		});
+		
+		
+		var body = '';
+		for (var key in sortedProjections) {
+			if (sortedProjections.hasOwnProperty(key)) {
+				body += '<div class="col-md-12">';
+				body +=	  '<div class="panel panel-primary">';
+				body +=	     '<div class="panel-heading">';
+				body +=	         '<h2 class="panel-title">' + key + '</h2>';
+				body +=      '</div>';
+				body +=      '<div class="panel-body">';
+				
+				for (var i = 0; i < sortedProjections[key].length; i++) {
+					body += '<button class="btn btn-info" onclick="redirectToReservation(' + sortedProjections[key][i].id + ')">' + sortedProjections[key][i].date + '</button>'	
+				}
+				
+				body +=	     '</div>';
+				body +=      '<div class="panel-footer">';
+				body +=	        '<button class="btn btn-primary" onclick="redirectToMovie(' + sortedProjections[key][0].movieOrPerformance.id  + ',' + cinemaID + ')">Details</button>';
+				body +=      '</div>'
+				body +=   '</div>'
+				body += '</div>'
+				body += '<hr>';
+			}
+		}
+		
+		$("#projections-panels").append(body);
+		
+		
+		
+	})
+	
+
+	function redirectToMovie(movieID, cinemaID) {
+		var redirectLoc = "/movie.html?movieid=" + movieID + "&cinemaid=" + cinemaID;
+		window.location.href = redirectLoc;
+	}
+	
+	function redirectToReservation(projectionID) {
+		var redirectLoc = "/reservation.html?id=" + projectionID;
+		window.location.href = redirectLoc;
+	}
+	
+	
+
+</script>
+	  
+
+</html>

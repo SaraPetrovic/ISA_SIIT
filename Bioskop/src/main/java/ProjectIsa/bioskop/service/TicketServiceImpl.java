@@ -49,9 +49,8 @@ public class TicketServiceImpl implements TicketServiceInterface{
 
 	@Override
 	public Ticket reserve(Ticket ticket, User user) {
-
+		return null;
 		
-	
 	}
 
 }

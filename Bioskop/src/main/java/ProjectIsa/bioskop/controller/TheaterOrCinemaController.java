@@ -96,4 +96,21 @@ public class TheaterOrCinemaController {
 		TheaterOrCinema newTheaterOrCinema = service.changeRepertoar(cinema, projectionId);
 		return new ResponseEntity<TheaterOrCinema>(newTheaterOrCinema, HttpStatus.OK);
 	}
+	
+	@RequestMapping(
+			value = "/api/TheaterOrCinema/{cinemaID}/projections",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	public ResponseEntity<List<Projection>> getCinemasProjections(@PathVariable("cinemaID") Long id) {
+		TheaterOrCinema t = service.getTheaterOrCinema(id);
+		List<Projection> ret = null;
+		if (t != null) {
+			ret = t.getProjections();
+		}
+		if (ret == null) {
+			return new ResponseEntity<List<Projection>>(ret, HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<List<Projection>>(ret, HttpStatus.OK);
+	}
 }

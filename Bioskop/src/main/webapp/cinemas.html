@@ -1,148 +1,117 @@
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			
-			<h1 id="naslov" class="panel-title" align="center" style="color:black;font-family:serif;font-size:45px;">Cinemas</h1>
-</div></div>
-<table  class="table" id="table" style="background-color:white;">
-	<tr><td>
-			<span id="map" style="width:30%;height:220px;"></span>
-			<span id="mark"></span>
-			<span id="description"></span>
-	</td></tr>
-	<tr><td>
-			<div id="cinemas" class="container"></div>
-	</td></tr>
-</table>
+<!DOCTYPE html>
+<html>
 
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="icon" href="favicon.ico">
+      <title>Cinemas</title>
+      <!-- Bootstrap core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- materialize -->
+      
+      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+      <!-- Custom styles for this template -->
+      <link href="css/jumbotron.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+      <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <link rel="stylesheet" href="js/jquery.rateyo-lib/jquery.rateyo.css">
+      
+</head>
+<body>
+	<script src="js/jquery.rateyo-lib/jquery.rateyo.js"></script>
+
+	<div id="body" class="container-body" style="margin-top: 100px">
+		<div class="jumbotron">
+	         <div class="container">
+	            <h1>Cinemas</h1>
+	            <p>We are in the Cinema View now!</p>
+	         </div>
+	      </div>
+	
+		<div id="cinema-panels">
+				
+		</div>	
+	</div>
+</body>
 
 <script>
-	var map;
-	var geocoder;
-	
-	function myMap() {
-		var mapProp= {
-		    center:new google.maps.LatLng(45.267136, 19.833549),
-		    zoom:15,
-		};
-		map = new google.maps.Map(document.getElementById("map"),mapProp);
-		
-		geocoder = new google.maps.Geocoder();
-		
-	}
-	
-	function codeAddress(buttonValue){
-		var rez = buttonValue.split(',');
-		var address = rez[1] + ' ' + rez[2];
-		geocoder.geocode( {address:address}, function(results, status) 
-		{
-			if (status == google.maps.GeocoderStatus.OK) 
-		    {
-		    	map.setCenter(results[0].geometry.location);
-		      	var marker = new google.maps.Marker(
-		      	{
-		        	map: map,
-		        	position: results[0].geometry.location
-		    	});
-		    }else {
-		    	alert('Geocode was not successful for the following reason: ' + status);
-		    }
-		});
-	}
-	
+
+	var allCinemas = [];
+	var ratings = [];
 	$.ajax({
 		type: "GET",
 		url: "/api/TheaterOrCinemas",
 		success: function(cinemas){
-			document.getElementById("mark").style.display = "none";
-			document.getElementById("map").style.display = "none";
-			$('#cinemas').empty();
-			var html = '';
+			allCinemas = cinemas;
+			
+			var body = '';
 			$.each(cinemas, function(i, cinema){
-				//alert(cinema.isCinema);
 				if(cinemas == null){
-					html+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
+					// ovde uradi neki alert i redirect
+					body+='<br><br><br><br><br><br><br><br><br><p>There is no cinema at this moment.</p>';
 				}
 				else{
-					//if(cinema.isCinema == 1){
-						html+= '<div border="2" class="row" style="background-color:white" align:"center">'+
-			       		
-			         	'<td><h1 font-family:serif>'+cinema.name+'</h1></td>'+
-			         	'<td><button id="viewDetails" class="viewDetails" value="'+cinema.name+','+cinema.adress.street +','+ cinema.adress.city+','+cinema.description+','+ cinema.averageMark +'" onclick="codeAddress(this.value); viewRepertoireForCinema(this.value); displayMark(this.value)">View details</button></td>'+
-			       		
-			    		'</div><hr>';
-					//}
+					if(cinema.cinema == 1){
+						var r = {};
+						r.id = cinema.id;
+						r.rating = cinema.averageMark;
+						ratings.push(r);
+						body += '<div class="col-md-6">';
+						body +=	  '<div class="panel panel-primary">';
+						body +=	     '<div class="panel-heading">';
+						body +=	         '<h2 class="panel-title">' + cinema.name + '</h2>';
+						body +=      '</div>';
+						body +=      '<div class="panel-body">';
+						body +=			'<p>' + cinema.adress.street + ', ' + cinema.adress.city + '</p>';
+						body +=	        '<p style="margin-top:15px;word-wrap: break-word;">' + cinema.description + '</p>';
+						body +=  		'<span id="mark_' + cinema.id + '">' + '</span>';
+						body +=	     '</div>';
+						body +=      '<div class="panel-footer">';
+						body +=	        '<button class="btn btn-primary" onclick="repertoire(' + cinema.id + ')">Repertoire</button>';
+						body +=      '</div>'
+						body +=   '</div>'
+						body += '</div>'
+					}
 				}
 				
 			});
-			$('#cinemas').append(html);
-		}
-	});
-	
-	function displayMark(buttonValue){
-		var rez = buttonValue.split(',');
-		var mark = rez[4];
-		document.getElementById("mark").style.display = "block";
-		if(mark == 5){
-			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9733;</h2>";
-		}
-		if(mark == 4){
-			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9733;&#9734;</h2>";
-		}
-		if(mark == 3){
-			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9733;&#9734;&#9734;</h2>";
-		}
-		if(mark == 2){
-			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9733;&#9734;&#9734;&#9734;</h2>";
-		}
-		if(mark == 1){
-			document.getElementById("mark").innerHTML = "<h2>&#9733;&#9734;&#9734;&#9734;&#9734;</h2>";
-		}
-		if(mark == 0){
-			document.getElementById("mark").innerHTML = "<h2>&#9734;&#9734;&#9734;&#9734;&#9734;</h2>";
-		}
-	}
-	
-	function viewRepertoireForCinema(buttonValue){
-		var rez = buttonValue.split(',');
-		$("#cinemas").empty();
-		$("#naslov").empty();
-		document.getElementById("naslov").innerHTML = rez[0];
-		document.getElementById("map").style.display = "block";
-		var description = '<br><pre>Street: '+ rez[1] +'</pre><pre>City: '+ rez[2] +'</pre>'+
-    				 	'<pre>Description: '+ rez[3] +'</pre><br>'+
-    				 	'</div></div>';
-		$("#description").append(description);
-		var projectionsHeader = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
-		projectionsHeader += '</div><div style="padding:15px;"><div class="row">';
-		projectionsHeader += '<table class="table" id="movieTable" style="background-color:white;">' +
-			  '<caption>List of projections</caption>' +
-			  '<thead><tr><th scope="col">#</th><th scope="col">Movie</th><th scope="col">Date and time</th><th scope="col">Hall</th>'+
-			  '<th scope="col">Price</th></tr></thead><tbody id="cinemaProjections"></tbody></table>';
-		$("#cinemas").append(projectionsHeader);
-		$("#cinemaProjections").empty();
-		var rowIndex = 1;
-		$.ajax({
-			type: "GET",
-			url: "/api/projections",
-			success: function(projections){
-				$.each(projections, function(i, projection){
-					if(projections != null && rez[0] == projection.theaterOrCinema.name){
-						var cinemasBody = '<tr><th scope="row">' + rowIndex + '</th>';
-						cinemasBody += '<td>' + projection.movieOrPerformance.name + '</td>';
-						cinemasBody += '<td>' + projection.date + '</td>';
-						cinemasBody += '<td>' + projection.hall.name + '</td>';
-						cinemasBody += '<td>' + projection.price + '</td></tr>';
-						$("#cinemaProjections").append(cinemasBody);
-						rowIndex++;
-					}
+			$('#cinema-panels').append(body);
+			
+			for (var i = 0; i < ratings.length; i++) {
+				var id = ratings[i].id;
+				var mark = ratings[i].rating;
+				$("#mark_" + id).rateYo({
+					starWidth: "20px",
+					readOnly: true,
+					rating: mark
 				});
 			}
-		});
+			
+			
+		},
+		error: function() {alert("nije uspeo ajax za dobavljanje bioskopa");},
+		contentType: "application/json",
+		processData: false,
+		async: false
+	});
+	
+	
+	
+	
+	function repertoire(id) {
+		var redirectLoc = "/cinemaProfile.html?id=" + id;
+		window.location.href = redirectLoc;
 	}
 	
 	
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsiA8negpX83Hk1V46NYvuQSLe4zctKZg&callback=myMap"
-    async defer></script>
+</html>
+
     

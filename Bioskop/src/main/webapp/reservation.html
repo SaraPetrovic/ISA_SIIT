@@ -26,15 +26,26 @@
       
 	  
 		
-   </head>
+</head>
 <body>
-
-<div id="body">
-	<div id="seat-map">
-	
+	<div id="header" class="container-body" style="margin-top: 100px">
+		<div class="jumbotron">
+	         <div class="container">
+	            <h1 id="cinema-name-header">Reservation</h1>
+	            <p>Choose one or more seats you'd like to reserve</p>
+	         </div>
+	      </div>	
 	</div>
 
-</div>
+
+	<div id="body">
+	
+		<div id="seat-map">
+		
+		</div>
+		<hr>
+		<button class="btn btn-primary">Next</button>
+	</div>
 
 <script>
 	var getUrlParameter = function getUrlParameter(sParam) {
@@ -55,12 +66,48 @@
 	var projectionID = getUrlParameter('id');
 	alert(projectionID);
 	
+	
+	var maxRow = 0;
+	var maxCol = 0;
+	
 	// ovde ide ajax poziv da dobavim projekciju->sve karte od te projekcije
 	// da bih imao sva zauzeta mesta
 	// i maxrow i maxCol budu iz te projekcije
-	
-	var maxRow = 10;
-	var maxCol = 8;
+	$.ajax({
+		type: "GET",
+		url: "/api/projections/" + projectionID,
+		success: function(projection) {	
+			maxRow = projection.hall.maxRow;
+			maxCol = projection.hall.maxColumn;
+		},
+		error: function() {alert("nije uspeo ajax za dobavljanje projekcije");},
+		contentType: "application/json",
+		processData: false,
+		async: false
+	});
+
+	var allTickets = [];
+	$.ajax({
+		type: "GET",
+		url: "/api/projections/" + projectionID + "/tickets",
+		success: function(tickets) {
+			if (tickets.length > 0) {
+				$.each(tickets, function(i, ticket){
+					var t = {red: -1, col: -1};
+					t.red = ticket.red;
+					t.col = ticket.kolona;
+					allTickets.push(t);
+				});
+			}
+		},
+		error: function() {
+			alert("nije uspeo ajax za dobavljanje karata");
+		},
+		contentType: "application/json",
+		processData: false,
+		async: false
+	})
+
 	var rows = [];
 	var c = "";
 	for (var i = 0; i < maxRow; i++) {
@@ -70,16 +117,9 @@
 	  }
 	}
 	
-	// ovde ubacim karte lepo
-	var allTickets = [];
-	var t1 = {red: 5, col:5};
-	var t2 = {red: 1, col:3};
-	var t3 = {red: 3, col:4};
-	allTickets.push(t1);
-	allTickets.push(t2);
-	allTickets.push(t3);
 	
 	var reservedSeats = generateReservedSeats(allTickets);
+	alert(JSON.stringify(reservedSeats));
 	var firstSeatLabel = 1;
 	
 	$(document).ready(function() {
