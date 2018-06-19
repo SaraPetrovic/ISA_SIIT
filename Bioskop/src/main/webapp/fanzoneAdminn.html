@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link href="css/Adminpanel.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" charset="UTF-8"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> 
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="UTF-8"></script>
+
+<script src="dataTable.js" charset="UTF-8"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" charset="UTF-8"></script>
+<script src="uploadImage.js"></script>
+
+ 
+</head>
+<body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="index.html">Cinema</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+               <form id="login-form" class="navbar-form navbar-right">
+                  <div class="form-group">
+                     <input id="username-field" type="text" placeholder="Username" class="form-control">
+                  </div>
+                  <div class="form-group">
+                     <input id="password-field" type="password" placeholder="Password" class="form-control">
+                  </div>
+                  <button  id="login-btn" type="button" class="btn btn-success">Login</button>
+                  <button  id="admin-button" type="button" class="btn btn-success admin">Administracija</button>
+                  <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
+                  <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
+                  <button  id="adminCinema-button" type="button" class="btn btn-success admin">Institution's Admin</button>
+                  
+               </form>
+            </div>
+            <!--/.navbar-collapse -->
+         </div>
+      </nav>
+<div id="mySidenav" class="sidenav">
+	
+
+  	<a href="#" onclick="profile()">Profile</a>
+  	
+    <hr>
+	<a href="#" onclick="ads()">User ads</a>
+	<hr>
+	<a href="#" onclick="officialItems()">Official items</a>
+</div>
+
+
+
+<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+<div id="main">
+<div class="jumbotron" id="jumbotron" style="margin-left:200px;margin-right:0px;padding-left:0px;padding-top:-50px;margin-top:-50px;">
+	<div class="container" style="margin-top: 100px;height:100%;display:table;" id="bodyAdmin">
+
+
+  	</div>
+</div>
+
+<div class="modal fade" id="modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal za dodavanje admina.-->
+    <div class="modal-content">
+      <div class="row centered-form">
+      <div class="col-xs-12 col-sm-12 col-md-12 ">
+      	<div class="panel panel-default">
+      		<div class="panel-heading">
+	    		<h3 class="panel-title">Please enter information about new admin </h3>
+	 			</div>
+	 			<div class="panel-body">
+	    		<form role="form" id="form">
+	    			<div class="row">
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	                			<input type="text" name="firstName" id="firstName" class="form-control input-sm" placeholder="First Name">
+	    					</div>
+	    				</div>
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	    						<input type="text" name="lastName" id="lastName" class="form-control input-sm" placeholder="Last Name">							    					</div>
+	    				</div>
+	    			</div>
+	    			<div class="row">
+	    			<div class="col-xs-6 col-sm-6 col-md-6" >
+	    				<div class="form-group">
+	    					<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
+	    				</div>
+	    			</div>
+	    			<div class="col-xs-6 col-sm-6 col-md-6" >
+	    				<div class="form-group">
+	    					<input type="text" name="username" id="username" class="form-control input-sm" placeholder="Username">
+	    				</div>
+	    			</div>
+	    			</div>
+	    			<div class="row">
+
+
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	    						<input type="text" name="city" id="city" class="form-control input-sm" placeholder="City">
+	    					</div>
+	    				</div>
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	    						<input type="text" name="street" id="street" class="form-control input-sm" placeholder="Street" >
+	    					</div>
+	    				</div>
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    				
+	    				      <label for="sel1">Select admin type:</label>
+												  <select class="form-control" id="userType">
+ 													 	<option value="SYSTEMADMIN">System admin</option>
+  													<option value="FANZONEADMIN">Fan zone admin</option>
+  													<option value="CINEMAADMIN">Cinema admin</option>
+											  </select>
+										</div>
+	    				
+	    			<div class="col-xs-6 col-sm-6 col-md-6">
+	    				<button  id="addAdmin" type="button" class="btn btn-info">Add new admin</button>
+	    				
+	    			</div>
+	    			</div>
+	    		</form>
+	    	</div>
+   		</div>
+  		</div>
+  	</div>	
+  </div>
+</div>
+</div> 
+</div>
+  <div class="modal fade" id="newCinema" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal za dodavanje pozorista-->
+      <div class="modal-content">
+        <div class="row centered-form">
+        <div class="col-xs-12 col-sm-12 col-md-12 ">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+			    		<h3 class="panel-title">Please enter information about new cinema/theater </h3>
+			 			</div>
+			 			<div class="panel-body">
+			    		<form role="form" data-toggle="validator" id="formCinema">
+			    			<div class="row">
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+			                			<input type="text" name="name" id="name" class="form-control input-sm"  placeholder="Name">
+			    					</div>
+			    				</div>
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+			    						<input type="text" name="city" id="cityCinema" class="form-control input-sm" placeholder="city">						    					</div>
+			    				</div>
+			    			</div>
+			    			<div class="row">
+			    			<div class="col-xs-6 col-sm-6 col-md-6" >
+			    				<div class="form-group">
+			    						<input type="text" name="street" id="streetCinema" class="form-control input-sm" placeholder="Street" required>
+			    				</div>
+			    			</div>
+			    			<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+			    						<input type="text" name="description" id="description" class="form-control input-sm" placeholder="Description" required>
+			    					</div>
+			    			</div>
+
+			    			</div>
+			    			<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6" >
+			    				<div class="form-group">
+			    					<label class="radio-inline"><input type="radio" name="optradio" id="cinema" checked>Cinema</label>
+			    					<label class="radio-inline"><input type="radio" name="optradio" id="theater">Theather</label>
+								
+			    				</div>
+			    			</div>
+			    				<div class="col-xs-6 col-sm-6 col-md-6">
+			    					<div class="form-group">
+			    						<button  id="addEntity" type="button" class="btn btn-info">Add</button>
+			    					</div>
+			    				</div>
+			    			</div>
+			    			
+			    		</form>
+			    	</div>
+	    		</div>
+    		</div>
+    	</div>	
+    </div>
+  </div>
+  </div> 
+ <!-- Modal za dodavanje oficijalnih itema -->
+<div class="modal fade" id="newItem" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+   <div class="modal-content">
+     <div class="row centered-form">
+     <div class="col-xs-12 col-sm-12 col-md-12 ">
+     	<div class="panel panel-default">
+     		<div class="panel-heading">
+    		<h3 class="panel-title">Please enter information about new official item </h3>
+ 			</div>
+ 			<div class="panel-body">
+    		<form role="form" id="formItem">
+				<div class="row">
+					<div class="col-md-6">
+           				<input type="text" name="ItemName" id="itemName" class="form-control input-sm" placeholder="Item Name">
+					</div>
+					<div class="col-md-6">
+						<input type="text" name="price" id="price" class="form-control input-sm" placeholder="Price">
+					</div>
+				
+				
+		    		<div class="col-md-6" style="margin-top:20px;">
+						<input type="text" name="itemDescription" id="itemDescription" class="form-control input-sm col-md-6" placeholder="Description">
+					</div>
+					<div class="col-md-6" style="margin-top:20px;">
+						<input type="text" name="itemQuantity" id="itemQuantity" class="form-control input-sm col-md-6" placeholder="Quantity">	
+					</div>
+				</div>
+					
+				
+    			
+    			    <div class="container" style="margin-top:20px;">
+		
+		
+		
+		          <div id="image-preview-div" style="display: none">
+		            <label for="exampleInputFile">Selected image:</label>
+		            <br>
+		            <img id="preview-img">
+		          </div>
+		          <div class="form-group">
+		            <input type="file" name="file" id="file" required>
+		            <input id="itemImage" name="itemImage" type="hidden" value="">
+		          </div>
+
+
+			        <br>
+			        <div class="alert alert-info" id="loading" style="display: none;" role="alert">
+			          Uploading image...
+			          <div class="progress">
+			            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+				            </div>
+				          </div>
+				        </div>
+				        <div id="message"></div>
+				      </div>
+				
+				
+		
+				    
+	    				
+	    			<div class="col-xs-12 col-sm-12 col-md-12">
+	    				<button  id="officialItemBtn" type="button" class="btn btn-info " onClick="addOfficialItem()" disabled>Add item</button>
+	    				
+	    			</div>
+	    			
+	    			
+	    		</form>
+	    	</div>
+   		</div>
+  		</div>
+  	</div>	
+  </div>
+</div>
+</div>
+
+ <!-- Modal za izmenu oficijalnih itema -->
+<div class="modal fade" id="changeItem" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+   <div class="modal-content">
+     <div class="row centered-form">
+     <div class="col-xs-12 col-sm-12 col-md-12 ">
+     	<div class="panel panel-default">
+     		<div class="panel-heading">
+    		<h3 class="panel-title">Enter new data </h3>
+ 			</div>
+ 			<div class="panel-body">
+    		<form role="form" id="formItemChange">
+				<div class="row">
+					<div class="col-md-6">
+           				Name:<input type="text" name="ItemName" id="itemNameChange" class="form-control input-sm" placeholder="Item Name">
+					</div>
+					<div class="col-md-6">
+						Price<input type="text" name="price" id="itemPriceChange" class="form-control input-sm" placeholder="Price">
+					</div>
+				
+				
+		    		<div class="col-md-6" style="margin-top:20px;">
+						Description:<input type="text" name="itemDescription" id="itemDescriptionChange" class="form-control input-sm col-md-6" placeholder="Description">
+					</div>
+					<div class="col-md-6" style="margin-top:20px;">
+						Quantity:<input type="text" name="itemQuantity" id="itemQuantityChange" class="form-control input-sm col-md-6" placeholder="Quantity">	
+					</div>
+					<input type="hidden" id="itemId" name="custId" >
+				</div>
+					
+			
+	    				
+	    			<div class="col-xs-12 col-sm-12 col-md-12" style="margin-top:10px;">
+	    				<button  id="changeItemBtn" type="button" class="btn btn-info" onClick="changeItem()" >Update</button>
+	    				
+	    			</div>
+	    			
+	    			
+	    		</form>
+	    	</div>
+   		</div>
+  		</div>
+  	</div>	
+  </div>
+</div>
+</div>
+
+
+
+
+<div id="membership" class="row" style="display:none" >
+	<div class="col-md-4">
+		<img class="img-responsive" src="images/secondplace.jpg" style="width:100px;height:100px;margin-bottom:50px;">'
+	</div>
+	<div class="col-md-4">
+	</div>
+	<div class="col-md-4">
+	</div>
+</div> 
+</body>
+<script src="uploadImage.js"></script>
+<script>
+
+var tableIndex = 1;
+$('#newItem').on('hidden.bs.modal', function(){
+	$(this).find('form')[0].reset();
+});
+function admins(){
+	$("#bodyAdmin").empty();
+	$.ajax({
+	    contentType: 'application/json',
+	    dataType: 'json',
+	    success: function(admins){
+	    	
+
+ 			$.get("adminTable.html", function( adminTable ) {
+			  $("#bodyAdmin").append(adminTable);
+// 				  tableIndex = 1;
+				  admins.forEach(function(admin) {
+ 						var tableData = '';
+ 						tableData += '<tr>';
+ 						tableData += '<td>'+ admin.firstName +'</td>';
+ 						tableData += '<td>' + admin.lastName + '</td>';
+ 						tableData += '<td>' + admin.username + '</td>';
+ 						tableData += '<td>' + admin.email + '</td>';
+ 						tableData += '<td>' + admin.userType + '</td></tr>';
+ 						$("#tableBody").append(tableData);
+ 						
+					});
+				$("#adminTable").DataTable();
+				});
+			
+	    },
+	    processData: false,
+	    type: 'GET',
+	    url: '/api/admins'
+	});
+}
+$("#addEntity").click(function() {
+	 var entity = {};
+	 var isCinema = $('#cinema:checked').val()?true:false;
+
+	 entity.cinema = isCinema;
+	 entity.name = $("#name").val();
+	 var adress = { "city" : $("#cityCinema").val(),
+			 		"street" : $("#streetCinema").val()};
+	entity.description = $("#description").val();
+	entity["adress"] = {};
+	entity["adress"] = adress;
+	
+	$.ajax({
+	    contentType: 'application/json',
+	    data: JSON.stringify(entity),
+	    dataType: 'json',
+	    success: function(data){
+
+	    	alert("Succesful add!");
+			$('#newCinema').modal('toggle');
+			cinemaTab();
+
+	    },
+	    error: function(data){
+	    	alert("name already exists");
+	    },
+	    processData: false,
+	    type: 'POST',
+	    url: '/api/createTheaterOrCinema'
+	});
+
+});
+function profile(){
+	$("#bodyAdmin").empty();
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(user){
+			$.get("asd.html", function( profile ) {
+				  $("#bodyAdmin").append(profile);
+				  tableIndex = 1;
+				  $("#profileImage").attr('src', 'images/' + user.profilePicture);
+				  $("#profileLastname").val(user.lastName);
+				  $("#profileFirstname").val(user.firstName);
+				  $("#profileUsername").val(user.username);
+				  $("#profileEmail").val(user.email);
+				  $("#profileCity").val(user.address.city);
+				  $("#profileStreet").val(user.address.street);
+				  $("#profilePassword").val(user.password);
+				  $("#userInfo").html(user.firstName + " " + user.lastName);
+				});
+			
+		},
+		processData: false,
+		url : '/api/profile'
+	});
+}
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+$("#addAdmin").click(function() {
+	var person = {};
+	 person.firstName = $("#firstName").val();
+	 person.lastName = $("#lastName").val();
+	 person.username = $("#username").val();
+	 person.email = $("#email").val();
+	 var address = { "city" : $("#city").val(),
+			 		"street" : $("#street").val()};
+	 
+	 person["address"] = {};
+	 person["address"] = address
+	 person.password = $("#password").val();
+	 person.userType = $("#userType").val();
+	 
+	$.ajax({
+	    contentType: 'application/json',
+	    data: JSON.stringify(person),
+	    dataType: 'json',
+	    success: function(admin){
+			
+	    	alert("Admin " + admin.username + " has been successfully added!");
+			var tableData = '';
+			tableData += '<tr>';
+			tableData += '<td>'+ admin.firstName +'</td>';
+			tableData += '<td>' + admin.lastName + '</td>';
+			tableData += '<td>' + admin.username + '</td>';
+			tableData += '<td>' + admin.email + '</td>';
+			tableData += '<td>' + admin.userType + '</td></tr>';
+			$("#tableBody").append(tableData);
+			$("#adminTable").DataTable();
+
+			$('#modal').modal('toggle');
+			admins();
+
+	    },
+	    error: function(data){
+	    	alert("username already exists");
+	    },
+	    processData: false,
+	    type: 'POST',
+	    url: '/api/users'
+	});
+});
+
+function cinemaTab(){
+	$("#bodyAdmin").empty();
+	$.ajax({
+	    contentType: 'application/json',
+	    dataType: 'json',
+	    success: function(entities){
+	    	
+
+ 			$.get("cinemaTable.html", function( cinemaTable ) {
+			  $("#bodyAdmin").append(cinemaTable);
+// 				  tableIndex = 1;
+				  entities.forEach(function(entity) {
+ 						var tableData = '';
+ 						tableData += '<tr>';
+ 						tableData += '<td>'+ entity.name +'</td>';
+ 						tableData += '<td>' + entity.adress.city + '</td>';
+ 						tableData += '<td>' + entity.adress.street + '</td>';
+ 						tableData += '<td>' + (entity.cinema  ?  "Cinema" : "Theater") + '</td>';
+ 						tableData += '<td>' + entity.description + '</td>';
+ 						tableData += '<td>' + entity.averageMark + '</td></tr>';
+ 						$("#tableBody").append(tableData);
+ 						
+					});
+				$("#cinemaTable").DataTable();
+				});
+			
+	    },
+	    processData: false,
+	    type: 'GET',
+	    url: '/api/TheaterOrCinemas'
+	});
+	
+}
+
+function ads(){
+	$("#bodyAdmin").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" >';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(items){
+			if (items.length != 0){
+				var i=new Number(1);
+				body += '<h2 align="center" style="color:grey;">Ads</h2><hr>';
+				items.forEach(function(item){
+					if (i == 1){
+						body += '<div class="row">';
+					}
+						body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <hr><p style="margin-top:15px;word-wrap: break-word;">Owner: '+item.owner.firstName + ' ' + item.owner.lastName + ' </p> </div> <div class="panel-footer">' ;
+						body += '<button  type="button" style="margin-right:5px;" class="btn btn-primary" onclick="approveItem(' + item.id + ')">Approve</button><button  type="button"  class="btn btn-danger" onclick="declineItem(' + item.id + ')">Decline</button> </div> </div> </div>';
+						
+					i++;
+					if (i == 4){
+						body += '</div>';
+						i = 1;
+					}
+				});
+			}else{
+				body += '<h2 align="center" style="color:grey;">0 items to approve</h2>';
+			}
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyAdmin").append(body);
+		},
+		error: function(){
+			alert("fail");
+		},
+		processData: false,
+		url : '/api/items/unapproved'
+	});
+
+	
+}
+function officialItems(){
+	$("#bodyAdmin").empty();
+	var body = '<div class = "row">';
+	body += '';
+	body += '<div class="col-sm-12 col-md-12" style="background-color:white;border-radius:6px;padding:15px;margin-right:15px;">';
+	body += '<div class="col-sm-12 col-md-12" >';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(items){
+			if (items.length != 0){
+				var i=new Number(1);
+				body += '<h2 align="center" style="color:grey;">Official Items</h2><hr>';
+				body += '<button id="itemAdd" type="button" style="margin-bottom:20px;" class="btn btn-info btn-lg col-md-offset-5" data-toggle="modal" data-target="#newItem">Add official item</button>';
+				items.forEach(function(item){
+					if (i == 1){
+						body += '<div class="row">';
+					}
+						body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+'</p> <hr> <p style="margin-top:15px;word-wrap: break-word;">price: '+item.price +  '$ </p> </div> <div class="panel-footer">' ;
+						body += '<button  type="button" style="margin-right:5px;" class="btn btn-primary" onclick="openChangeModal(' + item.id + ')">change</button><button  type="button"  class="btn btn-danger" onclick="deleteItem(' + item.id + ')">Delete</button> </div> </div> </div>';
+						
+					i++;
+					if (i == 4){
+						body += '</div>';
+						i = 1;
+					}
+				});
+			}else{
+				body += '<h2 align="center" style="color:grey;">0 items to show</h2>';
+				body += '<button id="itemAdd" type="button" style="margin-bottom:20px;" class="btn btn-info btn-lg col-md-offset-5" data-toggle="modal" data-target="#newItem">Add official item</button>';
+
+			}
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyAdmin").append(body);
+		},
+		error: function(){
+			alert("fail");
+		},
+		processData: false,
+		url : '/api/officialItems'
+	});
+
+	
+}
+function deleteItem(id){
+	$.ajax({
+	    contentType: 'application/json',
+	    
+	    dataType: 'text',
+	    success: function(message){
+	    	swal("success", "You successfully deleted item.", "success");
+	    	officialItems();
+	    },
+		
+	    error: function(error){
+	    	swal("error", "Oops.. something went wrong", "error");
+	    },
+	    processData: false,
+	    type: 'DELETE',
+	    url: '/api/officialItems/' + id
+	});
+}
+function openChangeModal(id){
+
+	$("#changeItem").modal("toggle");
+	$.ajax({
+	    contentType: 'application/json',
+	    
+	    dataType: 'json',
+	    success: function(item){
+
+	    	$("#itemPriceChange").val(item.price);
+	    	$("#itemNameChange").val(item.name);
+	    	$("#itemDescriptionChange").val(item.description);
+	    	$("#itemQuantityChange").val(item.quantity)
+	    	$("#itemId").val(item.id);
+	    	//officialItems();
+	    },
+		
+	    error: function(error){
+	    	swal("error", "Oops.. something went wrong", "error");
+	    },
+	    processData: false,
+	    type: 'GET',
+	    url: '/api/officialItems/' + id
+	});
+}
+function changeItem(){
+	var officialItem = {};
+	officialItem.price = $("#itemPriceChange").val();
+	officialItem.name = $("#itemNameChange").val();
+	officialItem.description = $("#itemDescriptionChange").val();
+	officialItem.quantity = $("#itemQuantityChange").val()
+	officialItem.id = $("#itemId").val();
+	$.ajax({
+	    contentType: 'application/json',
+	    data : JSON.stringify(officialItem),
+	    dataType: 'json',
+	    success: function(item){
+	    	swal("Success", "You successfully changed item", "success");
+	    	$("#changeItem").modal("toggle");
+	    	officialItems();
+	    },
+		
+	    error: function(error){
+	    	swal("error", "Oops.. something went wrong", "error");
+	    },
+	    processData: false,
+	    type: 'PUT',
+	    url: '/api/officialItems'
+	});
+}
+function approveItem(id){
+	$.ajax({
+	    contentType: 'application/json',
+	    
+	    dataType: 'json',
+	    success: function(item){
+			swal("Approved", "You successfully approved item: " + item.name, "success");
+			ads();
+	    },
+	    error: function(error){
+	    	if (error.status = '403' ){
+	    		swal("Error", "You dont have permision to accept items", "error");
+	    		
+	    	}else{
+	    		swal("Error", "Something went wrong", "error");
+	    	}
+	    },
+	    processData: false,
+	    type: 'GET',
+	    url: '/api/items/approve/' + id + '/true'
+	});
+}
+function declineItem(id){
+	$.ajax({
+	    contentType: 'application/json',
+	    
+	    dataType: 'json',
+	    success: function(item){
+			swal("Declined", "You successfully declined item: " + item.name, "success");
+			ads();
+	    },
+	    error: function(error){
+	    	if (error.status = '403' ){
+	    		swal("Error", "You dont have permision to decline items", "error");
+	    		
+	    	}else{
+	    		swal("Error", "Something went wrong", "error");
+	    	}
+	    },
+	    processData: false,
+	    type: 'GET',
+	    url: '/api/items/approve/' + id + '/false'
+	});
+}
+function makeOffer(itemId){
+	var itemOffer = {};
+	itemOffer.price = $("#price" + itemId).val();
+	var item = {};
+	item.id = itemId;
+	itemOffer.item = item;
+	$.ajax({
+	    contentType: 'application/json',
+	    data: JSON.stringify(itemOffer),
+	    dataType: 'json',
+	    success: function(admin){
+			alert("Uspesno napravljena ponuda!");
+
+
+	    },
+	    error: function(data){
+	    	
+	    	alert("FAIL");
+	    },
+	    processData: false,
+	    type: 'POST',
+	    url: '/api/items/makeOffer'
+	});
+}
+function reserve(itemId){
+
+
+	var item = {};
+	item.id = itemId;
+
+	$.ajax({
+	    contentType: 'application/json',
+	    data: JSON.stringify(item),
+	    dataType: 'json',
+	    success: function(admin){
+			swal("Reserved!", "You successfully reserved item", "success");
+
+
+	    },
+	    error: function(data){
+	    	swal("Oops!", "You cant reserve this item", "error");
+	    },
+	    processData: false,
+	    type: 'POST',
+	    url: '/api/items/reserve'
+	});
+	
+}
+function myOffersTab(){
+	$("#bodyAdmin").empty();
+	var body = '';
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(itemOffers){
+			var i=new Number(1);
+
+			itemOffers.forEach(function(itemOffer){
+				if (i == 1){
+					body += '<div class="row">';
+				}
+				
+					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+itemOffer.item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+itemOffer.item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+itemOffer.item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ itemOffer.item.id + ')" style="display:inline;" >Update bid </a><input id="price' + itemOffer.item.id +'" value="'+ itemOffer.price +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:100px;margin-left:5px;" > </div> </div> </div>';
+				
+				i++;
+				if (i == 4){
+					body += '</div>';
+					i = 1;
+				}
+			});
+
+			body += '</div>';
+			body += '</div>';
+			body += '</div>';
+			body += '<hr>';
+			$("#bodyAdmin").append(body);
+		},
+		processData: false,
+		url : '/api/items/myOffers'
+	});
+}
+function membership(){
+	$("#bodyAdmin").empty();
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(membership){
+			var html = '<div id="membership" class="row" style="margin-left:-100px;">'
+			html += '<div  class="col-sm-3 col-sm-offset-1"> <div style="background-color:white;border-radius:6px;padding:5px;margin-bottom:50px;"><img class="img-responsive" src="images/firstplace.jpg" style="width:100px;height:100px;margin-left:30%;"><p style="margin-left:10px;margin-bottom:-5px;">Min<p><input value="'+ membership.goldMin + '" type="text" style="display:inline-block;margin-left:10px;width:92%;" name="itemDescription" id="goldMin" class="form-control input-sm"  placeholder="min"><p style="margin-left:10px;margin-bottom:-5px;">Max<p><input value="'+ membership.goldMax + '" type="text" style="width:70%;margin-left:10px;width:92%;" name="itemDescription" id="goldMax" class="form-control input-sm" placeholder="max"></div></div>';
+			html += '<div  class="col-sm-3 col-sm-offset-1"> <div style="background-color:white;border-radius:6px;padding:5px;margin-bottom:50px;"><img class="img-responsive" src="images/secondplace.jpg" style="width:100px;height:100px;margin-left:30%;"><p style="margin-left:10px;margin-bottom:-5px;">Min<p><input value="'+ membership.silverMin + '" type="text" style="display:inline-block;margin-left:10px;width:92%;" name="itemDescription" id="silverMin" class="form-control input-sm"  placeholder="min"><p style="margin-left:10px;margin-bottom:-5px;">Max<p><input value="'+ membership.silverMax + '" type="text" style="width:70%;margin-left:10px;width:92%;" name="itemDescription" id="silverMax" class="form-control input-sm" placeholder="max"></div></div>';
+			html += '<div  class="col-sm-3 col-sm-offset-1"> <div style="background-color:white;border-radius:6px;padding:5px;margin-bottom:50px;"><img class="img-responsive" src="images/thirdplace.jpg" style="width:100px;height:100px;margin-left:30%;"><p style="margin-left:10px;margin-bottom:-5px;">Min<p><input value="'+ membership.bronzeMin + '" type="text" style="display:inline-block;margin-left:10px;width:92%;" name="itemDescription" id="bronzeMin" class="form-control input-sm"  placeholder="min"><p style="margin-left:10px;margin-bottom:-5px;">Max<p><input value="'+ membership.bronzeMax + '" type="text" style="width:70%;margin-left:10px;width:92%;" name="itemDescription" id="bronzeMax" class="form-control input-sm" placeholder="max"></div></div>';
+			html += '</div>';
+			html += '<div class="row" style="margin-left:30px;">'
+			html += '<button  id="membershipBtn" type="button" class="btn btn-info col-md-2 col-md-offset-5" onclick="updateMembership()">Update</button>';
+			html += '</div>'
+			$("#bodyAdmin").append(html);
+
+		},
+		processData: false,
+		url : '/api/membership'
+	});
+
+}
+function updateMembership(){
+	var membership = {};
+	membership.bronzeMin = $("#bronzeMin").val();
+	membership.bronzeMax = $("#bronzeMax").val();
+	membership.silverMin = $("#silverMin").val();
+	membership.silverMax = $("#silverMax").val();
+	membership.goldMin = $("#goldMin").val();
+	membership.goldMax = $("#goldMax").val();
+
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'POST',
+		data : JSON.stringify(membership),
+		success : function(membership1){
+			alert("UPDATED");
+
+		},
+		processData: false,
+		url : '/api/membership'
+	});
+	
+	
+ }
+ function addOfficialItem(){
+	 
+ }
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+
+
+</html>

@@ -119,6 +119,41 @@ $('#uploadImage').click( function() {
       }
     });
 });
+$('#file').change(function() {
+
+    $('#message').empty();
+
+    var file = this.files[0];
+    var match = ["image/jpeg", "image/png", "image/jpg"];
+
+    if ( !( (file.type == match[0]) || (file.type == match[1]) || (file.type == match[2]) ) )
+    {
+      noPreview();
+
+      $('#message').html('<div class="alert alert-warning" role="alert">Unvalid image format. Allowed formats: JPG, JPEG, PNG.</div>');
+
+      return false;
+    }
+
+    if ( file.size > maxsize )
+    {
+      noPreview();
+
+      $('#message').html('<div class=\"alert alert-danger\" role=\"alert\">The size of image you are attempting to upload is ' + (file.size/1024).toFixed(2) + ' KB, maximum size allowed is ' + (maxsize/1024).toFixed(2) + ' KB</div>');
+
+      return false;
+    }
+
+    $('#upload-button').removeAttr("disabled");
+
+    var reader = new FileReader();
+
+    reader.onload = selectImage;
+    reader.readAsDataURL(this.files[0]);
+
+  
+
+});
 $("#uploadProfile").click(function() {
 	var person = {};
 	 person.firstName = $("#profileFirstname").val();

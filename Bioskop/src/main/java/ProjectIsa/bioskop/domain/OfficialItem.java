@@ -1,13 +1,18 @@
 package ProjectIsa.bioskop.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class OfficialItem implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -24,7 +29,9 @@ public class OfficialItem implements Serializable{
 	
 	@Column(nullable = false)
 	private String description;
-	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="officialItem")
+	private List<ItemReservation> reservations;
 	@Column(nullable = true)
 	private String picture;
 	@Column(nullable = false)
@@ -34,7 +41,13 @@ public class OfficialItem implements Serializable{
 	@Version
 	private Long version;
 	
-
+	
+	public List<ItemReservation> getReservations() {
+		return reservations;
+	}
+	public void setReservations(List<ItemReservation> reservations) {
+		this.reservations = reservations;
+	}
 	public int getQuantity() {
 		return quantity;
 	}

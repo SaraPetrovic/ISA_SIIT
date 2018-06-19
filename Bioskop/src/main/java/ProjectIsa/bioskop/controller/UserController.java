@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ProjectIsa.bioskop.domain.Membership;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.repository.MembershipRepository;
 import ProjectIsa.bioskop.service.UserService;
 @CrossOrigin
 @RestController
@@ -33,6 +35,9 @@ public class UserController {
 	private HttpServletRequest request;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MembershipRepository membershipRepository;
+
 	@RequestMapping(
 			value = "/api/users",
 			method = RequestMethod.GET,
@@ -190,5 +195,42 @@ public class UserController {
 		} else {
 			return new ResponseEntity<List<User>>(requestList, HttpStatus.OK);
 		}
+	}
+	@RequestMapping(
+			value = "/api/membership",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Membership> membership() {
+		
+		
+		Membership m  = membershipRepository.findOne(1L);
+
+
+		return new ResponseEntity<Membership>(m,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/api/membership",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Membership> updateMembership(@RequestBody Membership newMembership) {
+		
+		
+		Membership membership  = membershipRepository.findOne(1L);
+		membership.setBronzeMin(newMembership.getBronzeMin());
+		membership.setBronzeMax(newMembership.getBronzeMax());
+		
+		membership.setSilverMin(newMembership.getSilverMin());
+		membership.setSilverMax(newMembership.getSilverMax());
+		
+		membership.setGoldMin(newMembership.getGoldMin());
+		membership.setGoldMax(newMembership.getGoldMax());
+		membershipRepository.save(membership);
+
+
+
+		return new ResponseEntity<Membership>(membership,
+				HttpStatus.OK);
 	}
 }
