@@ -1,7 +1,10 @@
 package ProjectIsa.bioskop.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
+import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
@@ -33,6 +37,8 @@ public class ProjectionController {
 	MovieOrPerformanceServiceImpl movieService;
 	@Autowired
 	TheaterOrCinemaService cinemaService;
+	@Autowired
+	private HttpServletRequest request;
 	
 	@RequestMapping(
 					value = "/api/projections",
@@ -143,6 +149,34 @@ public class ProjectionController {
 		newProjection.setTheaterOrCinema(projection.getTheaterOrCinema());
 		Projection returnProjection = service.changeProjection(projection, newProjection);
 		return new ResponseEntity<Projection>(returnProjection, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/api/makeReservation",
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			method = RequestMethod.POST)
+	public ResponseEntity<List<Ticket>> makeReservation(@RequestBody List<Ticket> tickets) {
+		User u = null;
+		u = (User) request.getSession().getAttribute("user");
+		if (u == null) {
+			// WTF
+			System.out.println("NIJE PRONASAO LOGOVANOG USERA U makeReservation api");
+		}
+		
+		for (Ticket t : tickets) {
+			Projection p = service.getProjection(t.getProjection().getId());
+			t.setUser(u);
+			t.setProjection(p);
+			p.addTicket(t);
+			Projection updatedProjection = service.makeReservation(p);
+			if (updatedProjection == null) {
+				return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.BAD_REQUEST);
+			}
+		}
+		
+		return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.OK);
+		
 	}
 	
 	

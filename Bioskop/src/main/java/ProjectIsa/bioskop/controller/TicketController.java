@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.service.ProjectionServiceImpl;
 import ProjectIsa.bioskop.service.TicketServiceImpl;
 
 @RestController
@@ -25,6 +28,8 @@ public class TicketController {
 
 	@Autowired
 	TicketServiceImpl service;
+	@Autowired
+	ProjectionServiceImpl projectionService;
 	@Autowired
 	private HttpServletRequest request;
 	
@@ -105,4 +110,6 @@ public class TicketController {
 			}
 		}
 	}
+	
+	
 }

@@ -158,6 +158,12 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		List<Projection> ret = repository.getAllByCinemaId(id);
 		return ret;
 	}
+
+	@Override
+	public Projection makeReservation(Projection proj) {
+		
+		return repository.save(proj);
+	}
 	
 	
 	

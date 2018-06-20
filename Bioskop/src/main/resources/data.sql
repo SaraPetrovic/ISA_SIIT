@@ -55,8 +55,8 @@ insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('3
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('4', '24', '30', 'Hall4', '5')
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5', '7', '7', 'Hall5', '4')
 
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', 4.1, 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', 3.6, 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', 4.1, 'Description...', '100', 'item.jpg', true, 'I can only imagine', 'Jon Erwin', 'religious')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', 3.6, 'Description...', '139', 'item.jpg', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
 
 insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 16.06.2018. 18.00', '16.06.2018.', 350.00, 1, 1, 4)  
 insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 16.06.2018. 22.00', '16.06.2018.', 350.00, 1, 1, 4)  
