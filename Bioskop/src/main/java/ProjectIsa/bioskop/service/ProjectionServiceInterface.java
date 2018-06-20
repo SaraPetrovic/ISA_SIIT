@@ -15,5 +15,7 @@ public interface ProjectionServiceInterface {
 	Projection changeProjection(Projection proj, Projection newProj);
 
 	List<Projection> getCinemasProjections(Long id);
+	
+	Projection makeReservation(Projection proj);
 
 }
