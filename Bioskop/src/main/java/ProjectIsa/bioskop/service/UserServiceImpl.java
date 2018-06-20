@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.domain.UserType;
+import ProjectIsa.bioskop.repository.AddressRepository;
 import ProjectIsa.bioskop.repository.UserDBRepository;
 
 @Service
@@ -20,7 +21,8 @@ public class UserServiceImpl implements UserService {
 	private static final String DEFAULT_ADMIN_PASSWORD = "ftn";
 	@Autowired
 	UserDBRepository userDbRepository;
-	
+	@Autowired
+	AddressRepository addressRepository;
 	@Override
 	public Collection<User> getUsers() {
 		List<User> users = userDbRepository.findAll();
@@ -29,32 +31,20 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User addUser(User user) {
-		if (user.getAddress() != null){
-			Adresa exists = userDbRepository.findByAddress_CityAndAddress_Street(user.getAddress().getCity(), user.getAddress().getStreet());
-			if ( exists == null) {
-				addAddress(user.getAddress());
-			}
-			else {
-				user.setAddress(exists);
-			}
-		}else{
+		//ukoliko vec postoji adresa postavi je korisniku
+		Adresa address = addressRepository.findByCityAndStreet(user.getAddress().getCity(), user.getAddress().getStreet());
+		if (address != null){
+			user.setAddress(address);
+		}
+		//admini ne moraju da aktiviraju account mailom
+		user.setActivated(true);
+		user.setIsFirstLogin(true);
+		user.setPassword(DEFAULT_ADMIN_PASSWORD);
+		if (!EmailValidator.getInstance().isValid(user.getEmail())){
 			return null;
 		}
 
-		user.setIsFirstLogin(true);
-		if (user.getPassword() == null){
-			user.setPassword(DEFAULT_ADMIN_PASSWORD);
-		}else{
-			//return null;
-		}
-
-		User existingUser = userDbRepository.findByUsername(user.getUsername());
-
-		if (existingUser == null){
-			User newUser = userDbRepository.save(user);
-			return newUser;
-		}
-		return null;
+		return userDbRepository.save(user);
 	}
 	@Override
 	public void deleteUser(User user) {
@@ -95,13 +85,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User changeProfile(User user, User changedUser) {
 		//check if new username exists
-		
-		if (!user.getUsername().equals(changedUser.getUsername())){
-			User u = userDbRepository.findByUsername(changedUser.getUsername());
-			if (u != null){
-				return null;
-			}
-		}
+
 		if (!EmailValidator.getInstance().isValid(changedUser.getEmail())){
 			return null;
 		}
@@ -180,6 +164,10 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDbRepository.save(user);
 
+	}
+	@Override
+	public User getUserByUsername(String username){
+		return userDbRepository.findByUsername(username);
 	}
 	
 

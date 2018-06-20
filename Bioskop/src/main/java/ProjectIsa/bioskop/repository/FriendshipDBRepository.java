@@ -11,9 +11,12 @@ import ProjectIsa.bioskop.domain.User;
 
 
 public interface FriendshipDBRepository extends JpaRepository<Friendship, FriendshipPrimKey> {
+	@Override
 	@SuppressWarnings("unchecked")
 	Friendship save(Friendship friendship);
+	@Override
 	List<Friendship> findAll();
+	@Override
 	void delete(Friendship friendship);
 	//boolean existsByPrimKey(FriendshipPrimKey primaryKey);
 	Friendship findByPrimKey(FriendshipPrimKey primaryKey);

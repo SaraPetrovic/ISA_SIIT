@@ -421,7 +421,7 @@ function profile(){
 		dataType : 'json',
 		type : 'GET',
 		success : function(user){
-			$.get("asd.html", function( profile ) {
+			$.get("profile.html", function( profile ) {
 				  $("#bodyAdmin").append(profile);
 				  tableIndex = 1;
 				  $("#profileImage").attr('src', 'images/' + user.profilePicture);
@@ -662,7 +662,7 @@ function openChangeModal(id){
 	    },
 	    processData: false,
 	    type: 'GET',
-	    url: '/api/officialItems/' + id
+	    url: '/api/officialItem/' + id
 	});
 }
 function changeItem(){

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import ProjectIsa.bioskop.domain.Adresa;
-import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
 
 public interface CinemaDBRepository extends Repository<TheaterOrCinema, Long>{

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ProjectIsa.bioskop.domain.Membership;
 import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.repository.MembershipRepository;
 import ProjectIsa.bioskop.service.UserService;
 @CrossOrigin
@@ -71,11 +72,38 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<User> addUser(@RequestBody User user){
-
-
-		User newUser = userService.addUser(user);
-		
-		return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		//samo admin sme da doda novog admina
+		if (sessionUser != null && sessionUser.getUserType() == UserType.SYSTEMADMIN){
+			User dbUser = userService.getUserByUsername(user.getUsername());
+			if (dbUser != null){
+				return new ResponseEntity<User>(dbUser, HttpStatus.CONFLICT);
+			}
+			User newUser = userService.addUser(user);
+			
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+	}
+	@RequestMapping(
+			value = "/api/users/{id}",
+			produces = MediaType.TEXT_PLAIN_VALUE,
+			method = RequestMethod.DELETE)
+	public String addUser(@PathVariable("id") Long id){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		//samo admin sme da doda novog admina
+		if (sessionUser != null && sessionUser.getUserType() == UserType.SYSTEMADMIN){
+			User userToDelete = userService.getUser(id);
+			if (userToDelete.getUserType() != UserType.SYSTEMADMIN){
+				userService.deleteUser(userToDelete);
+				return "success";
+			}else{
+				return "error";
+			}
+		}
+		return "error";
 	}
 	@RequestMapping(
 			value = "/api/admins",
@@ -109,9 +137,21 @@ public class UserController {
 	public ResponseEntity<User> changeProfile(@RequestBody User changedUser){
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user"); 
-		
-		User newUser = userService.changeProfile(user, changedUser);
-		return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		if (user != null){
+			if (!user.getUsername().equals(changedUser.getUsername())){
+				User u = userService.getUser(changedUser.getUsername());
+				if (u != null){
+					return new ResponseEntity<User>(changedUser, HttpStatus.CONFLICT);
+	
+				}
+			}
+			User newUser = userService.changeProfile(user, changedUser);
+			if (newUser == null){
+				return new ResponseEntity<User>(changedUser, HttpStatus.PRECONDITION_FAILED);
+			}
+			return new ResponseEntity<User>(newUser, HttpStatus.OK);
+		}
+		return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "api/profile",
@@ -215,22 +255,33 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Membership> updateMembership(@RequestBody Membership newMembership) {
+		User loggedUser = (User) request.getSession().getAttribute("user");
+		if (loggedUser != null && loggedUser.getUserType() == UserType.SYSTEMADMIN){
+			
+			if (newMembership.getBronzeMin() < newMembership.getBronzeMax() && newMembership.getSilverMin() < newMembership.getSilverMax() 
+					&& newMembership.getGoldMin() < newMembership.getGoldMax() && newMembership.getBronzeMax() == (newMembership.getSilverMin() - 1)
+					&& newMembership.getSilverMax() == (newMembership.getGoldMin() -1) && newMembership.getBronzeMin() >= 0){
+				Membership membership  = membershipRepository.findOne(1L);
+				membership.setBronzeMin(newMembership.getBronzeMin());
+				membership.setBronzeMax(newMembership.getBronzeMax());
+				
+				membership.setSilverMin(newMembership.getSilverMin());
+				membership.setSilverMax(newMembership.getSilverMax());
+				
+				membership.setGoldMin(newMembership.getGoldMin());
+				membership.setGoldMax(newMembership.getGoldMax());
+				membershipRepository.save(membership);
+	
+				return new ResponseEntity<Membership>(membership,
+						HttpStatus.OK);
+			}else{
+				return new ResponseEntity<Membership>(newMembership, HttpStatus.CONFLICT);
+			}
+		}else{
+			return new ResponseEntity<Membership>(newMembership, HttpStatus.FORBIDDEN);
+		}
 		
-		
-		Membership membership  = membershipRepository.findOne(1L);
-		membership.setBronzeMin(newMembership.getBronzeMin());
-		membership.setBronzeMax(newMembership.getBronzeMax());
-		
-		membership.setSilverMin(newMembership.getSilverMin());
-		membership.setSilverMax(newMembership.getSilverMax());
-		
-		membership.setGoldMin(newMembership.getGoldMin());
-		membership.setGoldMax(newMembership.getGoldMax());
-		membershipRepository.save(membership);
 
-
-
-		return new ResponseEntity<Membership>(membership,
-				HttpStatus.OK);
+		
 	}
 }

@@ -52,7 +52,10 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 		return repository.findByName(name);
 	}
 
+
+
 	public String changeMovie(MovieOrPerformance movie, MovieOrPerformance newMovie) {
+
 
 		if(newMovie.getName() == " " || newMovie.getType() == "" || newMovie.getProducer() == "" || newMovie.getActors() == "" 
 				|| newMovie.getDescription() == "" || newMovie.getFilmDuration() == 0) {

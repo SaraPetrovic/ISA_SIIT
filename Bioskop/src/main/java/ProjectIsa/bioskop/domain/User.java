@@ -12,9 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,7 +39,7 @@ public class User implements Serializable {
 	@Column(nullable = false, name = "usertype")
 	@Enumerated(EnumType.STRING)
 	private UserType userType;
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	private Adresa address;
 	@Column(nullable = false)
 	private String email;
@@ -59,7 +58,7 @@ public class User implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> itemOffers;
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.ALL)
 	private List<ItemReservation> itemReservations;
 	@Column(nullable = false)
 	private boolean activated;

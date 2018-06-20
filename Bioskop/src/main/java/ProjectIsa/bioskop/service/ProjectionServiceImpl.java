@@ -124,6 +124,7 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 		return proj;
 	}
 
+	@Override
 	public Projection changeProjection(Projection projection, Projection newProjection) {
 		
 		if (!projection.getName().equals(newProjection.getName())){

@@ -173,17 +173,26 @@ $("#uploadProfile").click(function() {
 	    dataType: 'json',
 	    success: function(data){
 
-	    	alert("Successfully changed profile!");
+	    	swal("Success", "You successfully changed your profile information", "success");
 
 
 
 	    },
 	    error: function(data){
-	    	alert("fail");
+	    	if (data.status == '409'){
+	    		swal("error", "username already exists", "error");
+	    	}else if (data.status == '412'){
+	    		swal("error", "bad input", "error");
+	    	}else{
+	    		
+	    		swal("error", "error", "error");
+	    	}
 	    },
 	    processData: false,
 	    type: 'POST',
 	    url: '/api/changeProfile'
 	});
 });
+
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>

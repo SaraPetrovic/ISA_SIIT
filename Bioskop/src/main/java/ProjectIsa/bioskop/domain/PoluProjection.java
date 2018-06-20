@@ -1,7 +1,5 @@
 package ProjectIsa.bioskop.domain;
 
-import java.util.Date;
-
 public class PoluProjection {
 	private String date;
 	private int price;
