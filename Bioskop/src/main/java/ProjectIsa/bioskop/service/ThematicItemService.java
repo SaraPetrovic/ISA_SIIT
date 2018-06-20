@@ -177,7 +177,7 @@ public class ThematicItemService implements ItemService {
 
 
 	@Override
-	public Collection<ItemAd> getItemAds() {
+	public List<ItemAd> getItemAds() {
 		// TODO Auto-generated method stub
 		return itemAdRepository.findAll();
 	}
@@ -317,6 +317,17 @@ public class ThematicItemService implements ItemService {
 		itemToChange.setQuantity(newItem.getQuantity());
 		OfficialItem updatedItem = officialItemRepository.save(itemToChange);
 		return updatedItem;
+	}
+
+
+
+	public ItemAd addItemAd(User user, ItemAd itemAd) {
+		User dbUser = userRepository.findById(user.getId());
+		itemAd.setApproved(false);
+		itemAd.setOwner(dbUser);
+		dbUser.getAds().add(itemAd);
+		userRepository.save(dbUser);
+		return itemAd;
 	}
 
 

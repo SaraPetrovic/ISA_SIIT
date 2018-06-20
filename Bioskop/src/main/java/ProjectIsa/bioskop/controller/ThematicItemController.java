@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -141,24 +142,7 @@ public class ThematicItemController {
 		}
 		
 	}
-	@RequestMapping(
-			value = "/api/officialItems/{id}",
-			method = RequestMethod.DELETE,
-			produces = MediaType.TEXT_PLAIN_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String addItem(@PathVariable("id") Long id) {
-		OfficialItem item = itemService.getOfficialItem(id);
-		String message = "";
-		if (item != null){
-			itemService.deteItem(item);
-			message ="Suceess";
-			
-		}else{
-			message = "NotFound";
-			
-		}
-		return message;
-	}
+
 	@RequestMapping(
 			value = "/api/officialItems/{search}",
 			method = RequestMethod.GET,
@@ -176,13 +160,30 @@ public class ThematicItemController {
 			value = "/api/itemAds",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<ItemAd>> getItemAds() {
+	public ResponseEntity<List<ItemAd>> getItemAds() {
 		
 		
-		Collection<ItemAd> items = itemService.getItemAds();
+		List<ItemAd> items = itemService.getItemAds();
+		for (ItemAd a : items){
+			System.out.println("\n\nowner: " + a.getOwner().getFirstName());
+		}
+
+		return new ResponseEntity<List<ItemAd>>(items,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/api/itemAds",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ItemAd> addItemAd(@RequestBody ItemAd itemAd) {
+		User user =(User) request.getSession().getAttribute("user");
+
+		
+		ItemAd item = itemService.addItemAd(user, itemAd);
 
 
-		return new ResponseEntity<Collection<ItemAd>>(items,
+		return new ResponseEntity<ItemAd>(itemAd,
 				HttpStatus.OK);
 	}
 	@RequestMapping(
@@ -362,6 +363,7 @@ public class ThematicItemController {
     
 
 	}
+
 	
 }
 

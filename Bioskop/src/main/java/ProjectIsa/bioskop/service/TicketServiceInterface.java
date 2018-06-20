@@ -8,7 +8,8 @@ import ProjectIsa.bioskop.domain.User;
 public interface TicketServiceInterface {
 	Collection<Ticket> getTickets();
 	String addTicket(Ticket ticket);
-	void deleteTicket(Ticket ticket);
+	Ticket deleteTicket(Long id);
 	Ticket getTicket(Long id);
 	Ticket reserve(Ticket ticket, User user);
+	
 }

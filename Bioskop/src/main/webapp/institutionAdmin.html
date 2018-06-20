@@ -6,7 +6,17 @@
 
 <link href="css/Adminpanel.css" rel="stylesheet">
 <script src="institutionAdminJS.js"></script>
+<link href="https://cdn.jsdelivr.net/sweetalert2/6.4.1/sweetalert2.css" rel="stylesheet"/>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+<link href="css/jumbotron.css" rel="stylesheet">
+<link href="css/Adminpanel.css" rel="stylesheet">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -30,7 +40,7 @@
 
 <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 <div id="main">
-<div class="jumbotron" id="jumbotron" style="margin-left:200px;margin-right:0px;padding-left:0px;padding-top:-50px;margin-top:0px;">
+<div class="jumbotron" id="jumbotron" style="margin-left:200px;margin-right:0px;padding-left:0px;padding-top:-50px;margin-top:-40px;">
 	<div class="container" style="margin-top: 50px;" id="rightBody">
 
 
@@ -436,35 +446,7 @@
      												  </select>
      											</div>
      										</div><br>
-							    			<div class="row">
-							    				<div class="col-xs-6 col-sm-6 col-md-6" >
-							    					<div class="form-group">
-							    						<input type="text" name="newName" id="newName" class="form-control input-sm" placeholder="Name">
-							    					</div>
-							    				</div>
-							    			</div>
-     										<div class="row">
-     											<div class="col-xs-6 col-sm-6 col-md-6">
-							    					<div class="form-group">
-							                			<input type="datetime-local" name="newDatetime" id="newDatetime" class="form-control input-sm" placeholder="Date and time">
-							    					</div>
-							    				</div>
-							    			</div>
-							    			<div class="row">
-							    				<div class="col-xs-6 col-sm-6 col-md-6" >
-							    					<div class="form-group">
-							    						<input type="number" min=0 name="newPrice" id="newPrice" class="form-control input-sm" placeholder="Price">
-							    					</div>
-							    				</div>
-							    			</div>
-							    			<div class="row">
-							    				<div class="col-xs-6 col-sm-6 col-md-6">
-							    				      Select movie or performance
-      												  <select class="form-control" id="selectNewMovie">
-       													 	<option value=""></option>
-     												  </select>
-     											</div>
-     										</div>
+     										
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6">
 							    				      Select hall
@@ -600,56 +582,99 @@
 				    	</div>	
 				    </div>
 				  </div>
-				  </div> 
+				</div> 
 			 </div>
 	
 	
 	<script>
+	
+    $('.modal').on('hidden.bs.modal', function(){
+        $(this).find('form')[0].reset();
+        
+    });
+    
+    function profile(){
+    	$("#rightBody").empty();
+    	$.ajax({
+    		contentType : 'application/json',
+    		dataType : 'json',
+    		type : 'GET',
+    		success : function(user){
+    			$.get("profile.html", function( profile ) {
+    				  $("#rightBody").append(profile);
+    				  tableIndex = 1;
+    				  $("#profileImage").attr('src', 'images/' + user.profilePicture);
+    				  $("#profileLastname").val(user.lastName);
+    				  $("#profileFirstname").val(user.firstName);
+    				  $("#profileUsername").val(user.username);
+    				  $("#profileEmail").val(user.email);
+    				  $("#profileCity").val(user.address.city);
+    				  $("#profileStreet").val(user.address.street);
+    				  $("#profilePassword").val(user.password);
+    				  $("#userInfo").html(user.firstName + " " + user.lastName);
+    				});
+    			
+    		},
+    		processData: false,
+    		url : '/api/profile'
+    	});
+    }
+	
 	function fillSeatSelect(){
 		var id = $("#selectProjectionForTicket").val();
 		$("#seatSelect").empty();
-		
+		alert("FILL FUNC " + id);
 		$.ajax({
 			type: "GET",
 			url: "/api/projections/" + id,
 			success: function(projection){
-				alert("TU SMO");
 				var maxRow = projection.hall.maxRow;
 				var maxColumn = projection.hall.maxColumn;
-				alert(maxRow + "-" + maxColumn);
-				var tickets = [];
-				tickets = projection.tickets;
-				var i, j;
-				var select = document.getElementById("seatSelect");
-				if(tickets == null){
-					alert("TICKETS NULL");
-					for (i = 1; i < maxRow + 1; i++) {
-					    for (j = 1; j < maxColumn + 1; j++) {
-					    	var option = document.createElement("OPTION");
-							select.add(option);
-							option.value = i + "-" + j;
-							option.text = i + "-" + j;
-					    }
-					}
-				}else{
-					alert("NISU NULL");
-					for (i = 1; i < maxRow + 1; i++) {
-					    for (j = 1; j < maxColumn + 1; j++) {
-					    	$.each(tickets, function(i, ticket){
-					    		alert(JSON.stringify(ticket));
-								if(ticket.red != i && ticket.kolona != j){
-									var option = document.createElement("OPTION");
+				$.ajax({
+					type: "GET",
+					url: "/api/projections/" + id + "/tickets",
+					success: function(tickets){
+						alert("FILL FUNC " + maxRow + "-" + maxColumn);						
+						var i, j;
+						var select = document.getElementById("seatSelect");
+						if(tickets.length == 0){
+							alert("FILL FUNC TICKETS NULL");
+							for (i = 1; i < maxRow + 1; i++) {
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	var option = document.createElement("OPTION");
 									select.add(option);
 									option.value = i + "-" + j;
 									option.text = i + "-" + j;
-								}
-							});  
-					    }
+							    }
+							}
+						}else{
+							alert("FILL FUNC NISU NULL");
+							var seats = [];
+							for (i = 1; i < maxRow + 1; i++) {
+							    for (j = 1; j < maxColumn + 1; j++) {
+							    	seats.push(i + "-" + j);
+							    }
+							}
+							alert("BROJ MESTA" + seats.length);
+							$.each(tickets, function(i, ticket){
+						    	for (var n = 0; n < seats.length; n++){
+									if(ticket.red == seats[n].split("-")[0] && ticket.kolona == seats[n].split("-")[1]){
+										seats.splice(n,1);
+									}
+						    	}
+							});
+							for (var m = 0; m < seats.length; m++){
+								var option = document.createElement("OPTION");
+								select.add(option);
+								option.value = seats[m];
+								option.text = seats[m];
+							}
+						}
+					},
+					error: function(err){
+						swal("Not found!", "Projection doesn't exists!", "info");
 					}
-				}
-			},
-			error: function(err){
-				swal("Not found!", "Projection doesn't exists!", "info");
+				});
 			}
 		});
 	}
@@ -734,7 +759,7 @@
 		$("#rightBody").empty();
 		var projBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
 		projBody += '&nbsp<button id="newProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newProjection" onclick="loadHalls(); loadMovie(); loadInstitutions2()">Add projection</button>' +
-					'&nbsp<button id="changeProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onclick="loadProjections(); loadMovie2(); loadHalls2()">Change projection</button>';
+					'&nbsp<button id="changeProjectionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeProjection" onchange="fillProjection()" onclick="loadProjections(); loadMovie2(); loadHalls2()">Change projection</button>';
 		projBody += '</div><div style="padding:15px;"><div class="row">';
 		projBody += '<table class="table" id="projectionsTable" style="background-color:white;">' +
 		  '<caption>List of projections</caption>' +
@@ -809,29 +834,39 @@
 		
 	});
 	
+	function fillProjection(){
+		var id = $("#selectProjectionForChange").val();
+		$.ajax({
+			type: "GET",
+			url: "/api/projections/" + id,
+			success: function(projection){
+				
+				$("#selectNewHall").select('select', projection.hall);
+			}
+		});
+	}
 	$("#saveProjectionChange").click(function(){
-		var poluProjection = {};
-		poluProjection.projectionName = $("#newName").val();
-		poluProjection.date = $("#newDatetime").val();
-		poluProjection.price = $("#newPrice").val();
-		poluProjection.projectionForChange = $("#selectProjectionForChange").val();
-		poluProjection.hallName = $("#selectNewHall").val();
-		poluProjection.movieName = $("#selectNewMovie").val();
+		var projection = {};
+		
+		projection.id = $("#selectProjectionForChange").val();
+		var hall = {"id" : $("#selectNewHall").val()};
+			
+		projection["hall"] = {};
+		projection["hall"] = hall;
 		
 		$.ajax({
 		    contentType: 'application/json',
-		    data: JSON.stringify(poluProjection),
+		    data: JSON.stringify(projection),
 		    dataType: 'json',
 		    success: function(response){
 
-		    	alert("Changes has been successfully saved!");
-
+		    	swal("Successfully!", response.msg, "success");
 		    	$('#changeProjection').modal('toggle');
 
 		    	printProjections();
 		    },
 		    error: function(err){
-		    	alert("This name already exists");
+		    	swal("Error!", err.responseJSON.msg, "error");
 		    },
 		    processData: false,
 		    type: 'POST',
@@ -1075,8 +1110,9 @@
 		    dataType: 'json',
 		    success: function(response){
 
-		    	printRepertoar(cinemaId);
 		    	swal("Success!", response.msg, "success");
+		    	printRepertoar(cinemaId);
+		    	
 		    },
 		    error: function(err){
 		    	swal("Error!", response.responseJSON.msg, "error");
@@ -1091,7 +1127,7 @@
 	function institutions(){
 		$("#rightBody").empty();
 		var cinemaBody = '<div style="background-color:white;border-radius:6px;padding:15px;"><div class="row">';
-		cinemaBody += '&nbsp<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newCinema">Add cinema/theater</button>'+
+		cinemaBody += 
 					'&nbsp<button id="changeInstitutionButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#changeCinema" onclick="loadInstitutions1()">Change cinema/theater</button>'+
 					'&nbsp<button id="viewAllTickets" type="button" class="btn btn-info btn-lg" onclick="printAllFastTickets()">View all tickets</button>';
 		cinemaBody += '</div><div style="padding:15px;"><div class="row">';
@@ -1129,7 +1165,8 @@
 					ticketsBody += '<td>' + ticket.red + '-' + ticket.kolona + '</td>';
 					ticketsBody += '<td>' + ticket.projection.date + '</td>';
 					ticketsBody += '<td>' + ticket.projection.price + '</td>';
-					ticketsBody += '<td>' + ticket.newPrice + '</td></tr>';
+					ticketsBody += '<td>' + ticket.newPrice + '</td>';
+					ticketsBody += '<td><button value="'+ticket.id+'" id="deleteTicket" onclick="deleteTicket(this.value)">Delete ticket</button></td></tr>';
 					$("#ticketsBody").append(ticketsBody);
 					rowIndex++;
 				});
@@ -1142,6 +1179,28 @@
 				var emptyBody = '<br><p>Tickets do not exist!</p>'
 				$("#ticketsBody").append(emptyBody);
 			}
+		});
+	}
+	
+	function deleteTicket(ticketId){
+		$.ajax({
+		    contentType: 'application/json',
+		    dataType: 'json',
+		    success: function(success){
+					swal("Success,", "Ticket is successfully removed!", "success");
+					printAllFastTickets();
+
+		    },
+		    error: function(err){
+		    	if(err.status == 409){
+		    		swal("Error", "You are not logged in as cinema admin!", "error");
+		    	}else{
+		    		swal("Error,", "You do not remove this ticket!", "error");
+		    	}
+		    },
+		    processData: false,
+		    type: 'DELETE',
+		    url: '/api/ticket/'+ ticketId
 		});
 	}
 	
