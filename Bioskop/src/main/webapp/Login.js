@@ -49,12 +49,14 @@ $("#login-btn").click(function() {
 			
 			if (response.userType == "REGISTEREDUSER") {
 				retUser = response;
-				$("#body").empty();
+				//$("#body").empty();
 				if (retUser != null) {
+					var redirectLoc = "/RegUserProfilePanel.html";
+					window.location.href = redirectLoc;
 					//alert(retUser.username);
-					$.get("RegUserProfilePanel.html", function(RegUserPanel) {
-						$("#body").append(RegUserPanel);
-					});
+					//$.get("RegUserProfilePanel.html", function(RegUserPanel) {
+						//$("#body").append(RegUserPanel);
+					//});
 				};
 			}
 			

@@ -541,18 +541,29 @@ function ads(){
 			if (items.length != 0){
 				var i=new Number(1);
 				body += '<h2 align="center" style="color:grey;">Ads</h2><hr>';
+				var owners = [];
 				items.forEach(function(item){
-					if (i == 1){
-						body += '<div class="row">';
-					}
-						body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <hr><p style="margin-top:15px;word-wrap: break-word;">Owner: '+item.owner.firstName + ' ' + item.owner.lastName + ' </p> </div> <div class="panel-footer">' ;
-						body += '<button  type="button" style="margin-right:5px;" class="btn btn-primary" onclick="approveItem(' + item.id + ')">Approve</button><button  type="button"  class="btn btn-danger" onclick="declineItem(' + item.id + ')">Decline</button> </div> </div> </div>';
-						
-					i++;
-					if (i == 4){
-						body += '</div>';
-						i = 1;
-					}
+						if (item.owner.firstName == null){
+							owners.forEach(function(owner){
+								if (item.owner == owner.id){
+									item.owner = owner;
+								}
+							});
+						}else{
+							owners.push(item.owner)
+						}
+						if (i == 1){
+							body += '<div class="row">';
+						}
+							body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> <hr><p style="margin-top:15px;word-wrap: break-word;">Owner: '+item.owner.firstName + ' ' + item.owner.lastName + ' </p> </div> <div class="panel-footer">' ;
+							body += '<button  type="button" style="margin-right:5px;" class="btn btn-primary" onclick="approveItem(' + item.id + ')">Approve</button><button  type="button"  class="btn btn-danger" onclick="declineItem(' + item.id + ')">Decline</button> </div> </div> </div>';
+							
+						i++;
+						if (i == 4){
+							body += '</div>';
+							i = 1;
+						}
+					
 				});
 			}else{
 				body += '<h2 align="center" style="color:grey;">0 items to approve</h2>';
@@ -654,7 +665,7 @@ function openChangeModal(id){
 	    	$("#itemDescriptionChange").val(item.description);
 	    	$("#itemQuantityChange").val(item.quantity)
 	    	$("#itemId").val(item.id);
-	    	//officialItems();
+	    	//officialItems();F
 	    },
 		
 	    error: function(error){

@@ -22,10 +22,10 @@ insert into user(username, password, usertype, address_id, email, firstname, las
 
 
 
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'kapa', 'opis' ,0, 2,'item.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false)
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'kapa', 'opis' ,0, 3,'item.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false, '2018-06-12')
 insert into official_item( name, price,description,version, quantity, picture) values ( 'duks', '700', 'opis', 0 ,2, 'item2.jpg')
 
 insert into item_reservation (id, user_id, official_item_id) values ('1' , '1', '1')
@@ -55,8 +55,8 @@ insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('3
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('4', '24', '30', 'Hall4', '5')
 insert into hall(id, max_column, max_row, name, theater_or_cinema_id) values ('5', '7', '7', 'Hall5', '4')
 
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', 4.1, 'Description...', '100', 'picture', true, 'I can only imagine', 'Jon Erwin', 'religious')
-insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', 3.6, 'Description...', '139', 'picture', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('1', 'Dennis Quaid, Michael Finley', 4.1, 'Description...', '100', 'item.jpg', true, 'I can only imagine', 'Jon Erwin', 'religious')
+insert into movie_or_performance(id, actors, average_rating, description, film_duration, img, is_film, name, producer, type) values ('2', 'Dan Ewing, Temuera Morrison', 3.6, 'Description...', '139', 'item.jpg', true, 'Occupation', 'Luke Sparke, Felix Williamsn', 'action')
 
 insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 2018-06-30 18:00', '2018-06-30T18:00', 350.00, 1, 1, 5)  
 insert into projection(name, date, price, hall_id, movie_or_performance_id, theater_or_cinema_id) values ('I can only imagine 2018-06-30 22:00', '2018-06-30T22:00', 350.00, 1, 1, 5)  

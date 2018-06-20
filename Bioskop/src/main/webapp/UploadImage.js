@@ -22,15 +22,15 @@ function selectImage(e){
 
   $('#max-size').html((maxsize/1024).toFixed(2));
 
-  $('#officialItemBtn').click( function() {
+  $('#itemAdBtn').click( function() {
 	//generete random image id
     $('#message').empty();
     $('#loading').show();
-    var officialItem = {}
-	officialItem.name = $('#itemName').val();
-    officialItem.description = $('#itemDescription').val();
-    officialItem.price = $('#price').val();
-    officialItem.quantity = $("#itemQuantity").val();
+    var itemAd = {}
+	itemAd.name = $('#itemName').val();
+    itemAd.description = $('#itemDescription').val();
+    itemAd.expiryDate = $("#itemExpiryDate").val();
+    alert(itemAd.expiryDate);
     $.ajax({
       url: "api/uploadImage",
       type: "POST",
@@ -40,23 +40,23 @@ function selectImage(e){
       processData: false,
       success: function(pictureName)
       {
-    	  officialItem.picture = pictureName;
+    	  itemAd.picture = pictureName;
         $('#loading').hide();
         $.ajax({
     	    contentType: 'application/json',
-    	    data: JSON.stringify(officialItem),
+    	    data: JSON.stringify(itemAd),
     	    dataType: 'json',
     	    success: function(data){
     			$('#newItem').modal('hide');
     			$("#image-preview-div").css("display", "none");
-    			officialItems();
+    			myAds();
     	    },
     	    error: function(data){
     	    	alert("greska");
     	    },
     	    processData: false,
     	    type: 'POST',
-    	    url: '/api/officialItems'
+    	    url: '/api/itemAds'
     	});
       }
     });
@@ -65,6 +65,50 @@ function selectImage(e){
     
 //	
   });
+  $('#officialItemBtn').click( function() {
+		//generete random image id
+	    $('#message').empty();
+	    $('#loading').show();
+	    var officialItem = {}
+		officialItem.name = $('#itemName').val();
+	    officialItem.description = $('#itemDescription').val();
+	    officialItem.price = $('#price').val();
+	    officialItem.quantity = $("#itemQuantity").val();
+	    $.ajax({
+	      url: "api/uploadImage",
+	      type: "POST",
+	      data: new FormData($("#formItem")[0]),
+	      contentType: false,
+	      cache: false,
+	      processData: false,
+	      success: function(pictureName)
+	      {
+	    	  officialItem.picture = pictureName;
+	        $('#loading').hide();
+	        $.ajax({
+	    	    contentType: 'application/json',
+	    	    data: JSON.stringify(officialItem),
+	    	    dataType: 'json',
+	    	    success: function(data){
+	    			$('#newItem').modal('hide');
+	    			$("#image-preview-div").css("display", "none");
+	    			officialItems();
+	    	    },
+	    	    error: function(data){
+	    	    	alert("greska");
+	    	    },
+	    	    processData: false,
+	    	    type: 'POST',
+	    	    url: '/api/officialItems'
+	    	});
+	      }
+	    });
+	    
+	    //$('#newItem').modal('hide');
+	    
+	//	
+	  });
+  
 
   $('#file').change(function() {
 
@@ -93,6 +137,9 @@ function selectImage(e){
     
     $('#officialItemBtn').removeClass("disabled");
     $('#officialItemBtn').prop("disabled",false);
+
+    $('#itemAdBtn').removeClass("disabled");
+    $('#itemAdBtn').prop("disabled",false);
     var reader = new FileReader();
 
     reader.onload = selectImage;

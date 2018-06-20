@@ -16,5 +16,7 @@ public interface ProjectionServiceInterface {
 	String changeProjection(Projection proj, Hall hall);
 
 	List<Projection> getCinemasProjections(Long id);
+	
+	Projection makeReservation(Projection proj);
 
 }

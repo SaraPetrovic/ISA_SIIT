@@ -52,7 +52,7 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private String profilePicture;
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<ItemAd> ads;
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "user", cascade = CascadeType.REMOVE)
