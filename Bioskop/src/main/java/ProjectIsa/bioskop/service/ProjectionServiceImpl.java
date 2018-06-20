@@ -11,8 +11,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ProjectIsa.bioskop.domain.MovieOrPerformance;
+import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.Projection;
+import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.HallDBRepository;
 import ProjectIsa.bioskop.repository.MovieDBRepository;
@@ -28,6 +29,8 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	HallDBRepository hallRepository;
 	@Autowired
 	MovieDBRepository movieRepository;
+	@Autowired
+	EmailService emailService;
 	
 	@Override
 	public Collection<Projection> getProjections() {
@@ -125,32 +128,39 @@ public class ProjectionServiceImpl implements ProjectionServiceInterface {
 	}
 
 	@Override
-	public Projection changeProjection(Projection projection, Projection newProjection) {
-		
-		if (!projection.getName().equals(newProjection.getName())){
-			Projection proj = repository.findByName(newProjection.getName());
-			if (proj != null){
-				return null;	//vec postoji
+	public String changeProjection(Projection projection, Hall hall) {
+		if(projection.getTheaterOrCinema().getId() != hall.getTheaterOrCinema().getId()) {
+			return "Not same theater/cinema. Please choose hall again!";
+		}
+		if(projection.getHall().getId() != hall.getId()) {
+			
+			for(Projection p : repository.findAll()) {
+ 				if(projection.getTheaterOrCinema().getId() == p.getTheaterOrCinema().getId() && 
+ 						hall.getId() == p.getHall().getId() &&
+ 						projection.getDate().equals(p.getDate())) {
+ 					return "Choosen hall is occupied.";
+ 				}
+			
+			}
+			projection.setHall(hall);
+			repository.save(projection);
+			
+			if(projection.getTickets().size() != 0) {
+				for(Ticket t: projection.getTickets()) {
+					if(t.isReserved() == true) {
+						String message = "Hall for projection " + t.getProjection().getName() + " is changed. Projection will be displayed in hall " + t.getProjection().getHall().getName() + ".";
+						new Thread(new Runnable() {
+						     @Override
+							public void run() {
+									emailService.sendSimpleMessage(t.getUser().getEmail(), "Hall for projection " + projection.getName() + " is changed", message);
+						     }
+						}).start();
+					}
+				}
 			}
 		}
+		return null;
 		
-		//ako u odredjenom bioskopu postoje dve proj sa istim nazivom u istoj sali, return null
-		for(Projection p : repository.findAll()) {
-			if(newProjection.getTheaterOrCinema().getName().equals(p.getTheaterOrCinema().getName()) 
-					&& newProjection.getName().equals(p.getName())
-					&& newProjection.getHall().getName().equals(p.getHall().getName())) {
-				
-				return null;
-			}
-		}
-		projection.setName(newProjection.getName());
-		projection.setDate(newProjection.getDate());
-		projection.setPrice(newProjection.getPrice());
-		projection.setHall(newProjection.getHall());
-		projection.setMovieOrPerformance(newProjection.getMovieOrPerformance());
-		projection.setTheaterOrCinema(newProjection.getTheaterOrCinema());
-		repository.save(projection);
-		return projection;
 	}
 
 	@Override

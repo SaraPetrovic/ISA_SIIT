@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
@@ -43,6 +45,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 		repository.save(ticket);
 		projection.addTicket(ticket);
 		projectionRepository.save(projection);
+		
 		List<Ticket> tickets = projection.getTickets();
 		System.out.println("BROJ KARATA " + tickets.size());
 		
@@ -50,8 +53,13 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	}
 
 	@Override
-	public void deleteTicket(Ticket ticket) {
+	public Ticket deleteTicket(Long id) {
+		Ticket ticket = repository.findById(id);
+		Projection p = ticket.getProjection();
+		p.getTickets().remove(ticket);
+		projectionRepository.save(p);
 		repository.delete(ticket);
+		return ticket;
 	}
 
 	@Override
@@ -60,19 +68,14 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Ticket reserve(Ticket ticket, User user) {
-
-		if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
-			return null;
-		}
 		
 		Ticket ticketToReserve = repository.findOne(ticket.getId());
-		User userWhoReserve = userRepository.findById(user.getId());
-		ticketToReserve.setUser(userWhoReserve);
+		//User userWhoReserve = userRepository.findById(user.getId());
+		ticketToReserve.setUser(user);
 		ticketToReserve.setReserved(true);
-		Projection projection = projectionRepository.findById(ticketToReserve.getProjection().getId());
-		projection.addTicket(ticketToReserve);
-		projectionRepository.save(projection);
+		
 		repository.save(ticketToReserve);
 		return ticketToReserve;
 		

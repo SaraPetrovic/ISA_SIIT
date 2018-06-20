@@ -22,6 +22,8 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	CinemaDBRepository repository;
 	@Autowired
 	ProjectionsDBRepository projectionRepository;
+	@Autowired
+	EmailService emailService;
 	
 	@Override
 	public List<TheaterOrCinema> getTheaterOrCinemas() {
@@ -118,15 +120,20 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 		if(!(Math.abs(currentDate.getTime() - projDate.getTime()) > millisecondsPerDay)) {
 			return "You can not delete projection!";
 		}
-		/*
+		
 		if(projection.getTickets().size() != 0) {
 			for(Ticket t: projection.getTickets()) {
 				if(t.isReserved() == true) {
-					return "";
+					String message = "Projection " + t.getProjection().getName() + " in hall " + t.getProjection().getHall().getName() + " is canceled.";
+					new Thread(new Runnable() {
+					     @Override
+						public void run() {
+								emailService.sendSimpleMessage(t.getUser().getEmail(), "Projection is canceled", message);
+					     }
+					}).start();
 				}
 			}
-			
-		}*/
+		}
 		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);
 		repository.save(theaterOrCinema);

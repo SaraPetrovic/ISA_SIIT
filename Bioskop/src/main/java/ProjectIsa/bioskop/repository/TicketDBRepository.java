@@ -14,5 +14,4 @@ public interface TicketDBRepository extends JpaRepository<Ticket, Long>{
 	@Override
 	void delete(Ticket ticket);
 	Ticket findById(Long id);
-
 }

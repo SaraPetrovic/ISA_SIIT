@@ -3,6 +3,7 @@ package ProjectIsa.bioskop.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Projection implements Serializable{
 	@ManyToOne(optional = false)
 	private TheaterOrCinema theaterOrCinema;
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.REMOVE)
 	private List<Ticket> tickets;
 	
 	public Projection() {

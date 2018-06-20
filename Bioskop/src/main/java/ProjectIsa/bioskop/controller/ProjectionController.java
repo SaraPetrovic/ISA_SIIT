@@ -3,6 +3,9 @@ package ProjectIsa.bioskop.controller;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
-import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
+import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
@@ -33,13 +38,14 @@ public class ProjectionController {
 	MovieOrPerformanceServiceImpl movieService;
 	@Autowired
 	TheaterOrCinemaService cinemaService;
+	@Autowired
+	HttpServletRequest request;
 	
 	@RequestMapping(
 					value = "/api/projections",
 					method = RequestMethod.GET,
 					produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Projection>> getProjections() {
-		
 		
 		Collection<Projection> projections = service.getProjections();
 
@@ -107,6 +113,11 @@ public class ProjectionController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addProjection(@RequestBody Projection projection){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		for(MovieOrPerformance movie: movieService.getAll()) {
 			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
@@ -129,20 +140,22 @@ public class ProjectionController {
 	@RequestMapping(value = "api/changeProjection", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Projection> changeProjection(@RequestBody PoluProjection proj){
-
-		Projection projection = service.getProjectionByName(proj.getProjectionForChange());
+	public ResponseEntity<String> changeProjection(@RequestBody Projection proj){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
+		Hall hall = hallService.getHallById(proj.getHall().getId());
 		
-		Projection newProjection = new Projection();
-		newProjection.setDate(proj.getDate());
-		newProjection.setPrice(proj.getPrice());
-		newProjection.setHall(hallService.getHallByName(proj.getHallName()));
-		newProjection.setMovieOrPerformance(movieService.findByName(proj.getMovieName()));
-		newProjection.setName(proj.getProjectionName());
-		newProjection.setTheaterOrCinema(projection.getTheaterOrCinema());
-		Projection returnProjection = service.changeProjection(projection, newProjection);
-		return new ResponseEntity<Projection>(returnProjection, HttpStatus.OK);
+		Projection projection = service.getProjection(proj.getId());
+		
+		String message = service.changeProjection(projection, hall);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Projection is successfully changed!\"}", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 	
 	

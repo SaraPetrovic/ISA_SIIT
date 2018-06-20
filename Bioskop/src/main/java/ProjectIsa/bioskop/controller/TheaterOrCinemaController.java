@@ -2,6 +2,9 @@ package ProjectIsa.bioskop.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.ChangedInstitution;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
 @RestController
@@ -22,7 +27,9 @@ public class TheaterOrCinemaController {
 
 	@Autowired
 	private TheaterOrCinemaService service;
-
+	@Autowired
+	HttpServletRequest request;
+	
 	@RequestMapping(
 			value = "/api/TheaterOrCinemas",
 			method = RequestMethod.GET,
@@ -57,6 +64,12 @@ public class TheaterOrCinemaController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addTheaterOrCinema(@RequestBody TheaterOrCinema item){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.SYSTEMADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as system admin!\"}", HttpStatus.CONFLICT);
+		}
+		
 		String message = service.addTheaterOrCinema(item);
 		if(message == null) {
 			return new ResponseEntity<String>("{\"msg\":\"Cinema/theater is successfully added!\"}", HttpStatus.OK);
@@ -68,6 +81,11 @@ public class TheaterOrCinemaController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> changeInstitution(@RequestBody ChangedInstitution changeInstitution){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		TheaterOrCinema institution = service.findByName(changeInstitution.getSelectInstitution());
 		TheaterOrCinema newInstitution = new TheaterOrCinema();
@@ -89,6 +107,11 @@ public class TheaterOrCinemaController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> changeRepertoar(@RequestBody String item){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		String[] splitResult = item.split("\"");
 		Long projectionId = Long.parseLong(splitResult[3].split(" ")[0]);
