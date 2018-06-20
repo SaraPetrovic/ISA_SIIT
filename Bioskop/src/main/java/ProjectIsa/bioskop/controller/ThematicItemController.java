@@ -160,13 +160,30 @@ public class ThematicItemController {
 			value = "/api/itemAds",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<ItemAd>> getItemAds() {
+	public ResponseEntity<List<ItemAd>> getItemAds() {
 		
 		
-		Collection<ItemAd> items = itemService.getItemAds();
+		List<ItemAd> items = itemService.getItemAds();
+		for (ItemAd a : items){
+			System.out.println("\n\nowner: " + a.getOwner().getFirstName());
+		}
+
+		return new ResponseEntity<List<ItemAd>>(items,
+				HttpStatus.OK);
+	}
+	@RequestMapping(
+			value = "/api/itemAds",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ItemAd> addItemAd(@RequestBody ItemAd itemAd) {
+		User user =(User) request.getSession().getAttribute("user");
+
+		
+		ItemAd item = itemService.addItemAd(user, itemAd);
 
 
-		return new ResponseEntity<Collection<ItemAd>>(items,
+		return new ResponseEntity<ItemAd>(itemAd,
 				HttpStatus.OK);
 	}
 	@RequestMapping(

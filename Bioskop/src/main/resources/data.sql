@@ -23,7 +23,7 @@ insert into user(username, password, usertype, address_id, email, firstname, las
 
 
 insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true, '2018-06-12')
-insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'kapa', 'opis' ,0, 2,'item.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'kapa', 'opis' ,0, 3,'item.jpg', true, '2018-06-12')
 insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true, '2018-06-12')
 insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false, '2018-06-12')
 insert into official_item( name, price,description,version, quantity, picture) values ( 'duks', '700', 'opis', 0 ,2, 'item2.jpg')

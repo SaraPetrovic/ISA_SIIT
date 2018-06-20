@@ -541,9 +541,17 @@ function ads(){
 			if (items.length != 0){
 				var i=new Number(1);
 				body += '<h2 align="center" style="color:grey;">Ads</h2><hr>';
+				var owners = [];
 				items.forEach(function(item){
-					
-					
+						if (item.owner.firstName == null){
+							owners.forEach(function(owner){
+								if (item.owner == owner.id){
+									item.owner = owner;
+								}
+							});
+						}else{
+							owners.push(item.owner)
+						}
 						if (i == 1){
 							body += '<div class="row">';
 						}

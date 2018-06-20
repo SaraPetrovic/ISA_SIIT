@@ -243,13 +243,22 @@ td, th {
 	function printItemAds(items){
 		bodyAd = '<div style="margin-left:20px;margin-right:20px;">';
 		var i=new Number(1);
-
+		var owners = [];
 		items.forEach(function(item){
 			if (item.approved == true){
+				if (item.owner.firstName == null){
+					owners.forEach(function(owner){
+						if (item.owner == owner.id){
+							item.owner = owner;
+						}
+					});
+				}else{
+					owners.push(item.owner)
+				}
 				if (i == 1){
 					bodyAd += '<div class="row">';
 				}
-					bodyAd += '<div class="col-md-4 item"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:70%;margin-left:5px;margin-right:5px;" ><a class="btn btn-primary "  onclick="showOffers('+ item.id + ')" style="display:block;margin-top:5px;" >Show all offers </a> </div> </div> </div>';
+					bodyAd += '<div class="col-md-4 item"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p><hr><p style="margin-top:15px;word-wrap: break-word;">owner: '+item.owner.firstName + ' ' + item.owner.lastName + ' </p> </div> <div class="panel-footer"> <a class="btn btn-primary " onclick="makeOffer('+ item.id + ')" style="display:inline;" >Bid </a><input id="price' + item.id +'" type="text" class="form-control input-sm " placeholder="Price" style="display:inline;width:70%;margin-left:5px;margin-right:5px;" ><a class="btn btn-primary "  onclick="showOffers('+ item.id + ')" style="display:block;margin-top:5px;" >Show all offers </a> </div> </div> </div>';
 				
 				i++;
 				if (i == 4){
