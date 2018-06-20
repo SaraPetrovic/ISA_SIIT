@@ -434,12 +434,12 @@ function acceptFriend(friendID) {
 		type : 'POST',
 		data : JSON.stringify(friendship),
 		success : function(data){
-	    	alert("Successfully accepted friend!");
+	    	swal("Success", "Successfully accepted friend", "success");
 	    	//swal("Successfully accepted friend!", "Your offer is " + itemOffer.price + "$", "success");
 	    	friendRequests();
 		},
 		error : function(data){
-			alert('ERROR accepting a friend');
+			swal('ERROR accepting a friend');
 		},
 		processData: false
 		
@@ -495,7 +495,7 @@ function removeFriend(friendID) {
 		type : 'POST',
 		data : JSON.stringify(friendship),
 		success : function(data){
-	    	alert("Successfully removed friend!");
+	    	swal("Success", "Successfully removed friend", "success");
 	    	friends();
 		},
 		error : function(data){
@@ -696,7 +696,7 @@ function makeOffer(itemId){
 	    data: JSON.stringify(itemOffer),
 	    dataType: 'json',
 	    success: function(admin){
-			alert("Uspesno napravljena ponuda!");
+			swal("Success", "Successfully made offer", "success");
 
 
 	    },
