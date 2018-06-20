@@ -3,6 +3,7 @@ package ProjectIsa.bioskop.service;
 import java.util.Collection;
 import java.util.List;
 
+import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.Projection;
 
 public interface ProjectionServiceInterface {
@@ -12,7 +13,7 @@ public interface ProjectionServiceInterface {
 	Projection getProjection(Long id);
 	Projection getProjectionByName(String name);
 	
-	Projection changeProjection(Projection proj, Projection newProj);
+	String changeProjection(Projection proj, Hall hall);
 
 	List<Projection> getCinemasProjections(Long id);
 	

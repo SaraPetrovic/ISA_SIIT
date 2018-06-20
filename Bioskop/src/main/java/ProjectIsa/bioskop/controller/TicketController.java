@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.domain.User;
+
+import ProjectIsa.bioskop.domain.UserType;
+
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
 import ProjectIsa.bioskop.service.TicketServiceImpl;
 
@@ -62,13 +65,36 @@ public class TicketController {
 			return new ResponseEntity<Ticket>(ticket, HttpStatus.NOT_FOUND);
 		}
 	}
-	
+	@RequestMapping(
+			value = "/api/ticket/{id}",
+			method = RequestMethod.DELETE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Ticket> deleteTicket(@PathVariable("id") Long id) {
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<Ticket>(new Ticket(), HttpStatus.CONFLICT);
+		}
+		
+		Ticket ticket = service.deleteTicket(id);
+
+		if (ticket != null){
+			return new ResponseEntity<Ticket>(ticket, HttpStatus.OK); 
+		}else{
+			return new ResponseEntity<Ticket>(ticket, HttpStatus.NOT_FOUND);
+		}
+	}
 	@RequestMapping(
 			value = "/api/addTicket",
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addTicket(@RequestBody Ticket ticket){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		String message = service.addTicket(ticket);
 		if(message == null) {
@@ -82,31 +108,31 @@ public class TicketController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<Ticket> reserveTicket(@RequestBody Ticket ticket){
-		System.out.println("\n\nId ticketa = " + ticket.getId() + "\n\n");
-		Long versionBefore = service.getTicket(ticket.getId()).getVersion();
 		while (true){
+			Ticket reservedTicket = null;
 			try{
 				HttpSession session = request.getSession();
 				User user = (User) session.getAttribute("user");
+				if (user == null || user.getUserType() != UserType.REGISTEREDUSER){
+					return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.CONFLICT);
+				}
 				
-				Ticket reservedTicket = service.reserve(ticket, user);
+				reservedTicket = service.reserve(ticket, user);
+				
 				if (reservedTicket != null){
-					if (reservedTicket.getVersion() == versionBefore){
-						System.out.println("\n\nVracam konfilkt\n\n");
-		
-						return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.CONFLICT);
-					}else{
+					
 						System.out.println("\n\nreserved ticket != null okk\n\n");
 		
 						return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.OK);
-					}
+					
 				}else{
 					System.out.println("\n\nreserved ticket == null\n\n");
-					return null;
+					return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.BAD_REQUEST);
 				}
 				
 			}catch(ObjectOptimisticLockingFailureException e){
-				
+				System.out.println("\n\nVracam konfilkt\n\n");
+				return new ResponseEntity<Ticket>(reservedTicket, HttpStatus.CONFLICT);
 			}
 		}
 	}

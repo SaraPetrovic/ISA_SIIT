@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ProjectIsa.bioskop.domain.Adresa;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.repository.CinemaDBRepository;
 import ProjectIsa.bioskop.repository.ProjectionsDBRepository;
 @Service
@@ -21,6 +22,8 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 	CinemaDBRepository repository;
 	@Autowired
 	ProjectionsDBRepository projectionRepository;
+	@Autowired
+	EmailService emailService;
 	
 	@Override
 	public List<TheaterOrCinema> getTheaterOrCinemas() {
@@ -118,6 +121,19 @@ public class TheaterOrCinemaService implements TheaterOrCinemaServiceInterface{
 			return "You can not delete projection!";
 		}
 		
+		if(projection.getTickets().size() != 0) {
+			for(Ticket t: projection.getTickets()) {
+				if(t.isReserved() == true) {
+					String message = "Projection " + t.getProjection().getName() + " in hall " + t.getProjection().getHall().getName() + " is canceled.";
+					new Thread(new Runnable() {
+					     @Override
+						public void run() {
+								emailService.sendSimpleMessage(t.getUser().getEmail(), "Projection is canceled", message);
+					     }
+					}).start();
+				}
+			}
+		}
 		theaterOrCinema.removeProjection(projection);
 		projectionRepository.delete(projection);
 		repository.save(theaterOrCinema);

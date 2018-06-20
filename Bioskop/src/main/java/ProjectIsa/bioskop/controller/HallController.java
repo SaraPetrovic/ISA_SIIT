@@ -3,6 +3,9 @@ package ProjectIsa.bioskop.controller;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.PoluHall;
 import ProjectIsa.bioskop.domain.TheaterOrCinema;
+import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
 
@@ -25,6 +30,8 @@ public class HallController {
 	private HallServiceImpl service;
 	@Autowired
 	private TheaterOrCinemaService cinemaService;
+	@Autowired
+	private HttpServletRequest request;
 
 	@RequestMapping(
 			value = "/api/halls",
@@ -62,6 +69,12 @@ public class HallController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addHall1(@RequestBody PoluHall poluHall){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
+		
 		Hall hall = new Hall();
 		hall.setName(poluHall.getId());
 		

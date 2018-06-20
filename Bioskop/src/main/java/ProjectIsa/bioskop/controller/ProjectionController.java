@@ -1,10 +1,11 @@
 package ProjectIsa.bioskop.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProjectIsa.bioskop.domain.Hall;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
-import ProjectIsa.bioskop.domain.PoluProjection;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.domain.User;
+
+import ProjectIsa.bioskop.service.EmailService;
+
+
+import ProjectIsa.bioskop.domain.UserType;
+
+
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
 import ProjectIsa.bioskop.service.TheaterOrCinemaService;
+import ProjectIsa.bioskop.service.UserServiceImpl;
 
 @RestController
 public class ProjectionController {
@@ -36,16 +45,22 @@ public class ProjectionController {
 	@Autowired
 	MovieOrPerformanceServiceImpl movieService;
 	@Autowired
+	UserServiceImpl userService;
+	@Autowired
 	TheaterOrCinemaService cinemaService;
 	@Autowired
-	private HttpServletRequest request;
+	EmailService emailService;
+	@Autowired
+	HttpServletRequest request;
+
+
+
 	
 	@RequestMapping(
 					value = "/api/projections",
 					method = RequestMethod.GET,
 					produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Projection>> getProjections() {
-		
 		
 		Collection<Projection> projections = service.getProjections();
 
@@ -113,6 +128,11 @@ public class ProjectionController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addProjection(@RequestBody Projection projection){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		for(MovieOrPerformance movie: movieService.getAll()) {
 			if(movie.getName().equals(projection.getMovieOrPerformance().getName())) {
@@ -135,20 +155,22 @@ public class ProjectionController {
 	@RequestMapping(value = "api/changeProjection", 
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	public ResponseEntity<Projection> changeProjection(@RequestBody PoluProjection proj){
-
-		Projection projection = service.getProjectionByName(proj.getProjectionForChange());
+	public ResponseEntity<String> changeProjection(@RequestBody Projection proj){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
+		Hall hall = hallService.getHallById(proj.getHall().getId());
 		
-		Projection newProjection = new Projection();
-		newProjection.setDate(proj.getDate());
-		newProjection.setPrice(proj.getPrice());
-		newProjection.setHall(hallService.getHallByName(proj.getHallName()));
-		newProjection.setMovieOrPerformance(movieService.findByName(proj.getMovieName()));
-		newProjection.setName(proj.getProjectionName());
-		newProjection.setTheaterOrCinema(projection.getTheaterOrCinema());
-		Projection returnProjection = service.changeProjection(projection, newProjection);
-		return new ResponseEntity<Projection>(returnProjection, HttpStatus.OK);
+		Projection projection = service.getProjection(proj.getId());
+		
+		String message = service.changeProjection(projection, hall);
+		if(message == null) {
+			return new ResponseEntity<String>("{\"msg\":\"Projection is successfully changed!\"}", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("{\"msg\": \""+message+"\"}", HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(
@@ -157,22 +179,58 @@ public class ProjectionController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<List<Ticket>> makeReservation(@RequestBody List<Ticket> tickets) {
-		User u = null;
-		u = (User) request.getSession().getAttribute("user");
-		if (u == null) {
+		User loggedUser = null;
+		loggedUser = (User) request.getSession().getAttribute("user");
+		if (loggedUser == null) {
 			// WTF
 			System.out.println("NIJE PRONASAO LOGOVANOG USERA U makeReservation api");
 		}
 		
 		for (Ticket t : tickets) {
 			Projection p = service.getProjection(t.getProjection().getId());
-			t.setUser(u);
+			// ako nije grupna, ili prva karta u grupnoj!
+			if (t.getUser() == null) {
+				t.setUser(loggedUser);
+			} else {
+				User u = userService.getUser(t.getUser().getId());
+				if (u == null) {
+					return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.CONFLICT);
+				}
+				t.setUser(u);
+			}
 			t.setProjection(p);
 			p.addTicket(t);
 			Projection updatedProjection = service.makeReservation(p);
 			if (updatedProjection == null) {
 				return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.BAD_REQUEST);
 			}
+			String msg;
+			if (t.getUser().getId() != loggedUser.getId()) {
+				msg = "Hello Mr./Ms. " + t.getUser().getFirstName() + " " + t.getUser().getLastName() + "!"
+				+ " You have been invated for a group reservation! Please accept or decline your reservation on "
+				+"your profile!";
+			} else {
+				msg = "Hello Mr./Ms. " + t.getUser().getFirstName() + " " + t.getUser().getLastName() + "!"
+				+ "You have successesfuly reserved a ticket! Check it out on your profile!";
+			}
+			String[] datum = t.getProjection().getDate().split("T");
+			
+			msg += "\n\n\nMovie: " + p.getName();
+			//msg += "\nDate: " + datum[0] + "   Time: " + datum[1];
+			msg += "\nPlace: " + p.getTheaterOrCinema().getName();
+			msg += "\nHall: " + p.getHall().getName();
+			msg += "\nRow: " + t.getRed();
+			msg += "\nColumn: " + t.getKolona();
+			msg += "\nPrice: $" + t.getNewPrice();
+			
+			String message = msg;
+			
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					emailService.sendSimpleMessage(t.getUser().getEmail(), "Group reservation", message);
+				}
+			}).start();
 		}
 		
 		return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.OK);

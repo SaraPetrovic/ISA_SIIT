@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ProjectIsa.bioskop.domain.ChangedMovie;
 import ProjectIsa.bioskop.domain.MovieOrPerformance;
+import ProjectIsa.bioskop.domain.User;
+import ProjectIsa.bioskop.domain.UserType;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 
 @RestController
@@ -28,6 +33,8 @@ public class MovieOrPerformanceController {
 	
 	@Autowired 
 	MovieOrPerformanceServiceImpl serviceMovie;
+	@Autowired 
+	HttpServletRequest request;
 	
 	@RequestMapping(
 			value = "/api/movies",
@@ -65,6 +72,12 @@ public class MovieOrPerformanceController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> addMovie(@RequestBody MovieOrPerformance movie){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
+		
 		String message = serviceMovie.add(movie);
 		
 		if(message == null) {
@@ -78,6 +91,11 @@ public class MovieOrPerformanceController {
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	public ResponseEntity<String> changeInstitution(@RequestBody ChangedMovie changeMovie){
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.CINEMAADMIN) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
 		
 		MovieOrPerformance movie = serviceMovie.findByName(changeMovie.getSelectMovie());
 		MovieOrPerformance newMovie = new MovieOrPerformance();

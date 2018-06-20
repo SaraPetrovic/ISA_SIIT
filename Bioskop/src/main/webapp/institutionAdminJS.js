@@ -1,63 +1,86 @@
 //fast rez ticket
 function loadProjectionForCinema(cinemaId){
+		$("#seatSelect").empty();
 		$.ajax({
 			type: "GET",
-			url: "/api/projections",
+			url: "/api/projectionss/" + cinemaId,
 			success: function(projections){
 				var proj = 0;
 				$("#selectProjectionForTicket").empty();
 				var select = document.getElementById("selectProjectionForTicket");
-				$.each(projections, function(m, projection){
-					if(projection.theaterOrCinema.id == cinemaId){
-						proj = 1;
-						var option = document.createElement("OPTION");
-						select.add(option);
-						option.value = projection.id;
-						option.text = projection.name;	
-					}
+				var maxRow;
+				var maxColumn;
+				var id;
+				$.each(projections, function(i, projection){
+					maxRow = projection.hall.maxRow;
+					maxColumn = projection.hall.maxColumn;
+					id = projection.id;
+					
+					var option = document.createElement("OPTION");
+					select.add(option);
+					option.value = projection.id;
+					option.text = projection.name;	
+					
 				});
-				if(proj == 0){
-					swal("Sorry,", "You must create projections before you create ticket!", "info");
-					$("#newTicket").modal("hide");
+				if(projections.length == 0){
+					swal("Sorry,", "You must create projection before you create ticket!", "info");
+			    	$("#newTicket").modal("hide");
 				}
 				
 				if(projections.length == 1){
-					$("#seatSelect").empty();
-					var i, j;
-					var select = document.getElementById("seatSelect");
-					
-					$.each(projections, function(i, projection){
-						var maxRow = projection.hall.maxRow;
-						var maxColumn = projection.hall.maxColumn;
-						if(projection.tickets == null){
-							for (i = 1; i < maxRow + 1; i++) {
-							    for (j = 1; j < maxColumn + 1; j++) {
-							    	var option = document.createElement("OPTION");
-							    	option.value = i + "-" + j;
-									option.text = i + "-" + j;
-							    	select.add(option);
-									
-							    }
-							}
-						}else{
-							for (i = 1; i < maxRow + 1; i++) {
-							    for (j = 1; j < maxColumn + 1; j++) {
-							    	$.each(tickets, function(i, ticket){
-										if(ticket.red != i && ticket.kolona != j){
-											var option = document.createElement("OPTION");
-											select.add(option);
-											option.value = i + "-" + j;
-											option.text = i + "-" + j;
+					alert("PROJ LENGTH == 1");
+					$.ajax({
+						type: "GET",
+						url: "/api/projections/" + id + "/tickets",
+						success: function(tickets){
+							var i, j;
+							var select = document.getElementById("seatSelect");
+							
+							if(tickets.length == 0){
+								alert("TICKETS SU NULL");
+								for (i = 1; i < maxRow + 1; i++) {
+								    for (j = 1; j < maxColumn + 1; j++) {
+								    	var option = document.createElement("OPTION");
+										select.add(option);
+										option.value = i + "-" + j;
+										option.text = i + "-" + j;
+								    }
+								}
+							}else{
+								alert("ON CLICK NISU NULL");
+								var seats = [];
+								for (i = 1; i < maxRow + 1; i++) {
+								    for (j = 1; j < maxColumn + 1; j++) {
+								    	seats.push(i + "-" + j);
+								    }
+								}
+								alert("ON CLICK BROJ MESTA" + seats.length);
+								var red;
+								var kol;
+								$.each(tickets, function(i, ticket){
+							    	for (var j = 0; j < seats.length; j++){
+							    		//alert("IF: " + ticket.red + "==" + seats[j].split("-")[0] + " I " + ticket.kolona + " == " + seats[j].split("-")[1]);
+										red = seats[j].split("-")[0];
+										kol = seats[j].split("-")[1];
+							    		if(ticket.red == red && ticket.kolona == kol){
+											alert("USAO");
+											seats.splice(j,1);
 										}
-									});  
-							    }
-							}
-						}
+							    	}
+								});
+								for (var m = 0; m < seats.length; m++){
+									var option = document.createElement("OPTION");
+									select.add(option);
+									option.value = seats[m];
+									option.text = seats[m];
+								}
+							}					
+						},
 					});
 				}
 			},
 			error: function(err){
-				swal("Sorry,", "You must create projections before you create ticket!", "info");
+				swal("Sorry,", "You must create projection before you create ticket!", "info");
 		    	$("#newTicket").modal("hide");
 			},
 		});
@@ -126,8 +149,8 @@ function loadProjectionForCinema(cinemaId){
 				$.each(halls, function(i, hall){
 					var option = document.createElement("OPTION");
 					select.add(option);
-					option.value = hall.name;
-					option.text = hall.name;
+					option.value = hall.id;
+					option.text = hall.name + " (" + hall.theaterOrCinema.name + ")";
 				});
 			}
 		});
@@ -238,7 +261,7 @@ function loadProjectionForCinema(cinemaId){
 				$.each(projections, function(i, projection){
 					var option = document.createElement("OPTION");
 					select.add(option);
-					option.value = projection.name;
+					option.value = projection.id;
 					option.text = projection.name;
 				});
 			}
