@@ -40,42 +40,36 @@ td, th {
 </style>
 </head>
 <body style="background-color:#efefe9">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="index.html">Cinema</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-				<form id="login-form" class="navbar-form navbar-right">
-					<div class="form-group">
-						<input id="username-field" type="text" placeholder="Username"
-							class="form-control">
-					</div>
-					<div class="form-group">
-						<input id="password-field" type="password" placeholder="Password"
-							class="form-control">
-					</div>
-					<button id="login-btn" type="button" class="btn btn-success">Login</button>
-					<button id="admin-button" type="button"
-						class="btn btn-success admin">Administracija</button>
-					<button id="registration-btn" type="button" class="btn btn-success">Registration</button>
-					<button id="logout-btn" type="button" class="btn btnc-success">Log
-						Out</button>
-					<button id="adminCinema-button" type="button"
-						class="btn btn-success admin">Institution's Admin</button>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="index.html">Home</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+               <form id="login-form" class="navbar-form navbar-right">
+                  <div class="form-group">
+                     <input id="username-field" type="text" placeholder="Username" class="form-control">
+                  </div>
+                  <div class="form-group">
+                     <input id="password-field" type="password" placeholder="Password" class="form-control">
+                  </div>
+                  <button  id="login-btn" type="button" class="btn btn-success">Login</button>
+                  <button  id="profile-btn" type="button" class="btn btn-success admin">Profile</button>
+                  <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
+                  <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
 
-				</form>
-			</div>
-			<!--/.navbar-collapse -->
-		</div>
-	</nav>
+                  
+               </form>
+            </div>
+            <!--/.navbar-collapse -->
+         </div>
+      </nav>
 
 	<section style="background: #efefe9;">
 		<div class="container">
@@ -245,6 +239,7 @@ td, th {
 		var i=new Number(1);
 		var owners = [];
 		items.forEach(function(item){
+			
 			if (item.approved == true){
 				if (item.owner.firstName == null){
 					owners.forEach(function(owner){
@@ -390,5 +385,23 @@ td, th {
 	      
 	    }, 300 );
 	});
+	  $( document ).ready(function() {
+		  
+			$.ajax({
+				contentType : 'application/json',
+				dataType : 'json',
+				type : 'GET',
+				success : function(user){
+					
+					printNav(user);
+				},
+				error : function(error){
+					printNav(null);
+				},
+				processData: false,
+				url : '/api/getLoggedUser'
+			});
+		    
+		});
 </script>
 </html>

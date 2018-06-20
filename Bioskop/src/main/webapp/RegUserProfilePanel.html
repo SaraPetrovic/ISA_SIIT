@@ -8,6 +8,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+<script src="Login.js"></script>
 
 <script>
 function printReservations(){
@@ -74,12 +75,12 @@ function printReservations(){
 		}
 	});
 }
-
 </script>
+
 
 </head>
 <body>
-     <nav class="navbar navbar-inverse navbar-fixed-top">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
          <div class="container">
             <div class="navbar-header">
                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -88,7 +89,7 @@ function printReservations(){
                <span class="icon-bar"></span>
                <span class="icon-bar"></span>
                </button>
-               <a class="navbar-brand" href="index.html">Cinema</a>
+               <a class="navbar-brand" href="index.html">Home</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                <form id="login-form" class="navbar-form navbar-right">
@@ -99,10 +100,10 @@ function printReservations(){
                      <input id="password-field" type="password" placeholder="Password" class="form-control">
                   </div>
                   <button  id="login-btn" type="button" class="btn btn-success">Login</button>
-                  <button  id="admin-button" type="button" class="btn btn-success admin">Administracija</button>
+                  <button  id="profile-btn" type="button" class="btn btn-success admin">Profile</button>
                   <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
                   <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
-                  <button  id="adminCinema-button" type="button" class="btn btn-success admin">Institution's Admin</button>
+
                   
                </form>
             </div>
@@ -610,15 +611,18 @@ function myAds(){
 			var i=new Number(1);
 
 			items.forEach(function(item){
-				if (i == 1){
-					body += '<div class="row">';
-				}
-					body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p><hr><p style="margin-top:15px;word-wrap: break-word;">expiry date:  '+item.expiryDate+' </p> </div> <div class="panel-footer"> <a href="ItemAd.html?itemId=' + item.id + '"> More info</a> </div> </div> </div>';
-					
-				i++;
-				if (i == 4){
-					body += '</div>';
-					i = 1;
+				
+				if(item.active == true){
+					if (i == 1){
+						body += '<div class="row">';
+					}
+						body  += '<div class="col-md-4"> <div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">'+item.name+'</h3> </div> <div class="panel-body"> <img class="img-responsive" style="height:200px;" src=images/'+item.picture+'><hr> <p style="margin-top:15px;word-wrap: break-word;"> '+item.description+' </p><hr><p style="margin-top:15px;word-wrap: break-word;">expiry date:  '+item.expiryDate+' </p> </div> <div class="panel-footer"> <a href="ItemAd.html?itemId=' + item.id + '"> More info</a> </div> </div> </div>';
+						
+					i++;
+					if (i == 4){
+						body += '</div>';
+						i = 1;
+					}
 				}
 			});
 
@@ -697,6 +701,24 @@ function makeOffer(itemId){
 	    url: '/api/items/makeOffer'
 	});
 }
+$( document ).ready(function() {
+	
+	$.ajax({
+		contentType : 'application/json',
+		dataType : 'json',
+		type : 'GET',
+		success : function(user){
+			
+			printNav(user);
+		},
+		error : function(error){
+			printNav(null);
+		},
+		processData: false,
+		url : '/api/getLoggedUser'
+	});
+    
+});
 function addOfficialItem(){
 	alert($("#itemExpiryDate").val());
 }
