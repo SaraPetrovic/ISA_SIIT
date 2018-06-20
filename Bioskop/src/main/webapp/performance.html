@@ -24,6 +24,14 @@
       <link rel="stylesheet" href="js/jquery.rateyo-lib/jquery.rateyo.css">
       <script src="Login.js"></script>
       
+      <style>
+      	#performance-details {
+      		font-size: 15px;
+      		font-weight: 600;
+      	}
+      
+      </style>
+      
 </head>
 
 <body>
@@ -196,12 +204,13 @@
 				body += '<div class="col-md-12">';
 				body +=	  '<div class="panel panel-primary">';
 				body +=	     '<div class="panel-heading">';
-				body +=	         '<h2 class="panel-title">' + key + '</h2>';
+				body +=	         '<h2 class="panel-title">' + "Performanceses" + '</h2>';
 				body +=      '</div>';
 				body +=      '<div class="panel-body">';
 				
 				for (var i = 0; i < sortedProjections[key].length; i++) {
-					body += '<button class="btn btn-info" onclick="redirectToReservation(' + sortedProjections[key][i].id + ')">' + sortedProjections[key][i].date + '</button>'	
+					var d = formatDate(sortedProjections[key][i].date)
+					body += '<button class="btn btn-info" onclick="redirectToReservation(' + sortedProjections[key][i].id + ')" style="margin: 2px;">' + d + '</button>'	
 				}
 				
 				body +=	     '</div>';
@@ -216,6 +225,18 @@
 		$("#performance-panels").append(body);
 		
 	});
+	
+	function formatDate(dateTxt) {
+		var temp = dateTxt.split('T');
+		var time = temp[1];
+		var t = temp[0].split('-');
+		var day = t[2];
+		var month = t[1];
+		var year = t[0];
+		var dateStr = "";
+		dateStr = day + "." + month + "." + year + ".<br/> " + time; 
+		return dateStr;
+	};
 	
 	function redirectToReservation(performanceID) {
 		var redirectLoc = "/reservation.html?id=" + performanceID;

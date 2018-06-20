@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+ 
 <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,16 +14,20 @@
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <!-- materialize -->
       
-      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet"> 
+      <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
       <!-- Custom styles for this template -->
       <link href="css/jumbotron.css" rel="stylesheet">
       <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
       <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
-   </head>
 
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
+
+       
+
+   </head>
+ 
 <body>
-    
+   
       <nav class="navbar navbar-inverse navbar-fixed-top">
          <div class="container">
             <div class="navbar-header">
@@ -47,17 +51,18 @@
                   <button  id="profile-btn" type="button" class="btn btn-success admin">Profile</button>
                   <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
                   <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
-
-                  
+ 
+                 
                </form>
             </div>
             <!--/.navbar-collapse -->
          </div>
       </nav>
       <div id="body" class="container-body" style="margin-top: 50px">
-      
-      
+     
+     
          <div class="container" >
+
 			  <h1 align="center" style="color:grey;">Promotions</h1>  
 			  <div id="myCarousel" class="carousel slide" data-ride="carousel">
 			    <!-- Indicators -->
@@ -79,7 +84,7 @@
 			      </div>
 			
 			      <div class="item">
-			        <img src="images/starwars.jpg" alt="Chicago" style="width:100%;height:500px;">
+			        <img src="images/starwars2.jpg" alt="Chicago" style="width:100%;height:500px;">
 			      </div>
 			    
 			      <div class="item">
@@ -98,21 +103,22 @@
 			    </a>
 			  </div>
 			
+
       </div>
       <div  class="row" style="margin-top:50px;">
-      		<div class="col-md-4">
-      			<a href="cinemas.html"  style="margin-left:40%;display:inline; font-size:36px;cursor:pointer;">Cinemas</a>
-      		</div>
-      		<div class="col-md-4">
-      			<a href="theaters.html"  style="margin-left:30%;display:inline; font-size:36px;cursor:pointer;">Theaters</a>
-      		</div>
-      		<div class="col-md-4">
-      			<a href="fanZone.html" style="margin-left:30%;display:inline; font-size:36px;cursor:pointer;">Fanzone</a>
-      		</div>
+            <div class="col-md-4">
+                <a href="cinemas.html"  style="margin-left:40%;display:inline; font-size:36px;cursor:pointer;">Cinemas</a>
+            </div>
+            <div class="col-md-4">
+                <a href="theaters.html"  style="margin-left:30%;display:inline; font-size:36px;cursor:pointer;">Theaters</a>
+            </div>
+            <div class="col-md-4">
+                <a href="fanZone.html" style="margin-left:30%;display:inline; font-size:36px;cursor:pointer;">Fanzone</a>
+            </div>
      
       </div>
       </div>
-      
+     
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>
       <script src="js/bootstrap.min.js"></script>
@@ -125,6 +131,7 @@
 	  $('#passwordModal').modal({backdrop: 'static', keyboard: false});
 	  $( document ).ready(function() {
 		  $("body").css("overflow", "hidden");
+		  $("body").css("background-color", "#eee");
 			$.ajax({
 				contentType : 'application/json',
 				dataType : 'json',
@@ -198,6 +205,90 @@
 	
 			
 		
-</body>
 
+      <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+ 
+ 
+      <script>
+           
+      //$("#logout-btn").hide();
+      $('#passwordModal').modal({backdrop: 'static', keyboard: false});
+      $( document ).ready(function() {
+         
+            $.ajax({
+                contentType : 'application/json',
+                dataType : 'json',
+                type : 'GET',
+                success : function(user){
+                   
+                    printNav(user);
+                },
+                error : function(error){
+                    printNav(null);
+                },
+                processData: false,
+                url : '/api/getLoggedUser'
+            });
+           
+        });
+           
+        </script>
+ 
+    <script>
+   
+ 
+   
+   
+    </script>
+ 
+        <script>
+/*         
+            $("#adminCinema-button").click(function(){
+                $("#body").empty();
+                $.get("institutionAdmin.html", function( InstitutionAdminPanel ) {
+                      $("#body").append(InstitutionAdminPanel);
+                     
+                    });
+            });
+            */
+        </script>
+    <script src="Login.js"></script>
+ 
+   
+    <script type="text/javascript">
+        $("#registration-btn").click(function(){
+            $("#body").empty();
+            $.get("SignUpForm.html", function( signUpForm ) {
+                $("#body").append(signUpForm);
+                });
+        });
+    </script>
+       
+    <script type="text/javascript">
+        $("#theater").click(function(){
+            $("#body").empty();
+            $.get("theaters.html", function( theaters ) {
+                $("#body").append(theaters);
+                });
+           
+        });
+    </script>
+   
+    <script>
+        $("#cinema").click(function(){
+            $("#body").empty();
+            $.get("cinemas.html", function( cinemas ) {
+                $("#body").append(cinemas);
+                });
+        });
+    </script>
+   
+   
+ 
+   
+           
+       
+
+</body>
+ 
 </html>
