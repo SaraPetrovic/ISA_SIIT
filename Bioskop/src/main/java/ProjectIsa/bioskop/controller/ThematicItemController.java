@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -141,24 +142,7 @@ public class ThematicItemController {
 		}
 		
 	}
-	@RequestMapping(
-			value = "/api/officialItems/{id}",
-			method = RequestMethod.DELETE,
-			produces = MediaType.TEXT_PLAIN_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String addItem(@PathVariable("id") Long id) {
-		OfficialItem item = itemService.getOfficialItem(id);
-		String message = "";
-		if (item != null){
-			itemService.deteItem(item);
-			message ="Suceess";
-			
-		}else{
-			message = "NotFound";
-			
-		}
-		return message;
-	}
+
 	@RequestMapping(
 			value = "/api/officialItems/{search}",
 			method = RequestMethod.GET,
@@ -362,6 +346,7 @@ public class ThematicItemController {
     
 
 	}
+
 	
 }
 

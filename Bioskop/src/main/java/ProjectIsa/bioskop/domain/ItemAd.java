@@ -1,6 +1,7 @@
 package ProjectIsa.bioskop.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,9 +13,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ProjectIsa.bioskop.controller.CustomJsonDateDeserializer;
 @Entity
 public class ItemAd implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +40,9 @@ public class ItemAd implements Serializable {
 	private String picture;
 	@Column(nullable = false)
 	private Boolean approved;
-	
+	@Temporal(TemporalType.DATE)
+	@NotNull
+	private Date expiryDate;
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY , mappedBy = "itemAd", cascade = CascadeType.REMOVE)
 	private List<ItemOffer> offers;
@@ -97,6 +106,18 @@ public class ItemAd implements Serializable {
 	}
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+	
+	
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+	@JsonDeserialize(using = CustomJsonDateDeserializer.class)
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
+	public Boolean getApproved() {
+		return approved;
 	}
 	public ItemAd(Long id, String name, String description, String picture, User owner, Long version) {
 		super();

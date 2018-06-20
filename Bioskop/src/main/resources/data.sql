@@ -22,10 +22,10 @@ insert into user(username, password, usertype, address_id, email, firstname, las
 
 
 
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'kapa', 'opis' ,0, 2,'item.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true)
-insert into item_ad( name, description ,version, owner_id, picture, approved) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false)
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'kapa', 'opis' ,0, 2,'item.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false, '2018-06-12')
 insert into official_item( name, price,description,version, quantity, picture) values ( 'duks', '700', 'opis', 0 ,2, 'item2.jpg')
 
 insert into item_reservation (id, user_id, official_item_id) values ('1' , '1', '1')
