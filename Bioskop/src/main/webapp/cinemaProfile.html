@@ -38,6 +38,7 @@
 	      </div>	
 	</div>
 	
+	<div class="container">
 	<div id="body">
 		<div>
 			<div class="col-md-5">
@@ -53,6 +54,7 @@
 			
 		</div>
 	
+	</div>
 	</div>
 </body>
 
@@ -177,12 +179,16 @@
 				body +=	         '<h2 class="panel-title">' + key + '</h2>';
 				body +=      '</div>';
 				body +=      '<div class="panel-body">';
-				body +=		 '<img src="images/'+ sortedProjections[key][0].movieOrPerformance.img + '" class="img img-thumbnail" style="width:100px;height:150px;">'
+				body +=      	'<div class="col-md-4">';
+				body +=		 		'<img src="images/'+ sortedProjections[key][0].movieOrPerformance.img + '" class="img img-thumbnail" style="width:100px;height:150px;">'
+				body +=	     	'</div>';
+				body +=		 	'<div class="col-md-8">';
 				for (var i = 0; i < sortedProjections[key].length; i++) {
-					body += '<button class="btn btn-info" onclick="redirectToReservation(' + sortedProjections[key][i].id + ')">' + sortedProjections[key][i].date + '</button>'	
+					var d = formatDate(sortedProjections[key][i].date);
+					body += '<button class="btn btn-info" onclick="redirectToReservation(' + sortedProjections[key][i].id + ')" style="margin:2px;">' + d + '</button>'	
 				}
-				
-				body +=	     '</div>';
+				body +=		 	'</div>';
+				body +=		 '</div>';
 				body +=      '<div class="panel-footer">';
 				body +=	        '<button class="btn btn-primary" onclick="redirectToMovie(' + sortedProjections[key][0].movieOrPerformance.id  + ',' + cinemaID + ')">Details</button>';
 				body +=      '</div>'
@@ -198,6 +204,17 @@
 		
 	})
 	
+	function formatDate(dateTxt) {
+		var temp = dateTxt.split('T');
+		var time = temp[1];
+		var t = temp[0].split('-');
+		var day = t[2];
+		var month = t[1];
+		var year = t[0];
+		var dateStr = "";
+		dateStr = day + "." + month + "." + year + ".<br/> " + time; 
+		return dateStr;
+	}
 
 	function redirectToMovie(movieID, cinemaID) {
 		var redirectLoc = "/movie.html?movieid=" + movieID + "&cinemaid=" + cinemaID;
