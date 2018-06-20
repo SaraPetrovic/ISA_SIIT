@@ -72,14 +72,15 @@ public class ThematicItemService implements ItemService {
 		itemRepository.delete(item);
 		
 	}
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_UNCOMMITTED)
 	@Override
 	public ItemOffer addItemOffer(ItemOffer offer,User user) {
 		ItemAd item = itemAdRepository.findOne(offer.getItem().getId());
 		offer.setItem(item);
+		offer.setAccepted(false);
 		User userWhoOffer = userRepository.findById(user.getId());
 		offer.setUser(userWhoOffer);
-		if (user == null || item == null || offer.getPrice() < 0){
+		if (user == null || item == null || offer.getPrice() < 0 || item.getActive() == false){
 			return null;
 		}
 		// proverava se da li u bazi postoji ponuda korisnika
@@ -179,7 +180,7 @@ public class ThematicItemService implements ItemService {
 	@Override
 	public List<ItemAd> getItemAds() {
 		// TODO Auto-generated method stub
-		return itemAdRepository.findAll();
+		return itemAdRepository.findAllByActive(true);
 	}
 
 
@@ -205,23 +206,36 @@ public class ThematicItemService implements ItemService {
 		ItemOffer acceptedOffer = offerRepository.findOne(id);
 		List<ItemOffer> offers = offerRepository.findByItemAd(acceptedOffer.getItem());
 		//duboko kopiranje zato sto se item brise iz baze
-		ItemOffer response = new ItemOffer(acceptedOffer);
 		
-		if (acceptedOffer != null && sessionUser != null && sessionUser.getId() == acceptedOffer.getItem().getOwner().getId()){
+		if (acceptedOffer != null && sessionUser != null && sessionUser.getId() == acceptedOffer.getItem().getOwner().getId() && acceptedOffer.getItem().getActive() == true){
 			try{
+				acceptedOffer.getItem().setActive(false);
+				acceptedOffer.setAccepted(true);
+				offerRepository.save(acceptedOffer);
+				
 				for (ItemOffer offer : offers ){
 					if (offer == acceptedOffer){
-						emailService.sendSimpleMessage(acceptedOffer.getUser().getEmail(), "Your bid for cinema prop", "You successfully bought item " 
-					+ acceptedOffer.getItem().getName() + " for " + acceptedOffer.getPrice() + "$." );
+						new Thread(new Runnable() {
+						     @Override
+							public void run() {
+						    	 emailService.sendSimpleMessage(acceptedOffer.getUser().getEmail(), "Your bid for cinema prop", "You successfully bought item " 
+											+ acceptedOffer.getItem().getName() + " for " + acceptedOffer.getPrice() + "$." );
+						     }
+						}).start();
+						
 					}else{
-						emailService.sendSimpleMessage(offer.getUser().getEmail(), "Your bid for cinema prop", "You lost on acution for item " 
-								+ acceptedOffer.getItem().getName() + " -- price  " + offer.getPrice() + "$." );
+						new Thread(new Runnable() {
+						     @Override
+							public void run() {
+						    	 emailService.sendSimpleMessage(offer.getUser().getEmail(), "Your bid for cinema prop", "You lost on acution for item " 
+											+ acceptedOffer.getItem().getName() + " -- price  " + offer.getPrice() + "$." );
+						     }
+						}).start();
+						
 					}
-					offerRepository.delete(offer);
 					
 				}
-				itemAdRepository.delete(acceptedOffer.getItem());
-				return response;
+				return acceptedOffer;
 			}catch(Exception e){
 				System.out.println("\n\nexception se desio" + e.getClass()+ "\n\n");
 				return null;
@@ -324,6 +338,7 @@ public class ThematicItemService implements ItemService {
 	public ItemAd addItemAd(User user, ItemAd itemAd) {
 		User dbUser = userRepository.findById(user.getId());
 		itemAd.setApproved(false);
+		itemAd.setActive(true);
 		itemAd.setOwner(dbUser);
 		dbUser.getAds().add(itemAd);
 		userRepository.save(dbUser);

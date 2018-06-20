@@ -22,16 +22,15 @@ insert into user(username, password, usertype, address_id, email, firstname, las
 
 
 
-insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true, '2018-06-12')
-insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'kapa', 'opis' ,0, 3,'item.jpg', true, '2018-06-12')
-insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true, '2018-06-12')
-insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false, '2018-06-12')
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date, active) values ( 'majica', 'opis' ,0,2 , 'item1.jpg', true, '2018-06-12', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date, active) values ( 'kapa', 'opis' ,0, 3,'item.jpg', true, '2018-06-12', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date, active) values ( 'duks', 'opis' ,0, 2,'item2.jpg', true, '2018-06-12', true)
+insert into item_ad( name, description ,version, owner_id, picture, approved, expiry_date, active) values ( 'duks', 'opis' ,0, 2,'item2.jpg', false, '2018-06-12', true)
 insert into official_item( name, price,description,version, quantity, picture) values ( 'duks', '700', 'opis', 0 ,2, 'item2.jpg')
 
 insert into item_reservation (id, user_id, official_item_id) values ('1' , '1', '1')
-insert into item_offer(user_id, price, item_ad_id, version) values ('1', '500', '2', '0')
-insert into item_offer(user_id, price, item_ad_id, version) values ('3', '700', '2', '0')
-insert into item_offer(user_id, price, item_ad_id, version) values ('2', '500', '3', '0')
+insert into item_offer(user_id, price, item_ad_id, accepted, version) values ('1', '500', '2', false, '0')
+insert into item_offer(user_id, price, item_ad_id, accepted, version) values ('2', '500', '3', false ,'0')
 
 insert into isa.friendship(userid1, userid2, action_userid, status) values (2, 3, 3, 2)
 insert into isa.friendship(userid1, userid2, action_userid, status) values (1, 3, 1, 2)

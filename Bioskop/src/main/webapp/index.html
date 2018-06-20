@@ -33,7 +33,7 @@
                <span class="icon-bar"></span>
                <span class="icon-bar"></span>
                </button>
-               <a class="navbar-brand" href="index.html">Cinema</a>
+               <a class="navbar-brand" href="index.html">Home</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                <form id="login-form" class="navbar-form navbar-right">
@@ -44,10 +44,10 @@
                      <input id="password-field" type="password" placeholder="Password" class="form-control">
                   </div>
                   <button  id="login-btn" type="button" class="btn btn-success">Login</button>
-                  <button  id="admin-button" type="button" class="btn btn-success admin">Administracija</button>
+                  <button  id="profile-btn" type="button" class="btn btn-success admin">Profile</button>
                   <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
                   <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
-                  <button  id="adminCinema-button" type="button" class="btn btn-success admin">Institution's Admin</button>
+
                   
                </form>
             </div>
@@ -121,45 +121,32 @@
 
 	  <script>
 	  		
-	  $("#logout-btn").hide();
+	  //$("#logout-btn").hide();
 	  $('#passwordModal').modal({backdrop: 'static', keyboard: false});
-			$("#admin-button").click(function() {
-				window.location.replace("sysadmin.html");
-
-				 
+	  $( document ).ready(function() {
+		  
+			$.ajax({
+				contentType : 'application/json',
+				dataType : 'json',
+				type : 'GET',
+				success : function(user){
+					
+					printNav(user);
+				},
+				error : function(error){
+					printNav(null);
+				},
+				processData: false,
+				url : '/api/getLoggedUser'
 			});
+		    
+		});
 			
 		</script>
 
 	<script>
 	
-		$("#logout-btn").click(function() {	
-			$.ajax({
-				type: "POST",
-				url: "/api/logout",
-				success: function(response) { 
-					$("#username-field").val("");
-					$("#password-field").val("");
-					$("#username-field").show();
-					$("#password-field").show();
-					$("#admin-button").show();
-					$("#login-btn").show();
-					$("#registration-btn").show();
-					$("#adminCinema-button").show();
-					$("#logout-btn").hide();
-					$("#body").empty(); 
-					$("#body").append("<h1><br/><br/>Uspesno ste se izlogovali!!</h1>");
-					
-					alert(response.username);
-				},
-				error: function() {alert("nije uspeo logout");},
-				contentType: "application/json",
-				
-			});
-			
-			
-			
-		});
+
 	
 	
 	</script>

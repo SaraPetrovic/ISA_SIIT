@@ -1,3 +1,49 @@
+function printNav(user){
+	if (user == null){
+		$("#logout-btn").hide();
+		$("#profile-btn").hide();
+	}else{
+			$("#logout-btn").show();
+			$("#profile-btn").show();
+			$("#username-field").hide();
+			$("#password-field").hide();
+			$("#login-btn").hide();
+			$("#registration-btn").hide();
+			var replaceHtml= "";
+			if (user.userType == "REGISTEREDUSER"){
+				replaceHtml = "RegUserProfilePanel.html";	
+			}else if (user.userType == "SYSTEMADMIN"){
+				replaceHtml = "sysAdmin.html";
+			}else if (user.userType == "FANZONEADMIN"){
+				replaceHtml = "fanzoneAdmin.html";
+			}else if (user.userType = "CINEMAADMIN"){
+				replaceHtml = "institutionAdmin.html";
+			}
+			$("#profile-btn").click(function(){
+				
+				window.location.replace(replaceHtml);
+			});
+		
+			$("#logout-btn").click(function() {	
+				
+				$.ajax({
+					type: "POST",
+					url: "/api/logout",
+					success: function(response) { 
+						
+						
+						window.location.replace("index.html");
+					},
+					error: function() {alert("nije uspeo logout");},
+					contentType: "application/json",
+					
+				});
+				
+				
+				
+			});	
+	}
+}
 
 $("#login-btn").click(function() {
 	
@@ -28,40 +74,20 @@ $("#login-btn").click(function() {
 		dataType: "json",
 		
 		success: function(response) { 
-			$("#username-field").hide();
-			$("#password-field").hide();
-			$("#admin-button").hide();
-			$("#login-btn").hide();
-			$("#registration-btn").hide();
-			$("#adminCinema-button").hide();
-			$("#logout-btn").show();
-			$("#body").empty(); 
-			$("#body").append("<h1><br/><br/>Uspesno ste se ulogovali!</h1>");
+			
 			if (response.userType == "SYSTEMADMIN" || response.userType == "FANZONEADMIN" || response.userType == "CINEMAADMIN"){
 				if (response.isFirstLogin){
 					$.get("changePassModal.html", function( modalPanel ) {
 						  $('#body').append(modalPanel);
 						  $('#passwordModal').modal({backdrop: 'static', keyboard: false});
-
 						});
 				}
 			}
 			
-			if (response.userType == "REGISTEREDUSER") {
-				retUser = response;
-				//$("#body").empty();
-				if (retUser != null) {
-					var redirectLoc = "/RegUserProfilePanel.html";
-					window.location.href = redirectLoc;
-					//alert(retUser.username);
-					//$.get("RegUserProfilePanel.html", function(RegUserPanel) {
-						//$("#body").append(RegUserPanel);
-					//});
-				};
-			}
+			location.reload();
 			
 										
-										},
+		},
 		error: function() {alert("nije uspeo");},
 		contentType: "application/json",
 		

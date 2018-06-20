@@ -27,12 +27,29 @@ public class ItemOffer implements Serializable {
 	private User user;
 	@Column(nullable = false)
 	private Double price;
-	
 	@ManyToOne(optional = false)
 	private ItemAd itemAd;
+	@Column(nullable = false)
+	Boolean accepted;
 	@Version
 	private Long version;
 	
+	
+	public ItemAd getItemAd() {
+		return itemAd;
+	}
+	public void setItemAd(ItemAd itemAd) {
+		this.itemAd = itemAd;
+	}
+	public Boolean getAccepted() {
+		return accepted;
+	}
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public Long getVersion() {
 		return version;
 	}
@@ -83,6 +100,16 @@ public class ItemOffer implements Serializable {
 		this.user.setLastName(originalOffer.getUser().getLastName());
 
 	}
+	public ItemOffer(Long id, User user, Double price, ItemAd itemAd, Boolean accepted, Long version) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.price = price;
+		this.itemAd = itemAd;
+		this.accepted = accepted;
+		this.version = version;
+	}
+	
 	
 	
 	

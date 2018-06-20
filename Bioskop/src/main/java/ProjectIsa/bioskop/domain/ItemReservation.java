@@ -3,6 +3,7 @@ package ProjectIsa.bioskop.domain;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,12 +29,14 @@ public class ItemReservation implements Serializable {
 	@JsonBackReference
 	@ManyToOne(optional = false)
 	private User user;
+
 	
 	
 	
 	public ItemReservation() {
 
 	}
+	
 	public Long getId() {
 		return id;
 	}
