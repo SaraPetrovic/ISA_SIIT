@@ -69,7 +69,7 @@ insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) 
 insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 4)
 insert into theater_or_cinema_projections(theater_or_cinema_id, projections_id) values (4, 5)
 
-insert into ticket(fast_ticket, kolona, new_price, red, reserved, version, projection_id, user_id) values (false, 1, 500.00, 1, true, '0', 1, 3)
+insert into ticket(fast_ticket, kolona, new_price, red, reserved, version, projection_id) values (true, 1, 500.00, 1, false, '0', 1)
 insert into projection_tickets(projection_id, tickets_id) values (1, 1)
 
 insert into theater_or_cinema_halls(theater_or_cinema_id, halls_id) values (5, 1)
@@ -77,3 +77,4 @@ insert into theater_or_cinema_halls(theater_or_cinema_id, halls_id) values (2, 2
 insert into theater_or_cinema_halls(theater_or_cinema_id, halls_id) values (3, 3)
 insert into theater_or_cinema_halls(theater_or_cinema_id, halls_id) values (5, 4)
 insert into theater_or_cinema_halls(theater_or_cinema_id, halls_id) values (4, 5)
+insert into ticket(fast_ticket, kolona, new_price, red, reserved, version, projection_id, user_id) values (false, 1, 360.00, 1, true, '0', 2, 3)

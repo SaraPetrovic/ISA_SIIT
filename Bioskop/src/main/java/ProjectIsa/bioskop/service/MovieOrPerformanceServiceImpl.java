@@ -27,8 +27,10 @@ public class MovieOrPerformanceServiceImpl implements MovieOrPerformanceServiceI
 			return "Please enter all required data!";
 		}
 		
+		
 		MovieOrPerformance exsisting = repository.findByName(movie.getName());
 		if(exsisting == null) {
+			movie.setImg("images/popcorn.jpeg");
 			repository.save(movie);
 			return null;
 		}

@@ -11,5 +11,6 @@ public interface TicketServiceInterface {
 	Ticket deleteTicket(Long id);
 	Ticket getTicket(Long id);
 	Ticket reserve(Ticket ticket, User user);
+	String decline(Ticket t);
 	
 }

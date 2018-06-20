@@ -28,7 +28,6 @@ function loadProjectionForCinema(cinemaId){
 				}
 				
 				if(projections.length == 1){
-					alert("PROJ LENGTH == 1");
 					$.ajax({
 						type: "GET",
 						url: "/api/projections/" + id + "/tickets",
@@ -37,7 +36,6 @@ function loadProjectionForCinema(cinemaId){
 							var select = document.getElementById("seatSelect");
 							
 							if(tickets.length == 0){
-								alert("TICKETS SU NULL");
 								for (i = 1; i < maxRow + 1; i++) {
 								    for (j = 1; j < maxColumn + 1; j++) {
 								    	var option = document.createElement("OPTION");
@@ -47,23 +45,19 @@ function loadProjectionForCinema(cinemaId){
 								    }
 								}
 							}else{
-								alert("ON CLICK NISU NULL");
 								var seats = [];
 								for (i = 1; i < maxRow + 1; i++) {
 								    for (j = 1; j < maxColumn + 1; j++) {
 								    	seats.push(i + "-" + j);
 								    }
 								}
-								alert("ON CLICK BROJ MESTA" + seats.length);
 								var red;
 								var kol;
 								$.each(tickets, function(i, ticket){
 							    	for (var j = 0; j < seats.length; j++){
-							    		//alert("IF: " + ticket.red + "==" + seats[j].split("-")[0] + " I " + ticket.kolona + " == " + seats[j].split("-")[1]);
 										red = seats[j].split("-")[0];
 										kol = seats[j].split("-")[1];
 							    		if(ticket.red == red && ticket.kolona == kol){
-											alert("USAO");
 											seats.splice(j,1);
 										}
 							    	}

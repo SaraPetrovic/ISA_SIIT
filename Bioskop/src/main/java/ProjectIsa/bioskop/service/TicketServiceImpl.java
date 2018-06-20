@@ -26,6 +26,7 @@ public class TicketServiceImpl implements TicketServiceInterface{
 	@Autowired
 	UserDBRepository userRepository;
 	
+	
 	@Override
 	public Collection<Ticket> getTickets() {
 		return repository.findAll();
@@ -79,6 +80,24 @@ public class TicketServiceImpl implements TicketServiceInterface{
 		repository.save(ticketToReserve);
 		return ticketToReserve;
 		
+	}
+
+	@Override
+	public String decline(Ticket t) {
+		
+		if(t.isFastTicket() == false) {
+			Projection p = t.getProjection();
+			p.getTickets().remove(t);
+			projectionRepository.save(p);
+			repository.delete(t);
+		}else {
+			System.out.println("FAST REZ TICKET");
+			t.setReserved(false);
+			t.setUser(null);
+			repository.save(t);
+		}
+		
+		return null;
 	}
 
 

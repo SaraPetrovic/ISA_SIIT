@@ -39,6 +39,7 @@ public class UserController {
 	@Autowired
 	private MembershipRepository membershipRepository;
 
+	
 	@RequestMapping(
 			value = "/api/users",
 			method = RequestMethod.GET,
