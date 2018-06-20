@@ -17,24 +17,58 @@
 <link href="css/jumbotron.css" rel="stylesheet">
 <link href="css/Adminpanel.css" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="UploadImage.js"></script>
+<script src="Login.js"></script>
 
 </head>
 <body>
-<div id="mySidenav" class="sidenav">
-	<a href="#" onclick="profile()">Profile</a>
-  	<hr>
-  	<a href="#"  onclick="halls()">Hall</a>
-  	<hr>
-  	<a href="#" onclick="movies()">Movie/
-  	Performance</a>
-  	<hr>
-  	<a href="#" onclick="projections()">Projection</a>
-  	<hr>
-  	<a href="#"  onclick="institutions()">Cinema/
-  	Theather
-  	</a>
-  	<hr>
-</div>
+
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="index.html">Home</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+               <form id="login-form" class="navbar-form navbar-right">
+                  <div class="form-group">
+                     <input id="username-field" type="text" placeholder="Username" class="form-control">
+                  </div>
+                  <div class="form-group">
+                     <input id="password-field" type="password" placeholder="Password" class="form-control">
+                  </div>
+                  <button  id="login-btn" type="button" class="btn btn-success">Login</button>
+                  <button  id="profile-btn" type="button" class="btn btn-success admin">Profile</button>
+                  <button  id="registration-btn" type="button" class="btn btn-success">Registration</button>
+                  <button  id="logout-btn" type="button" class="btn btnc-success">Log Out</button>
+
+                  
+               </form>
+            </div>
+            <!--/.navbar-collapse -->
+         </div>
+      </nav>
+		<div id="mySidenav" class="sidenav">
+			<a href="#" onclick="profile()">Profile</a>
+		  	<hr>
+		  	<a href="#"  onclick="halls()">Hall</a>
+		  	<hr>
+		  	<a href="#" onclick="movies()">Movie/
+		  	Performance</a>
+		  	<hr>
+		  	<a href="#" onclick="projections()">Projection</a>
+		  	<hr>
+		  	<a href="#"  onclick="institutions()">Cinema/
+		  	Theather
+		  	</a>
+		  	<hr>
+		</div>
+
 
 
 
@@ -229,33 +263,7 @@
 								    				</div>
 								    			</div>
 								    		</div>
-								    		<div class="row">
-								    		
-								    			<div class="container">
-									
-									        		<div id="image-preview-div" style="display: none">
-									            		<label for="exampleInputFile">Selected image:</label>
-									            		<br>
-									            		<img id="preview-img">
-									          		</div>
-									          		<div class="form-group">
-									           			<input type="file" name="file" id="fileImage" required>
-									          			<input id="item-image" name="item-image" type="hidden" value="">
-									          		</div>
-											        <br>
-											        <div class="alert alert-info" id="loadingImage" style="display: none;" role="alert">
-														Uploading image...
-										        		<div class="progress">
-										            	<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-										           		</div>
-										          		</div>
-										        	</div>
-										        	<div id="messageImage"></div>
-										      	</div>
-										
-								    			<script src="uploadImage.js"></script>
-								    			
-							    			</div>
+								    		 
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
@@ -398,13 +406,7 @@
 								    				</div>
 								    			</div>
 								    		</div>
-								    		<div class="row">
-								    			<div class="col-xs-6 col-sm-6 col-md-6">
-							    					<div class="form-group">
-							                			<input type="text" name="changedImg" id="changedImg" class="form-control input-sm" placeholder="Image">
-							    					</div>
-							    				</div>
-							    			</div>
+								    		
 							    			<div class="row">
 							    				<div class="col-xs-6 col-sm-6 col-md-6" >
 							    					<div class="form-group">
@@ -623,7 +625,6 @@
 	function fillSeatSelect(){
 		var id = $("#selectProjectionForTicket").val();
 		$("#seatSelect").empty();
-		alert("FILL FUNC " + id);
 		$.ajax({
 			type: "GET",
 			url: "/api/projections/" + id,
@@ -634,11 +635,9 @@
 					type: "GET",
 					url: "/api/projections/" + id + "/tickets",
 					success: function(tickets){
-						alert("FILL FUNC " + maxRow + "-" + maxColumn);						
 						var i, j;
 						var select = document.getElementById("seatSelect");
 						if(tickets.length == 0){
-							alert("FILL FUNC TICKETS NULL");
 							for (i = 1; i < maxRow + 1; i++) {
 							    for (j = 1; j < maxColumn + 1; j++) {
 							    	var option = document.createElement("OPTION");
@@ -648,14 +647,12 @@
 							    }
 							}
 						}else{
-							alert("FILL FUNC NISU NULL");
 							var seats = [];
 							for (i = 1; i < maxRow + 1; i++) {
 							    for (j = 1; j < maxColumn + 1; j++) {
 							    	seats.push(i + "-" + j);
 							    }
 							}
-							alert("BROJ MESTA" + seats.length);
 							$.each(tickets, function(i, ticket){
 						    	for (var n = 0; n < seats.length; n++){
 									if(ticket.red == seats[n].split("-")[0] && ticket.kolona == seats[n].split("-")[1]){
@@ -916,10 +913,7 @@
 	}
 		
 	$("#addMovie").click(function(){
-		var extension = $('#fileImage').val().split(/[. ]+/).pop();
-		$('#item-image').val( Math.random().toString(36).substr(2, 9) + "." + extension);
-	    $('#messageImage').empty();
-	    $('#loadingImage').show();
+		
 		
 		var movieOrPerformance = {};
 		
@@ -930,24 +924,12 @@
 		movieOrPerformance.producer = $("#producer").val();
 		movieOrPerformance.actors = $("#actors").val();
 		movieOrPerformance.filmDuration = $("#duration").val();
-		movieOrPerformance.img = $("#item-image").val();
+		
 		movieOrPerformance.averageRating = 0;
 		movieOrPerformance.description = $("#movieDescription").val();
 		movieOrPerformance.isFilm = isFilm;
 		
-		 $.ajax({
-		      url: "api/uploadMovieImage",
-		      type: "POST",
-		      data: new FormData($("#form3")[0]),
-		      contentType: false,
-		      cache: false,
-		      processData: false,
-		      success: function(data)
-		      {
-		        $('#loadingImage').hide();
-		        $('#messageImage').html(data);
-		      }
-		    });
+		
 		$.ajax({
 		    contentType: 'application/json',
 		    data: JSON.stringify(movieOrPerformance),
@@ -976,7 +958,7 @@
 		changedMovie.type = $("#changedType").val();
 		changedMovie.producer = $("#changedProducer").val();
 		changedMovie.filmDuration = $("#changedDuration").val();
-		changedMovie.img = $("#changedImg").val();
+		
 		changedMovie.description = $("#changedDescription").val();
 		changedMovie.selectMovie = $("#selectMovieForChange").val();
 	
@@ -1281,4 +1263,22 @@
 		});
 
 	});
+	  $( document ).ready(function() {
+		  
+			$.ajax({
+				contentType : 'application/json',
+				dataType : 'json',
+				type : 'GET',
+				success : function(user){
+					
+					printNav(user);
+				},
+				error : function(error){
+					printNav(null);
+				},
+				processData: false,
+				url : '/api/getLoggedUser'
+			});
+		    
+		});
 	</script>

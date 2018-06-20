@@ -5,12 +5,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +31,17 @@ import ProjectIsa.bioskop.domain.OfficialItem;
 import ProjectIsa.bioskop.domain.ThematicItem;
 import ProjectIsa.bioskop.domain.User;
 import ProjectIsa.bioskop.domain.UserType;
+import ProjectIsa.bioskop.repository.ItemAdRepository;
+import ProjectIsa.bioskop.repository.ItemOfferRepository;
 import ProjectIsa.bioskop.service.ThematicItemService;
 import ProjectIsa.bioskop.service.UserService;
 
 @RestController
 public class ThematicItemController {
-	
+	@Autowired
+	ItemOfferRepository offerRepo;
+	@Autowired
+	ItemAdRepository itemRepo;
 	public final static String  DEFAULT_IMAGE_FOLDER = "src/main/webapp/images/";
 	@Autowired
 	private ThematicItemService itemService;
@@ -70,13 +75,17 @@ public class ThematicItemController {
 	public ResponseEntity<ItemOffer> acceptOffer(@PathVariable(value = "id") Long id){
 		
 		User sessionUser = (User)request.getSession().getAttribute("user");
-		
+		try{
 		ItemOffer acceptedOffer = itemService.acceptOffer(id, sessionUser);
+		
 		if (acceptedOffer != null){
 			return new ResponseEntity<ItemOffer>(acceptedOffer, HttpStatus.OK);
 		}else{
 			return new ResponseEntity<ItemOffer>(acceptedOffer, HttpStatus.CONFLICT);
 
+		}
+		}catch(ObjectOptimisticLockingFailureException e){
+			return new ResponseEntity<ItemOffer>(new ItemOffer(), HttpStatus.CONFLICT);
 		}
 			
 		
@@ -183,7 +192,7 @@ public class ThematicItemController {
 		ItemAd item = itemService.addItemAd(user, itemAd);
 
 
-		return new ResponseEntity<ItemAd>(itemAd,
+		return new ResponseEntity<ItemAd>(item,
 				HttpStatus.OK);
 	}
 	@RequestMapping(
@@ -207,8 +216,8 @@ public class ThematicItemController {
 		
 		User user =(User) request.getSession().getAttribute("user");
 		User userDB = userService.getUser(user.getId());
-		Collection<ItemAd> items = userDB.getAds();
-		System.out.println("\n\nbroj itema " +  items.size() + "\n\n");
+		Collection<ItemAd> items = itemService.getUserAds(userDB);
+		
 
 
 		return new ResponseEntity<Collection<ItemAd>>(items,
@@ -274,10 +283,14 @@ public class ThematicItemController {
 		if (user == null){
 			System.out.println("\n\n\n\nALERT\n\n\n\n");
 		}
-
-		ItemOffer offerToAdd = itemService.addItemOffer(offer, user);
+		try{
+			ItemOffer offerToAdd = itemService.addItemOffer(offer, user);
+			return new ResponseEntity<ItemOffer>(offerToAdd, HttpStatus.OK);
+		}catch(ObjectOptimisticLockingFailureException e){
+			return new ResponseEntity<ItemOffer>(offer, HttpStatus.CONFLICT);
+		}
 		
-		return new ResponseEntity<ItemOffer>(offerToAdd, HttpStatus.OK);
+		
 
 	}
 	@RequestMapping(value = "api/items/myOffers",
@@ -363,6 +376,7 @@ public class ThematicItemController {
     
 
 	}
+
 
 	
 }

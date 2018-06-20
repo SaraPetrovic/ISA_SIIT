@@ -10,4 +10,5 @@ import ProjectIsa.bioskop.domain.ItemAd;
 public interface ItemAdRepository extends JpaRepository<ItemAd, Long> {
 	List<ItemAd> findByNameContainingOrDescriptionContainingAllIgnoringCase(String param, String param2);
 	List<ItemAd> findByApproved(Boolean approved);
+	List<ItemAd> findAllByActive(boolean sold);
 }

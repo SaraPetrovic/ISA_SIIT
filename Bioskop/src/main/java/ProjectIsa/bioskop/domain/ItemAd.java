@@ -49,12 +49,21 @@ public class ItemAd implements Serializable {
 
 	@ManyToOne(optional = false)
 	private User owner;
-
+	@Column
+	Boolean active;
 	@Version
 	private Long version;
 	
 	
 	
+
+
+	public Boolean getActive() {
+		return active;
+	}
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
 	public Boolean isApproved() {
 		return approved;

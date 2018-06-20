@@ -100,20 +100,18 @@ public class ItemServiceTest {
 		assertThat(offer1 != null);
 		assertThat(offer2 != null);
 		offer2.setPrice(33D);
+		offer1.setPrice(10D);
 		//simlucacija prihvatanja ponude
 		
 		//offer1.setPrice(44D);
+		offerRepository.save(offer1);
 		offerRepository.save(offer2);
-		offerRepository.delete(offer1);
+		
 		//offerRepository.save(offer1);
-		 
-		
-		
-		
-		
+
 		ItemOffer offer3 = offerRepository.findByUserAndItemAd(userWhoOffer, item);
-		assertThat (offer3.getVersion()).isEqualTo(1);
-		
+		System.out.println(offer3.getItem().getName());
 	}
+
 
 }

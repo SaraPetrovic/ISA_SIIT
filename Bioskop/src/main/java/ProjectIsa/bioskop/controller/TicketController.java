@@ -65,6 +65,25 @@ public class TicketController {
 			return new ResponseEntity<Ticket>(ticket, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@RequestMapping(
+			value = "/api/decline/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> decline(@PathVariable("id") Long id) {
+		HttpSession session = request.getSession();
+		User sessionUser = (User) session.getAttribute("user");
+		if(sessionUser == null || sessionUser.getUserType() != UserType.REGISTEREDUSER) {
+			return new ResponseEntity<String>("{\"msg\":\"You are not logged in as cinema admin!\"}", HttpStatus.CONFLICT);
+		}
+		
+		Ticket ticket = service.getTicket(id);
+
+		String message = service.decline(ticket);
+		
+		return new ResponseEntity<String>("{\"msg\":\"Reservation is successfully declined!\"}", HttpStatus.OK); 
+	}
+	
 	@RequestMapping(
 			value = "/api/ticket/{id}",
 			method = RequestMethod.DELETE,
