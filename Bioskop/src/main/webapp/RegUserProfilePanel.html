@@ -35,7 +35,14 @@ function printReservations(){
 					if(tickets.length != 0){
 						tickets.forEach(function(ticket){
 							if(ticket.user != null){
-								if(user.id == ticket.user.id){
+								var id;
+								if (ticket.user.id == null) {
+									id = ticket.user;
+								} else {
+									id = ticket.user.id;
+								}
+
+								if(user.id == id){
 									rez++;
 									body  += '<div class="col-md-4"> <div class="panel panel-info"> <div class="panel-heading">' +
 									'<h3 class="panel-title"><b>'+ticket.projection.movieOrPerformance.name+'</b></h3> </div>'+ 
@@ -43,7 +50,7 @@ function printReservations(){
 									'<p style="margin-top:15px;word-wrap: break-word;">Hall: '+ticket.projection.hall.name+' </p>'+
 									'<p style="margin-top:15px;word-wrap: break-word;">Row - Column: '+ticket.red+' - '+ticket.kolona+' </p>'+
 									'<p> <small>Old price: '+ ticket.projection.price + '</small> <big style="color:red;">New price: '+ ticket.newPrice + '</big></p>' +
-									'<p><a class="btn btn-primary " onclick="decline('+ticket.id+')" style="display:inline;"> Decline </a></p></div></div>';
+									'<p><a class="btn btn-primary " onclick="decline('+ticket.id+')" style="display:inline;"> Remove </a></p></div></div>';
 									
 									i++;
 									if (i == 4){
