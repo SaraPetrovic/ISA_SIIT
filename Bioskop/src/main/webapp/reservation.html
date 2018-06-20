@@ -23,6 +23,10 @@
       <link rel="stylesheet" href="js/seat-chart-lib/jquery.seat-charts.css">
   	  <link rel="stylesheet" href="js/seat-chart-lib/custom-style.css">
   	  <script src="js/seat-chart-lib/jquery.seat-charts.min.js"></script>
+  	  <script type="text/javascript" src="js/multiselect-lib/multiselect.js"></script>
+  	  <link rel="stylesheet" href="js/multiselect-lib/multiselect.css" type="text/css"/>
+  	  <script src="js/bootstrap.min.js"></script>
+  	  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"> </script>
       
 	  
 		
@@ -55,10 +59,21 @@
 				Total: <b>$<span id="total">0</span></b>
 				
 				<hr>
-				<button class="btn btn-primary" onclick="makeReservation()">Next</button>			
+				<h2>Select Friends</h2>
+				<span class="multiselect-native-select">
+            	<select id="friends-reservation" multiple="multiple">
+                 
+            	</select>
+          		</span>
+          		<hr>
+          		<button class="btn btn-primary" onclick="makeReservation()">Next</button>
+							
 			</div>
 		</div>	
-	</div>
+		
+		
+		
+		</div>
 
 <script>
 	var getUrlParameter = function getUrlParameter(sParam) {
@@ -116,6 +131,7 @@
 			}
 		},
 		error: function() {
+			swal("Error", "Ajax call (get tickets) failed", "error")
 			alert("nije uspeo ajax za dobavljanje karata");
 		},
 		contentType: "application/json",
@@ -225,10 +241,42 @@
 	
 	function makeReservation() {
 		
-		
+		// selected seats
 		var sel = sc.find('selected');
 		var selectedItems = sel.seatIds;
 		
+		// selected friends
+		var sFriends = $("#friends-reservation option:selected");
+		var tempFriends = [];
+		$(sFriends).each(function(index, s) {
+	      	tempFriends.push($(this).val());
+	    });
+	    var selectedFriends = [];
+	    
+	    for (i = 0; i < tempFriends.length; i++) {
+	    	var f = {"id" : tempFriends[i]};
+	    	selectedFriends.push(f);
+	    };
+	    
+	    // provera ako nije izabrano dovoljno prijatelja
+	    if (selectedItems.length > 1) {
+	    	if (selectedFriends.length != (selectedItems.length - 1)) {
+	    		var msg =  "You have selected " + selectedItems.length + " seats, so you have to select " + (selectedItems.length - 1) + " friends!"
+	    		swal("Something went wrong", msg, "error")
+	    		
+	    		return;
+	    	}
+	    } else if (selectedItems.length == 1 && selectedFriends.length > 0) {
+	    	swal("Error", "You have to select more than one seat if you want to invite friends!", "error");
+	    	return;
+	    } else if (selectedItems.length == 0){
+	    	swal("Error", "You have to select one or more seat to make reservation!" ,"error");
+	    	return;
+	    }
+	    
+	    
+	    
+		// make tickets
 		var listOfTickets = [];
 		
 		for (var i = 0; i < selectedItems.length; i++) {
@@ -242,20 +290,15 @@
 			newTicket.reserved = true;
 			newTicket.red = r;
 			newTicket.kolona = c;
+			
+			if (i > 0) {
+				newTicket.user = selectedFriends[i - 1];
+			}
+			
 			listOfTickets.push(newTicket);
 		}
 		
 
-		
-		/*
-		var newTicket = {};
-		newTicket.fastTicket = false;
-		newTicket.newPrice = projPrice;
-		newTicket.projection = {id: projectionID};
-		newTicket.reserved = true;
-		newTicket.red = 5;
-		newTicket.kolona = 10;
-		*/
 		
 		$.ajax({
 			type: "POST",
@@ -266,10 +309,17 @@
 			dataType: 'json',
 			data: JSON.stringify(listOfTickets),
 			success: function(tickets) {
-				alert("WOHO");
+				//swal("Great!", "You've made a reservation!", "success");
+				swal("Great!", "You've made a reservation!", "success").then(function() {
+					location.reload();
+				});
+				
 			},
 			error: function() {
-				alert("greska");
+				swal("Something went wrong!", "Unsuccessful reservation", "error").then(function() {
+					location.reload();
+				})
+				
 			}
 			
 		});
@@ -287,6 +337,40 @@
 		
 		return total;
 	}
+	
+	function loadFriends(){
+	    $.ajax({
+	        type: "GET",
+	        url: "/api/getFriends",
+	        success: function(friends){
+	            $("#friends-reservation").empty();
+	            $.each(friends, function(i, friend){
+	                $("#friends-reservation").append($("<option>",{
+	                    value: friend.id,
+	                    text: friend.firstName + " " + friend.lastName
+	                  }));
+	               });
+	            $("#friends-reservation").multiselect('rebuild');
+	        },
+	        error: function() {
+	        	swal("Something went wrong!", "Error while loading friend list" , "error")
+	        }
+	    });
+	}
+	
+	
+	
+	 $(document).ready(function() {
+	        $('#friends-reservation').multiselect({
+	            enableFiltering: true,
+	            includeSelectAllOption: false,
+	            maxHeight: 200
+	        });
+	        loadFriends(); 
+	        
+	    });
+	
+	
 
 </script>
 
