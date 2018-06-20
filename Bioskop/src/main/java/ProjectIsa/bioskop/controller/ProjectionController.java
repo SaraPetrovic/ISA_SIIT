@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-<<<<<<< HEAD
+
 import javax.servlet.http.HttpSession;
-=======
->>>>>>> 626b0dc6175f1b359fc79d77ffb75b8c34a2ee4a
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +23,9 @@ import ProjectIsa.bioskop.domain.MovieOrPerformance;
 import ProjectIsa.bioskop.domain.Projection;
 import ProjectIsa.bioskop.domain.Ticket;
 import ProjectIsa.bioskop.domain.User;
-<<<<<<< HEAD
+
 import ProjectIsa.bioskop.domain.UserType;
-=======
->>>>>>> 626b0dc6175f1b359fc79d77ffb75b8c34a2ee4a
+
 import ProjectIsa.bioskop.service.HallServiceImpl;
 import ProjectIsa.bioskop.service.MovieOrPerformanceServiceImpl;
 import ProjectIsa.bioskop.service.ProjectionServiceImpl;
