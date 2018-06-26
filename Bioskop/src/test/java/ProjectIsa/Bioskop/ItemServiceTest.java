@@ -56,39 +56,7 @@ public class ItemServiceTest {
 		List<ThematicItem> itemsAfter = (List<ThematicItem>)service.getItems();
 		assertThat(items).hasSize(itemsAfter.size());
 	}
-	/* ispravi
-	@Test
-	public void testItemOffer(){
-		ThematicItem item = service.getItem(1L); // default item in db
-		User user = userService.getUser("admin"); //default user in db
-		double price = 400;
-		ItemOffer offer = new ItemOffer(user, price, item);
-		
-		List<ItemOffer> itemsBefore = service.getOffers();
-		
-		service.addItemOffer(offer);
-		
-		List<ItemOffer> itemsAfter = service.getOffers();
-		
-		assertThat(itemsBefore).hasSize(itemsAfter.size() - 1);
-	}
-	
-	@Test
-	public void testItemOffer1(){
-		ThematicItem item = service.getItem(1L); // default item in db
-		User user = new User("ime", "prezime", "aaaaaaaaaaaaaaaaa", "asd", UserType.REGISTEREDUSER, new Adresa(), "asd@gmail.com"); // user koji ne postoji
-		double price = 400;
-		ItemOffer offer = new ItemOffer(user, price, item);
-		
-		List<ItemOffer> itemsBefore = service.getOffers();
-		
-		service.addItemOffer(offer);
-		
-		List<ItemOffer> itemsAfter = service.getOffers();
-		
-		assertThat(itemsBefore).hasSize(itemsAfter.size());
-	}
-	*/
+
 	@Test(expected = ObjectOptimisticLockingFailureException.class)
 	public void testOfferAcceptence(){
 		User owner = userService.getUser("ftn");

@@ -40,12 +40,12 @@ insert into item_offer(user_id, price, item_ad_id, accepted, version) values ('7
 insert into item_offer(user_id, price, item_ad_id, accepted, version) values ('6', '150', '2', false ,'0')
 insert into item_offer(user_id, price, item_ad_id, accepted, version) values ('7', '450', '2', false ,'0')
 
-insert into isa.friendship(userid1, userid2, action_userid, status) values (2, 3, 3, 2)
-insert into isa.friendship(userid1, userid2, action_userid, status) values (1, 3, 1, 2)
-insert into isa.friendship(userid1, userid2, action_userid, status) values (1, 7, 1, 2)
-insert into isa.friendship(userid1, userid2, action_userid, status) values (2, 7, 2, 2)
-insert into isa.friendship(userid1, userid2, action_userid, status) values (3, 7, 3, 2)
-insert into isa.friendship(userid1, userid2, action_userid, status) values (6, 7, 6, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (2, 3, 3, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (1, 3, 1, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (1, 7, 1, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (2, 7, 2, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (3, 7, 3, 2)
+insert into friendship(userid1, userid2, action_userid, status) values (6, 7, 6, 2)
 
 
 
